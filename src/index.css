@@ -1,0 +1,536 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  html {
+    font-size: 15.2px; /* Increased font scale for crisp, effortless readability across all screens */
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased selection:bg-sky-500 selection:text-white font-sans;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Custom modern scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Print styles for diagnostic reports, tax invoices & thermal slips */
+@media print {
+  @page {
+    size: auto;
+    margin: 10mm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide navigation, sidebars, buttons, and elements marked with .no-print */
+  nav, aside, header, footer, .no-print, [role="navigation"] {
+    display: none !important;
+  }
+
+  /* Unclip modal backdrops and dialog containers */
+  .fixed, [class*="fixed"] {
+    position: static !important;
+    overflow: visible !important;
+    inset: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  [class*="overflow-hidden"], [class*="overflow-y-auto"], [class*="max-h-"] {
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  /* Ensure invoice, report, barcode containers, and MIS audit reports render cleanly with pure black text */
+  #printable-report,
+  #printable-report *,
+  #printable-invoice,
+  #printable-invoice *,
+  #printable-barcode-slip,
+  #printable-barcode-slip *,
+  #mis-report-printable-area,
+  #mis-report-printable-area *,
+  .atlas-print-container,
+  .atlas-print-container * {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+
+  #printable-report,
+  #printable-invoice,
+  #printable-barcode-slip,
+  #mis-report-printable-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+    display: block !important;
+    zoom: 0.90 !important;
+    transform-origin: top center !important;
+  }
+
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+
+  /* Lock brand logo dimensions strictly during print */
+  img.atlas-brand-logo,
+  .atlas-brand-logo,
+  [data-brand-logo="true"],
+  #printable-invoice img[alt*="Logo"],
+  #printable-report img[alt*="Logo"] {
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    object-fit: contain !important;
+    display: inline-block !important;
+  }
+}
+
+/* Rich Clinical Report Editor Styling */
+.ProseMirror {
+  outline: none;
+  min-height: 280px;
+}
+.ProseMirror p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+.ProseMirror h1, .ProseMirror h2, .ProseMirror h3, .ProseMirror h4 {
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+.ProseMirror table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  width: 100%;
+  table-layout: fixed;
+}
+.ProseMirror td, .ProseMirror th {
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  vertical-align: top;
+}
+.ProseMirror th {
+  background-color: #f0f9ff;
+  color: #0369a1;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* ============================================================
+   DARK MODE STYLES
+   Activated when html.dark is present via the Dark Mode Toggle
+   ============================================================ */
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #090d16 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Backgrounds: Main Cards, Modals, Tables, Dropdowns, Translucent Overlays */
+html.dark .bg-white,
+html.dark [class*="bg-white"] {
+  background-color: #111726 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Inset containers, tables headers, empty states, inner boxes (matches ALL bg-slate-50, bg-slate-100 variants with any opacity) */
+html.dark [class*="bg-slate-50"],
+html.dark [class*="bg-gray-50"],
+html.dark [class*="bg-neutral-50"],
+html.dark [class*="bg-zinc-50"] {
+  background-color: #0b101c !important;
+}
+
+html.dark [class*="bg-slate-100"],
+html.dark [class*="bg-gray-100"],
+html.dark [class*="bg-neutral-100"],
+html.dark [class*="bg-zinc-100"] {
+  background-color: #162032 !important;
+}
+
+html.dark [class*="bg-slate-200"],
+html.dark [class*="bg-gray-200"],
+html.dark [class*="bg-neutral-200"] {
+  background-color: #1f2c42 !important;
+}
+
+/* Table zebra and item hover */
+html.dark [class*="hover:bg-slate-50"]:hover,
+html.dark [class*="hover:bg-slate-100"]:hover,
+html.dark [class*="hover:bg-slate-200"]:hover,
+html.dark [class*="hover:bg-gray-50"]:hover,
+html.dark [class*="hover:bg-gray-100"]:hover {
+  background-color: #1a2538 !important;
+}
+
+/* Prevent gradient whitewash on dark mode */
+html.dark [class*="to-white"] {
+  --tw-gradient-to: #0c1220 !important;
+}
+html.dark [class*="from-emerald-50"] {
+  --tw-gradient-from: rgba(6, 78, 59, 0.45) !important;
+}
+html.dark [class*="from-rose-50"] {
+  --tw-gradient-from: rgba(136, 19, 55, 0.45) !important;
+}
+html.dark [class*="from-sky-50"] {
+  --tw-gradient-from: rgba(8, 47, 73, 0.45) !important;
+}
+html.dark [class*="from-indigo-50"] {
+  --tw-gradient-from: rgba(49, 46, 129, 0.45) !important;
+}
+html.dark [class*="via-teal-50"] {
+  --tw-gradient-via: rgba(15, 23, 42, 0.8) !important;
+}
+html.dark [class*="via-cyan-50"] {
+  --tw-gradient-via: rgba(15, 23, 42, 0.8) !important;
+}
+html.dark [class*="via-purple-50"] {
+  --tw-gradient-via: rgba(15, 23, 42, 0.8) !important;
+}
+html.dark [class*="via-amber-50"] {
+  --tw-gradient-via: rgba(15, 23, 42, 0.8) !important;
+}
+
+/* Refined Dark Mode Borders */
+html.dark [class*="border-slate-"],
+html.dark [class*="border-gray-"],
+html.dark [class*="border-zinc-"] {
+  border-color: #1c2638 !important;
+}
+
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1c2638 !important;
+}
+
+/* Accent Borders */
+html.dark [class*="border-sky-100"],
+html.dark [class*="border-sky-200"] {
+  border-color: rgba(56, 189, 248, 0.25) !important;
+}
+
+html.dark [class*="border-rose-100"],
+html.dark [class*="border-rose-200"],
+html.dark [class*="border-rose-300"] {
+  border-color: rgba(244, 63, 94, 0.25) !important;
+}
+
+html.dark [class*="border-amber-100"],
+html.dark [class*="border-amber-200"],
+html.dark [class*="border-amber-300"] {
+  border-color: rgba(245, 158, 11, 0.25) !important;
+}
+
+html.dark [class*="border-emerald-100"],
+html.dark [class*="border-emerald-200"],
+html.dark [class*="border-emerald-300"] {
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Typography Hierarchy in Dark Mode */
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-gray-900,
+html.dark .text-gray-800 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-700,
+html.dark .text-slate-600,
+html.dark .text-gray-700,
+html.dark .text-gray-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-500,
+html.dark .text-slate-400,
+html.dark .text-gray-500,
+html.dark .text-gray-400 {
+  color: #94a3b8 !important;
+}
+
+/* Form Controls (Inputs, Selects, Textareas) */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #0e1626 !important;
+  border-color: #223147 !important;
+  color: #f8fafc !important;
+}
+
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+  border-color: #38bdf8 !important;
+  background-color: #131c30 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Translucent Glowing Tints in Dark Mode */
+html.dark [class*="bg-sky-50"],
+html.dark [class*="bg-sky-100"] {
+  background-color: rgba(2, 132, 199, 0.16) !important;
+}
+html.dark .text-sky-600,
+html.dark .text-sky-700,
+html.dark .text-sky-800,
+html.dark .text-sky-900 {
+  color: #38bdf8 !important;
+}
+
+html.dark [class*="bg-emerald-50"],
+html.dark [class*="bg-emerald-100"] {
+  background-color: rgba(16, 185, 129, 0.16) !important;
+}
+html.dark .text-emerald-600,
+html.dark .text-emerald-700,
+html.dark .text-emerald-800,
+html.dark .text-emerald-900,
+html.dark .text-emerald-950 {
+  color: #34d399 !important;
+}
+
+html.dark [class*="bg-amber-50"],
+html.dark [class*="bg-amber-100"],
+html.dark [class*="bg-amber-200"] {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+}
+html.dark .text-amber-600,
+html.dark .text-amber-700,
+html.dark .text-amber-800,
+html.dark .text-amber-900,
+html.dark .text-amber-950 {
+  color: #fbbf24 !important;
+}
+
+html.dark [class*="bg-rose-50"],
+html.dark [class*="bg-rose-100"],
+html.dark [class*="bg-rose-200"] {
+  background-color: rgba(244, 63, 94, 0.16) !important;
+}
+html.dark .text-rose-600,
+html.dark .text-rose-700,
+html.dark .text-rose-800,
+html.dark .text-rose-900 {
+  color: #fb7185 !important;
+}
+
+html.dark [class*="bg-teal-50"],
+html.dark [class*="bg-teal-100"],
+html.dark [class*="bg-teal-200"] {
+  background-color: rgba(13, 148, 136, 0.16) !important;
+}
+html.dark .text-teal-600,
+html.dark .text-teal-700,
+html.dark .text-teal-800,
+html.dark .text-teal-900 {
+  color: #2dd4bf !important;
+}
+html.dark [class*="border-teal-100"],
+html.dark [class*="border-teal-200"],
+html.dark [class*="border-teal-300"] {
+  border-color: rgba(45, 212, 191, 0.25) !important;
+}
+
+html.dark [class*="bg-cyan-50"],
+html.dark [class*="bg-cyan-100"],
+html.dark [class*="bg-cyan-200"] {
+  background-color: rgba(6, 182, 212, 0.16) !important;
+}
+html.dark .text-cyan-600,
+html.dark .text-cyan-700,
+html.dark .text-cyan-800,
+html.dark .text-cyan-900 {
+  color: #22d3ee !important;
+}
+html.dark [class*="border-cyan-100"],
+html.dark [class*="border-cyan-200"],
+html.dark [class*="border-cyan-300"] {
+  border-color: rgba(34, 211, 238, 0.25) !important;
+}
+
+html.dark [class*="bg-indigo-50"],
+html.dark [class*="bg-indigo-100"],
+html.dark [class*="bg-indigo-200"] {
+  background-color: rgba(99, 102, 241, 0.16) !important;
+}
+html.dark .text-indigo-600,
+html.dark .text-indigo-700,
+html.dark .text-indigo-800,
+html.dark .text-indigo-900,
+html.dark .text-indigo-950 {
+  color: #818cf8 !important;
+}
+html.dark [class*="border-indigo-100"],
+html.dark [class*="border-indigo-200"],
+html.dark [class*="border-indigo-300"] {
+  border-color: rgba(129, 140, 248, 0.25) !important;
+}
+
+html.dark [class*="bg-violet-50"],
+html.dark [class*="bg-violet-100"],
+html.dark [class*="bg-violet-200"],
+html.dark [class*="bg-purple-50"],
+html.dark [class*="bg-purple-100"] {
+  background-color: rgba(139, 92, 246, 0.16) !important;
+}
+html.dark .text-violet-600,
+html.dark .text-violet-700,
+html.dark .text-violet-800,
+html.dark .text-violet-900,
+html.dark .text-purple-600,
+html.dark .text-purple-700,
+html.dark .text-purple-800 {
+  color: #a78bfa !important;
+}
+html.dark [class*="border-violet-100"],
+html.dark [class*="border-violet-200"],
+html.dark [class*="border-violet-300"],
+html.dark [class*="border-purple-100"],
+html.dark [class*="border-purple-200"] {
+  border-color: rgba(167, 139, 250, 0.25) !important;
+}
+
+/* Preserve crisp white text on solid colored buttons */
+html.dark [class*="bg-sky-600"],
+html.dark [class*="bg-sky-700"],
+html.dark [class*="bg-emerald-600"],
+html.dark [class*="bg-emerald-700"],
+html.dark [class*="bg-teal-600"],
+html.dark [class*="bg-teal-700"],
+html.dark [class*="bg-cyan-600"],
+html.dark [class*="bg-cyan-700"],
+html.dark [class*="bg-rose-600"],
+html.dark [class*="bg-rose-700"],
+html.dark [class*="bg-amber-500"],
+html.dark [class*="bg-amber-600"],
+html.dark [class*="bg-indigo-600"],
+html.dark [class*="bg-violet-600"] {
+  color: #ffffff !important;
+}
+
+html.dark [class*="bg-sky-600"] *,
+html.dark [class*="bg-sky-700"] *,
+html.dark [class*="bg-emerald-600"] *,
+html.dark [class*="bg-emerald-700"] *,
+html.dark [class*="bg-teal-600"] *,
+html.dark [class*="bg-teal-700"] *,
+html.dark [class*="bg-cyan-600"] *,
+html.dark [class*="bg-cyan-700"] *,
+html.dark [class*="bg-rose-600"] *,
+html.dark [class*="bg-rose-700"] *,
+html.dark [class*="bg-amber-500"] *,
+html.dark [class*="bg-amber-600"] *,
+html.dark [class*="bg-indigo-600"] *,
+html.dark [class*="bg-violet-600"] * {
+  color: #ffffff !important;
+}
+
+/* Modals & Popovers Backdrop */
+html.dark .bg-slate-900\/60,
+html.dark .bg-slate-900\/40,
+html.dark [class*="bg-slate-900/"] {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Custom Scrollbars in Dark Mode */
+html.dark ::-webkit-scrollbar-track {
+  background: #090d16;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Clinical Editor in Dark Mode */
+html.dark .ProseMirror h1, 
+html.dark .ProseMirror h2, 
+html.dark .ProseMirror h3, 
+html.dark .ProseMirror h4 {
+  color: #f1f5f9;
+}
+html.dark .ProseMirror td,
+html.dark .ProseMirror th {
+  border-color: #223147;
+}
+html.dark .ProseMirror th {
+  background-color: #162032;
+  color: #38bdf8;
+}
+
+/* CRITICAL: Printable reports, invoices and thermal receipts MUST stay crisp white for physical printers */
+html.dark #printable-report,
+html.dark #printable-report *,
+html.dark #printable-invoice,
+html.dark #printable-invoice *,
+html.dark #printable-barcode-slip,
+html.dark #printable-barcode-slip *,
+html.dark #mis-report-printable-area,
+html.dark #mis-report-printable-area *,
+html.dark .thermal-slip,
+html.dark .thermal-slip * {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #cbd5e1 !important;
+}
+

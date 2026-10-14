@@ -1,0 +1,1171 @@
+﻿Test ID,Test Name,Category,Department,Sample Type,TAT (Hours),Standard MRP (₹),B2B / Partner Rate (₹),Fasting Required,Last Updated
+t-usg-001,SONOGRAPHY WHOLE ABDOMEN,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-002,SONOGRAPHY PELVIC REGION,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-003,SONOGRAPHY KUB,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-004,SONOGRAPHY EARLY OBSTETRIC,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-005,SONOGRAPHY ROUTINE,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-006,SONOGRAPHY GROWTH SCAN,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-007,NT SCAN SINGLE,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-008,NT SCAN TWINS,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,4400,880,No,30/09/2026
+t-usg-009,TARGET SCAN,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,3000,600,No,30/09/2026
+t-usg-010,TARGET SCAN (TWINS),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,6000,1200,No,30/09/2026
+t-usg-011,OBSTETRIC DOPPLER SCAN,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-012,OBSTETRIC DOPPLER SCAN (TWINS),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,4400,880,No,30/09/2026
+t-usg-013,SONOGRAPHY ROUTINE (TWINS),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2000,400,No,30/09/2026
+t-usg-014,NECK SONOGRAPHY,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-015,USG Carotid Doppler (Bilateral),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-016,USG Local Region (Soft Tissue / Musculoskeletal),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1800,360,No,30/09/2026
+t-usg-017,Sono Mammography (Single Breast),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1500,300,No,30/09/2026
+t-usg-018,Sono Mammography (Both Breasts),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-019,SONOGRAPHY CHEST,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-020,COLOR RENAL DOPPLER,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-021,LOWER LIMB VENOUS SYSTEM (SINGLE),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-022,LOWER LIMB VENOUS SYSTEM (BOTH),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,4400,880,No,30/09/2026
+t-usg-023,UPPER LIMB VENOUS SYSTEM (SINGLE),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-024,UPPER LIMB VENOUS SYSTEM (BOTH),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,4400,880,No,30/09/2026
+t-usg-025,KNEE JOINT SONOGRAPHY (SINGLE),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1500,300,No,30/09/2026
+t-usg-026,TRANSVAGINAL SONOGRAPHY (TVS),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1000,200,No,30/09/2026
+t-usg-027,COLOR DOPPLER Hip Joint (Single),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-028,LOWER LIMB ARTERY SYSTEM (SINGLE),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-029,LOWER LIMB ARTERY SYSTEM (BOTH),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,4400,880,No,30/09/2026
+t-usg-030,UPPER LIMB ARTERY SYSTEM (SINGLE),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,2200,440,No,30/09/2026
+t-usg-031,UPPER LIMB ARTERY SYSTEM (BOTH),Radiology,Ultrasound / Sonography,Ultrasound Scan,2,4400,880,No,30/09/2026
+t-usg-032,SONOGRAPHY OVULATION,Radiology,Ultrasound / Sonography,Ultrasound Scan,2,1800,360,No,30/09/2026
+t-radct-001,MRI L S SPINE,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-002,MRI BRAIN,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5500,1100,No,30/09/2026
+t-radct-003,MRI SCREENING (WITH ANY SCAN),Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,3000,600,No,30/09/2026
+t-radct-004,MRI CERVICAL SPINE,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-005,MRI KNEE,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-006,MRI SHOULDER,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-007,MRI BRAIN ANGIO,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,8000,1600,No,30/09/2026
+t-radct-008,MRI BRAIN VERTIGO,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,8000,1600,No,30/09/2026
+t-radct-009,MRI WHOLE SPINE,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,9700,1940,No,30/09/2026
+t-radct-010,MRI CONTRAST,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,3000,600,No,30/09/2026
+t-radct-011,MRI BRAIN VENOGRAM,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,6700,1340,No,30/09/2026
+t-radct-012,MRCP (Magnetic Resonance Cholangiopancreatography),Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,8000,1600,No,30/09/2026
+t-radct-013,MRI PELVIS,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-014,MRI ANKLE,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-015,MRI FOOT,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-016,MRI NECK,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-017,MRI BOTH HIP,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,7000,1400,No,30/09/2026
+t-radct-018,MRI DORSAL SPINE,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-019,MRI PELVIS WITH BOTH HIP,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,7500,1500,No,30/09/2026
+t-radct-020,MRI PERINEUM / FISTULOGRAM,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,7500,1500,No,30/09/2026
+t-radct-021,MRI WRIST,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-022,MRI ELBOW,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-023,MRI WHOLE ABDOMEN,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,8000,1600,No,30/09/2026
+t-radct-024,MRI BRAIN WITH NECK ANGIO,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,9000,1800,No,30/09/2026
+t-radct-025,MRI THIGH,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-026,MRI ORBIT,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-027,MRI BRACHIAL PLEXUS,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,7700,1540,No,30/09/2026
+t-radct-028,MRI PROSTATE,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,7500,1500,No,30/09/2026
+t-radct-029,MRI S.I. JOINTS,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,5700,1140,No,30/09/2026
+t-radct-030,MRI NEURAL AXIS,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,10000,2000,No,30/09/2026
+t-radct-031,CT Contrast 3,Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-032,CT Brain (Plain),Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-033,CT Abdomen,Radiology,Computed Tomography (CT),CT Scan,4,5500,1100,No,30/09/2026
+t-radct-034,HRCT Chest,Radiology,Computed Tomography (CT),CT Scan,4,4500,900,No,30/09/2026
+t-radct-035,CT Chest,Radiology,Computed Tomography (CT),CT Scan,4,3500,700,No,30/09/2026
+t-radct-036,CT Contrast 4,Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-037,CT PNS (Coronal View),Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-038,CT Urogram (TCC),Radiology,Computed Tomography (CT),CT Scan,4,5500,1100,No,30/09/2026
+t-radct-039,CT Contrast 2,Radiology,Computed Tomography (CT),CT Scan,4,2000,400,No,30/09/2026
+t-radct-040,CT PNS (Axial & Coronal Complete),Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-041,CT Neck,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-042,CT Brain (Contrast Enhanced / Thin Sections),Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-043,CT KUB,Radiology,Computed Tomography (CT),CT Scan,4,5500,1100,No,30/09/2026
+t-radct-044,CT Temporal Bone,Radiology,Computed Tomography (CT),CT Scan,4,4500,900,No,30/09/2026
+t-radct-045,CT 3D Face,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-046,CT ABDOMEN ANGIO,Radiology,Computed Tomography (CT),CT Scan,4,7000,1400,No,30/09/2026
+t-radct-047,CT Knee (L/R),Radiology,Computed Tomography (CT),CT Scan,4,3500,700,No,30/09/2026
+t-radct-048,CT Ankle,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-049,CT Elbow,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-050,CT Face+Brain,Radiology,Computed Tomography (CT),CT Scan,4,6000,1200,No,30/09/2026
+t-radct-051,CT Peripheral Angio both Limbs,Radiology,Computed Tomography (CT),CT Scan,4,8000,1600,No,30/09/2026
+t-radct-052,CT Pulmonary Angio,Radiology,Computed Tomography (CT),CT Scan,4,6000,1200,No,30/09/2026
+t-radct-053,CT Brain Angio,Radiology,Computed Tomography (CT),CT Scan,4,6000,1200,No,30/09/2026
+t-radct-054,CT Lumbar Spine,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-055,CT Whole Abdomen,Radiology,Computed Tomography (CT),CT Scan,4,5500,1100,No,30/09/2026
+t-radct-056,CT Aortogram,Radiology,Computed Tomography (CT),CT Scan,4,7500,1500,No,30/09/2026
+t-radct-057,CT Pelvis 3D,Radiology,Computed Tomography (CT),CT Scan,4,5500,1100,No,30/09/2026
+t-radct-058,CT 3D,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-059,CT Cervical or Neck Spine,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-060,CT Wrist,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-061,CT Head / Brain,Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-062,CT Whole Spine,Radiology,Computed Tomography (CT),CT Scan,4,8500,1700,No,30/09/2026
+t-radct-063,CT Chest + Upper Abdomen,Radiology,Computed Tomography (CT),CT Scan,4,6000,1200,No,30/09/2026
+t-radct-064,CT Dorsal Spine,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-065,CT Foot,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-066,CT Shoulder,Radiology,Computed Tomography (CT),CT Scan,4,5000,1000,No,30/09/2026
+t-radct-067,CT Contrast 1,Radiology,Computed Tomography (CT),CT Scan,4,1000,200,No,30/09/2026
+t-radct-068,CT Carotid,Radiology,Computed Tomography (CT),CT Scan,4,6000,1200,No,30/09/2026
+t-radct-069,CT Chest Screening,Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-070,CT Orbit,Radiology,Computed Tomography (CT),CT Scan,4,3000,600,No,30/09/2026
+t-radct-071,EEG (Pediatric / Child),Specialized,Neurodiagnostics / EEG,Digital Imaging,2,2500,500,No,30/09/2026
+t-radct-072,EEG with Head Preparation / Wash,Specialized,Neurodiagnostics / EEG,Digital Imaging,2,1500,300,No,30/09/2026
+t-radct-073,2D Echocardiography (Color Doppler),Cardiology,Cardiology / Echo,Ultrasound Scan,2,2000,400,No,30/09/2026
+t-radct-074,ECG (12-Lead Standard),Cardiology,Cardiology / ECG,Digital Imaging,2,200,50,No,30/09/2026
+t-radct-075,CHEST X RAY,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,600,120,No,30/09/2026
+t-radct-076,X-RAY CHEST P.A. VIEW,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,600,120,No,30/09/2026
+t-radct-077,X-RAY L.S. SPINE AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-078,X-RAY HAND AP & LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-079,X-RAY KNEE AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-080,X-RAY CHEST P.A. VIEW & BED SIDE,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-081,X-RAY ABDOMEN STANDING,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-082,X-RAY DOG ABDOMEN AP & LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1500,300,No,30/09/2026
+t-radct-083,X-RAY FOOT AP/LAT/OBQ,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-084,"X-RAY WRIST AP,LAT",Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-085,X-RAY ANKLE AP/LAT/OBS,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-086,X-RAY CERVICAL SPINE AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-087,X-RAY LEG AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-088,X-RAY SHOULDER AP/AXILLARY,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-089,X-RAY BOTH KNEE AP/LAT/,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1500,300,No,30/09/2026
+t-radct-090,X-Ray HSG (Hysterosalpingography),Radiology,Special Radiography (HSG),Digital Imaging,4,3500,700,No,30/09/2026
+t-radct-091,X-RAY PNS WATER VIEW,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-092,"X-RAY L.S. SPINE AP,LAT EXT.& FLEX.",Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1600,320,No,30/09/2026
+t-radct-093,X-RAY ELBOW AP & LAT.,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-094,X-RAY HIP JOINT AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-095,X-RAY FOOT WITH ANKLE AP/LAT.OBLI,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-096,"X-RAY BOTH KNEE AP STANDING,LAT,SKYLINE",Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1800,360,No,30/09/2026
+t-radct-097,X-RAY ANKLE WITH FOOT AP/LAT/OBLI,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-098,X-RAY MASTOID BOTH SIDE,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-099,X-RAY ABDOMEN AP & LAT.,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-100,X-RAY CHEST AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1000,200,No,30/09/2026
+t-radct-101,X-RAY SHOULDER AP,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-102,X-RAY DORSAL SPINE AP & LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-103,X-RAY PELVIS AP,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-104,X-RAY KUB,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-105,X-RAY LUMBAR SPINE AP & LAT.,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-106,X-RAY FOREARM AP & LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-107,X-RAY NASOPHARYNX,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-108,X-RAY BOTH HIP JOINT LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-109,X-RAY CERVICAL LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-110,X-RAY PELVIS AP & LAT.,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-111,X-RAY SKULL AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-112,X-RAY ABDOMEN AP & LAT & BED SIDE,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1000,200,No,30/09/2026
+t-radct-113,X-RAY HEEL AP & LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-114,X-RAY NASAL BONE LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-115,X-RAY BOTH KNEE AP (Standing),Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-116,X-RAY CHEST PA VIEW (Screening),Radiology,Digital Radiography (X-Ray),Digital Imaging,4,600,120,No,30/09/2026
+t-radct-117,X-RAY GASTROGRAFIN STUDY,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,4000,800,No,30/09/2026
+t-radct-118,X-Ray Cervical Spine AP/Lat/Flex/Ext,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1600,320,No,30/09/2026
+t-radct-119,X-RAY L.S. SPINE LATERAL,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-120,X-RAY URETHROGRAM (RCU),Radiology,Digital Radiography (X-Ray),Digital Imaging,4,3000,600,No,30/09/2026
+t-radct-121,"X-RAY BOTH ANKLE AP,LAT",Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1400,280,No,30/09/2026
+t-radct-122,"X-RAY CERVICAL SPINE AP,LAT,OBLIQUE",Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-123,X-RAY FINGER AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,700,140,No,30/09/2026
+t-radct-124,X-RAY L.S. SPINE EXT.& FLEX.,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-125,X-RAY THIGH AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-126,X-RAY ASCENDING URETHROGRAM (RGU),Radiology,Digital Radiography (X-Ray),Digital Imaging,4,3500,700,No,30/09/2026
+t-radct-127,X-Ray Both Hand AP,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1400,280,No,30/09/2026
+t-radct-128,X-RAY BOTH HEEL AXIAL & LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-129,"X-RAY BOTH LEG AP,LATERAL & OBLIQUE",Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1400,280,No,30/09/2026
+t-radct-130,X-RAY CHEST OBLIQUE VIEW,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,600,120,No,30/09/2026
+t-radct-131,X-Ray HSG with Tubal Wash / Patency,Radiology,Special Radiography (HSG),Digital Imaging,4,3500,700,No,30/09/2026
+t-radct-132,X-RAY MANDIBLE AP/LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-133,X-Ray S/T Neck,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-134,X-RAY THORACIC AP & LAT.,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-135,X-RAY THUMB AP/LAT/OBS,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-136,X-RAY CLAVICLE AP,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-137,X-RAY DORSAL SPINE,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-138,X-RAY L.S.SPINE AP/LAT/OBL,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-139,X-RAY Leg AP - lateral and oblique view,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-140,X-RAY SKULL LAT.,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-141,X-RAY ADENOIDS,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-142,X-RAY BARIUM S/D,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,3500,700,No,30/09/2026
+t-radct-143,X-RAY BARIUM SWALLOW,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,3500,700,No,30/09/2026
+t-radct-144,X-RAY BONE AGE,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-145,X-RAY BOTH HEEL LAT,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,800,160,No,30/09/2026
+t-radct-146,X-Ray Both Shoulder AP,Radiology,Digital Radiography (X-Ray),Digital Imaging,4,1400,280,No,30/09/2026
+t-radct-147,FNAC (Fine Needle Aspiration Cytology),Pathology,Cytology / FNAC,Swab,2,1500,300,No,30/09/2026
+t-radct-148,NCV (Nerve Conduction Velocity),Specialized,Neurodiagnostics / NCV,Digital Imaging,2,3500,700,No,30/09/2026
+t-radct-149,HSG Contrast Evaluation (Fluoroscopic),Radiology,Special Radiography (HSG),Digital Imaging,4,3500,700,No,30/09/2026
+t-radct-150,Therapeutic HSG Tubal Flushing,Radiology,Special Radiography (HSG),Digital Imaging,4,3500,700,No,30/09/2026
+t-radct-151,EMG (Electromyography - Needle Examination),Specialized,Neurodiagnostics / EMG,Digital Imaging,2,3000,600,No,30/09/2026
+t-radct-152,EMG (with Disposable Concentric Needle),Specialized,Neurodiagnostics / EMG,Digital Imaging,2,3500,700,No,30/09/2026
+t-path-0001,ANTI MULLERIAN HORMONES (AMH),Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0002,MYCOPLASMA PNEUMONIAE-IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0003,17 HYDROXY PROGESTERONE LEVEL,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0004,17-KETOSTEROIDS URINE 24HRS.,Pathology,Clinical Pathology & Microscopy,Urine,4,2600,468,No,30/09/2026
+t-path-0005,17-OH-P,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0006,24 Hrs URINARY CATECHOLAMINE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0007,24 Hrs Urinary Metabolic Profile (Urocare),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0008,24 Hrs Urinary Protein Creatinine Ratio.,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0009,24 Hrs URINARY SODIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0010,24 Hrs Urine Calcium,Pathology,Clinical Pathology & Microscopy,Urine,4,500,90,No,30/09/2026
+t-path-0011,24 hrs URINE METANEPHRINES,Pathology,Clinical Pathology & Microscopy,Urine,4,3500,630,No,30/09/2026
+t-path-0012,24 HRS URINE PROTEIN ELECTROPHORESIS,Pathology,Clinical Pathology & Microscopy,Urine,4,2000,360,No,30/09/2026
+t-path-0013,24 Hrs. URINARY 17 KETOSTEROID,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1700,306,No,30/09/2026
+t-path-0014,24 Hrs. URINARY CITRATE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0015,24 Hrs. URINARY COPPER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1900,342,No,30/09/2026
+t-path-0016,24 Hrs. URINARY CORTISOL,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0017,24 Hrs. Urinary Creatinine,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0018,24 Hrs. URINARY OXALIC ACID,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1850,333,No,30/09/2026
+t-path-0019,24 Hrs. URINARY PHOSPHORUS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,350,63,No,30/09/2026
+t-path-0020,24 Hrs. URINARY POTASSIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0021,24 Hrs. URINARY PROTEINS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0022,24 Hrs. URINARY SODIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0023,24 Hrs. URINARY UREA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0024,24 Hrs. URINARY URIC ACID CLEARANCE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0025,24 Hrs. URINARY ZINC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2900,522,No,30/09/2026
+t-path-0026,24 Hrs. URINE PORPHYRINS (SRL),Pathology,Clinical Pathology & Microscopy,Urine,4,1400,252,No,30/09/2026
+t-path-0027,24-Hrs. URINE- (COPPER),Pathology,Clinical Pathology & Microscopy,Urine,4,1800,324,No,30/09/2026
+t-path-0028,25-OH Vitamin D,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0029,Echocardiography (Structural & Hemodynamic Assessment),Cardiology,Cardiology / Echo,Ultrasound Scan,4,2000,360,No,30/09/2026
+t-path-0030,5-HIAA (Hydroxy Indole Acetic Acid),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0031,ABPA PANNEL,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5500,990,No,30/09/2026
+t-path-0032,ABSOLUTE BASOPHIL COUNT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0033,ABSOLUTE EOSINOPHIL COUNT (AEC),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0034,ABSOLUTE LYMPHOCYTE COUNT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0035,ABSOLUTE MONOCYTE COUNT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0036,ABSOLUTE NEUTROPHIL COUNT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0037,ACA - ANTI CARDIOLIPIN -IgA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,750,135,No,30/09/2026
+t-path-0038,ACA (Anti Cardiolipin Antibodies) IgG/IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0039,ACETONE (SERUM),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0040,ACETYLCHOLINE RECEPTOR AUTOANTIBODIES,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3800,684,No,30/09/2026
+t-path-0041,ACETYLCHOLINESTERASE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1300,234,No,30/09/2026
+t-path-0042,ACID PHOSPHATASE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0043,AFB SMEAR,Pathology,Microbiology & Infectious Diseases,Swab,4,400,72,No,30/09/2026
+t-path-0044,ACTH,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1550,279,No,30/09/2026
+t-path-0045,ACTH STIMULATION TEST FOR ANDROSTENDIONE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4100,738,No,30/09/2026
+t-path-0046,ACTH STIMULATION TEST FOR DHEA SULPHATE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0047,"ACTH EDTA plasma (ACTH, EDTA plasma)",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0048,ADA (Adenosine Deaminase),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0049,ADH (Antidiuretic Hormone) / Vasopressin Plasma,Pathology,Serology & Infectious Immunology,Blood (Serum),4,4100,738,No,30/09/2026
+t-path-0050,Adiponectin,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0051,ADRENALINE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2900,522,No,30/09/2026
+t-path-0052,AFB MTb Antibiogram panel 2nd Line,Pathology,Serology & Infectious Immunology,Blood (Serum),4,5300,954,No,30/09/2026
+t-path-0053,AFB-MTB Antibiogram Panel,Pathology,Serology & Infectious Immunology,Blood (Serum),4,7600,1368,No,30/09/2026
+t-path-0054,Alpha Fetoprotein (AFP) - Quantitative Serum,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0055,AIR CULTURE TESTING,Pathology,Microbiology & Infectious Diseases,Swab,4,1500,270,No,30/09/2026
+t-path-0056,Air Sampling,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0057,ALBERT STAIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0058,ALBUMIN (FLUID),Pathology,Clinical Pathology & Microscopy,Swab,4,200,36,No,30/09/2026
+t-path-0059,ALBUMIN /CREATININE RATIO,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0060,Aldolase Enzymatic,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,950,171,No,30/09/2026
+t-path-0061,ALDOSTERONE SERUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1950,351,No,30/09/2026
+t-path-0062,Aldosterone/Renin Ratio Aldosterone/PRA Ratio,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6500,1170,No,30/09/2026
+t-path-0063,ALFA - 1 ANTITRYPSIN,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1850,333,No,30/09/2026
+t-path-0064,Alkaline Phosphatase (ALP),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0065,Allergen Individual Food Cow Milk,Pathology,Allergy & Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0066,Allergen Individual IgE Specific,Pathology,Allergy & Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0067,Allergen Individual-Drug Mono Sodium Glutamate,Pathology,Allergy & Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0068,Allergen Individual-Drug Nimesulide Pain Killer,Pathology,Allergy & Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0069,Allergen Individual-Drug Paracetamol AntiPyretic,Pathology,Allergy & Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0070,Allergen Individual-Drug Sulpha antibiotic,Pathology,Allergy & Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0071,ALLERGY COMPREHENSIVE PANEL,Pathology,Allergy & Immunology,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0072,ALLERGY DRUG TEST,Pathology,Allergy & Immunology,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0073,ALLERGY ECZEMA/URTICARIA PANEL,Pathology,Allergy & Immunology,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0074,ALLERGY FOOD PANEL (VEG.),Pathology,Allergy & Immunology,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0075,ALLERGY FOODPANEL (VEG.NONVEG),Pathology,Allergy & Immunology,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0076,ALLERGY PEDIATRIC PANEL,Pathology,Allergy & Immunology,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0077,ALLERGY RESPIRATORY PANEL,Pathology,Allergy & Immunology,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0078,Allergy Test Complete,Pathology,Allergy & Immunology,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0079,ALLERGY TEST COMPLETE PANEL (Mini),Pathology,Allergy & Immunology,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0080,Alpha-1 Antitrypsin,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0081,ALUMINIUM SERUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0082,ALUMINIUM URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,2500,450,No,30/09/2026
+t-path-0083,Ambulance Charges,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0084,AMINO ACID SCREEN QUALITATIVE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,10000,1800,No,30/09/2026
+t-path-0085,Amino Acids Quantitative HPLC (Urine),Pathology,Clinical Pathology & Microscopy,Urine,4,5950,1071,No,30/09/2026
+t-path-0086,AMMONIA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0087,Amoebiasis Antibodies- (IgG),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1300,234,No,30/09/2026
+t-path-0088,Amphetamine for Spot Urine,Pathology,Clinical Pathology & Microscopy,Urine,4,500,90,No,30/09/2026
+t-path-0089,AMYLASE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0090,AMYLASE FLUID,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0091,Amyloid A,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3650,657,No,30/09/2026
+t-path-0092,ANA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0093,ANA BLOT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0094,ANA BY IFA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0095,ANA IFA TITRE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0096,ANA PROFILE BY IMMUNODOT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5000,900,No,30/09/2026
+t-path-0097,ANA (ELISA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0098,ANCA- c,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0099,ANCA C & ANCA-P,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2100,378,No,30/09/2026
+t-path-0100,ANCA- p,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0101,ANDROSTENEDIONE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0102,ANGIOTENSIN CONVERTING ENZYME (ACE),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0103,ANTI DS DNA (ANTI - DS DNA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0104,Anti HEV Antibody - IgM (Qualitative),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0105,Anti - Ro/SSA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0106,Anti - Ro/SSA and Anti-La/SSB,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2600,468,No,30/09/2026
+t-path-0107,ANTI CCP Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0108,ANTI DELTA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0109,Anti DNAse B,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2400,432,No,30/09/2026
+t-path-0110,ANTI ENDOMYCEAL ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0111,Anti Gliadin Antibodies-IgA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1900,342,No,30/09/2026
+t-path-0112,Anti HAV - IgG (Quantitative),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0113,ANTI HAV AB.-TOTAL,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0114,ANTI HAV ANTIBODIES-IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0115,Anti HAV Antibody - IgM (Qualitative),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0116,Anti HAV IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0117,Anti HBc IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0118,ANTI HBc TOTAL ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0119,Anti HBe,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0120,Anti HBs Total,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0121,Anti HAV IgM (QUANTITATIVE),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0122,ANTI HEPATITIS B CORE TOTAL,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0123,Anti HCV by ELISA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0124,Anti Hepatitis C Virus (HCV),Pathology,Serology & Infectious Immunology,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0125,Anti Hepatitis E Virus (HEV) - IgM (Quantitative),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0126,ANTI HISTONES ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2700,486,No,30/09/2026
+t-path-0127,Anti Jo Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0128,ANTI LIVER & KIDNEY ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1750,315,No,30/09/2026
+t-path-0129,ANTI MITOCHONDRIAL ANTIBODY (AMA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0130,Anti MOG Antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0131,Anti NMDA antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0132,Anti NMO (Neuromyelitis Optica Antibody),Pathology,Serology & Infectious Immunology,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0133,Anti Phospholipid Antibody (APL) - IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,8000,1440,Yes,30/09/2026
+t-path-0134,ANTI PHOSPHOLIPID ANTIBODY (APL) - IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,Yes,30/09/2026
+t-path-0135,Anti RO SSA Antibody by ELISA Method,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1550,279,No,30/09/2026
+t-path-0136,ANTI SMITH ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0137,ANTI SMOOTH MUSCLE ANTIBODIES (ASMA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0138,Anti Soluble Liver Antigen (SLA) Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2800,504,No,30/09/2026
+t-path-0139,ANTI SPERM ANTIBODIES (ELISA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0140,Anti SSA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1550,279,No,30/09/2026
+t-path-0141,Anti SSB,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1550,279,No,30/09/2026
+t-path-0142,ANTI THROMBIN III,Pathology,Serology & Infectious Immunology,Blood (Serum),4,4800,864,No,30/09/2026
+t-path-0143,ANTI THYROGLOBULIN ANTIBODIES (Anti TG),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1100,198,No,30/09/2026
+t-path-0144,ANTI TPO,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0145,ANTIBODY TEST FOR E.HYSTOLYTICA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0146,ANTIBODY-HBe,Pathology,Serology & Infectious Immunology,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0147,Anti-La/SSB,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0148,Antiphospholipid antibody syndrome,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,Yes,30/09/2026
+t-path-0149,ANTISPERM ANTIBODIES,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1100,198,No,30/09/2026
+t-path-0150,Antithrombin III deficiency,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0151,APA ANTI PHOSPHOLIPID AB.IgA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,Yes,30/09/2026
+t-path-0152,APCR (Activated Protein C Resistance),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3400,612,No,30/09/2026
+t-path-0153,APLA PROFILE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5000,900,No,30/09/2026
+t-path-0154,APO A1/ APO B,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0155,APOLIPOPROTEIN - A1 (APO A1),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0156,APOLIPOPROTEIN - B (APO - B),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0157,"ARSENIC,BLOOD",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0158,Arterial Blood Gas Estimation (ABG),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0159,ARYL Sulphatase-A (Sandor),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3750,675,No,30/09/2026
+t-path-0160,ASCA-IgA Saccharomyces Cerevisiae,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2150,387,No,30/09/2026
+t-path-0161,ASCA-IgG Saccharomyces Cerevisiae,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2150,387,No,30/09/2026
+t-path-0162,ASCORBIC ACID SERUM (Vitamin C),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0163,ASO Titre Quantitative,Pathology,Serology & Infectious Immunology,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0164,Aspergillosis IgE antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0165,Aspergillosis IgG antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0166,Aspergillosis IgM antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2100,378,No,30/09/2026
+t-path-0167,ATYPICAL CELLS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0168,Audiometry,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0169,AUDIOMETRY TEST (PURE TONE),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0170,Auto Immune Encephalitis Panel,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,19000,3420,No,30/09/2026
+t-path-0171,Autoimmune Liver Profile (9antigen),Pathology,Serology & Infectious Immunology,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0172,Autoimmune Liver Profile/ ASMA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6200,1116,No,30/09/2026
+t-path-0173,B.HCG Qualitative (Card),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0174,BACTERIOLOGICAL EXAMINATION,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0175,BAND CELLS & TOXIC GRANULES,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0176,BCR - ABL (Philadelphia Chromosome),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5500,990,No,30/09/2026
+t-path-0177,BCR - ABL Philadelphia by Fish (Blood),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3900,702,No,30/09/2026
+t-path-0178,BCR ABL PCR International Scale Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0179,Bence Jones Proteins (B J Protein),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0180,Benzodiazapine,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,480,86,No,30/09/2026
+t-path-0181,BETA 2 -Glycoprotein 1-IgA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1300,234,No,30/09/2026
+t-path-0182,BETA 2 -glycoprotein I -IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1050,189,No,30/09/2026
+t-path-0183,BETA 2 GLYCOPROTEIN IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1050,189,No,30/09/2026
+t-path-0184,"BETA 2 GLYCOPROTEIN IgM, Serum",Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0185,BETA 2 MICROGLOBULIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0186,Beta 2 Microglobulin (Urine),Pathology,Clinical Pathology & Microscopy,Urine,4,1500,270,No,30/09/2026
+t-path-0187,Beta-HCG (Quantitative Pregnancy / Tumor Marker),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0188,Beta Thalassemia by PCR Common Mutations,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0189,Beta Thalassemia (Whole Blood),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1100,198,No,30/09/2026
+t-path-0190,Beta-2 Transferrin (Nasal Fluid & Serum),Pathology,Clinical Pathology & Microscopy,Swab,4,5500,990,No,30/09/2026
+t-path-0191,BICARBONATE (HCO3),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0192,Bile Acids-Total,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1700,306,No,30/09/2026
+t-path-0193,BILE PIGMENTS,Pathology,Serology & Infectious Immunology,Blood (Serum),4,50,30,No,30/09/2026
+t-path-0194,BILE SALTS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,50,30,No,30/09/2026
+t-path-0195,Bilirubin,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0196,BIOTINIDASE QUANTITATIVE,Pathology,Serology & Infectious Immunology,Blood (Serum),4,5500,990,No,30/09/2026
+t-path-0197,BLADDER TUMOR ANTIGEN,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0198,BLAST CELLS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0199,Block & Slides Review HISTOPATHOLOGY N,Pathology,Histopathology & Cytology,Swab,4,1000,180,No,30/09/2026
+t-path-0200,BLOOD COLLECTION CHARGES (PAED),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0201,BLOOD GLUCOSE LOAD TEST (SINGLE SAMPLE),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0202,Blood Group By Gel Method,Pathology,Hematology & Hemostasis,Blood (EDTA),4,300,54,No,30/09/2026
+t-path-0203,Blood Group (BG*),Pathology,Hematology & Hemostasis,Blood (EDTA),4,100,30,No,30/09/2026
+t-path-0204,BLOOD PRESSURE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,50,30,No,30/09/2026
+t-path-0205,BLOOD SUGAR (2 HOUR),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0206,BLOOD SUGAR (POST PRANDIAL),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0207,BLOOD SUGAR 1 HOUR POST DINNER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0208,BLOOD SUGAR 1 Hrs.,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0209,BLOOD SUGAR 1 Hrs. POST LUNCH,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0210,BLOOD SUGAR 2 HOUR POST DINNER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0211,BLOOD SUGAR 2 Hrs,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0212,BLOOD SUGAR 2 Hrs. POST LUNCH,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0213,BLOOD SUGAR 3 Hrs,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0214,BLOOD SUGAR 3 Hrs. (POST PRANDIAL),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0215,BLOOD SUGAR 4 Hrs. (POST PRANDIAL),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0216,BLOOD SUGAR PP,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0217,BLOOD SUGAR PRE DINNER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0218,BLOOD SUGAR PRE LUNCH,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0219,BLOOD UREA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0220,BLOOD VBG,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0221,BNP (B Type Natriuretic Peptide),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2300,414,No,30/09/2026
+t-path-0222,Body Fluid Routine,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0223,BODY FLUID NASAL DISCHARGE (ROUTINE & MICROSCOPY),Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0224,BODY FLUID (BRONCHIAL LAVAGE) ROUTINE & MICRO.,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0225,BODY FLUID (LIVER ABSCESS) ROUTINE & MICRO.,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0226,BODY FLUID (PERICARDIAL) ROUTINE,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0227,BODY FLUID (SYNOVIAL FLUID) ROUTINE & MICRO.,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0228,BONE MARROW STUDIES,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1250,225,No,30/09/2026
+t-path-0229,Bordetella Pertussis IgG Antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0230,BRCA 1 and 2 Profile Complete Gene Sequencing,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,26000,4680,No,30/09/2026
+t-path-0231,BRUCELLA (IgG),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0232,BRUCELLA (IgM),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0233,BUCCAL SMEAR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0234,BUN / CREATININE RATIO,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0235,BUN / CREATININE RATIO-Copy,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0236,BUN - Blood Urea Nitrogen,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0237,C.S.F. R/M,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0238,C1 Esterase Inhibitor,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0239,C-2 (Compliments),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5000,900,No,30/09/2026
+t-path-0240,CA 19.9,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0241,CA-125,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0242,CA 15.3 (CA-15.3),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0243,Cadmium Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0244,CALCITONIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0245,Serum CALCIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0246,CALCIUM URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,250,45,No,30/09/2026
+t-path-0247,Calcium/creatinine ratio,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0248,Calprotectin Fecal,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2600,468,No,30/09/2026
+t-path-0249,Candida Albicans Antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3700,666,No,30/09/2026
+t-path-0250,Cannabis for spot Urine,Pathology,Clinical Pathology & Microscopy,Urine,4,500,90,No,30/09/2026
+t-path-0251,CARBAMEZAPINE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,850,153,No,30/09/2026
+t-path-0252,Cardiolipin Antibody (ACL) - IgG (ACA IgG),Pathology,Serology & Infectious Immunology,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0253,Cardiolipin Antibody (ACL) - IgM (IGA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0254,Catecholamines Adrenaline and Nor-adrenaline Plasma,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5800,1044,No,30/09/2026
+t-path-0255,Catecholamines Adrenaline and Nor-adrenaline Urine 24 Hours,Pathology,Clinical Pathology & Microscopy,Urine,4,4500,810,No,30/09/2026
+t-path-0256,CB NAAT / TB PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0257,CBNAT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0258,CD/DVD Charges,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0259,CD19,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0260,CD20,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0261,"CD3, CD4, CD8",Pathology,Endocrinology & Special Hormones,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0262,CD3/CD4 COUNTS ABSOLUTE,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1900,342,No,30/09/2026
+t-path-0263,CD4 / CD8,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0264,CD4 COUNTS - ABSOLUTE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0265,CEA - Carcinoembryonic Antigen,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0266,Celiac Disease,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0267,Centromere Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0268,CEREBRO-SPINAL FLUID EXAMINATION,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0269,CERULOPLASMIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0270,CH 50 Complement,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0271,CHIKANGUNYA IGG & IGM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0272,Chikungunya PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0273,CHIKUNGUNYA TEST-IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0274,CHIKUNGUNYA TEST-IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0275,CHLAMYDIA ANTIGEN,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0276,CHLAMYDIA PNEUMONIAE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1850,333,No,30/09/2026
+t-path-0277,Chlamydia Trachimatis-IgG Antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,950,171,No,30/09/2026
+t-path-0278,Chlamydia Trachimatis-IgM Antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,950,171,No,30/09/2026
+t-path-0279,CHLORIDE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0280,CHLORIDE (CSF),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0281,Chloride Urine (Spot),Pathology,Clinical Pathology & Microscopy,Urine,4,200,36,No,30/09/2026
+t-path-0282,Cholesterol (Total),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0283,CHOLESTEROL (FLUID),Pathology,Clinical Pathology & Microscopy,Swab,4,200,36,No,30/09/2026
+t-path-0284,Cholinesterase,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0285,Chromium Serum,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0286,Chromogranin A Level,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5800,1044,No,30/09/2026
+t-path-0287,CK-MB (MB fraction of Creatine Kinase) (CPK-MB),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0288,URINE PORPHOBILINOGEN (URINE - PORPHOBILINOGEN),Pathology,Clinical Pathology & Microscopy,Urine,4,2500,450,No,30/09/2026
+t-path-0289,Clostridium Difficile GDH Stool,Pathology,Clinical Pathology & Microscopy,Swab,4,2200,396,No,30/09/2026
+t-path-0290,CMA (Chromosomal Micro Array),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,20000,3600,No,30/09/2026
+t-path-0291,CMV - (PCR),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3900,702,No,30/09/2026
+t-path-0292,Coeliac Disease Profile-1 Basic,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0293,Cold agglutinin,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0294,COLLAGEN PROFILE (DR.LAL PATH),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0295,Collection Charges For Eurofins,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0296,Complement 3 (C3),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0297,Complement 4 (C4),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0298,COMPLETE BLOOD COUNT (CBC),Pathology,Hematology & Hemostasis,Blood (EDTA),4,300,54,No,30/09/2026
+t-path-0299,COMPLETE BLOOD COUNT- NEW (CBC-NEW),Pathology,Hematology & Hemostasis,Blood (EDTA),4,300,54,No,30/09/2026
+t-path-0300,Consultation Charges,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0301,"Copper, Serum",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0302,CORRECTED ESR,Pathology,Hematology & Hemostasis,Blood (EDTA),4,400,72,No,30/09/2026
+t-path-0303,COVID - 19 Antigen Test,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0304,COVID ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0305,Covid RT PCR,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0306,COVID-19 Qualitative by Real-Time PCR,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0307,C-PEPTIDE (FASTING),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,Yes,30/09/2026
+t-path-0308,C-PEPTIDE (POST PRANDIAL),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0309,C-PEPTIDE (RANDOM),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0310,CPK ISOENZYME ELECTRPOHORESIS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0311,CPK MM fraction (Metropolis),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6500,1170,No,30/09/2026
+t-path-0312,CPK-Total*,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0313,Creatinine (Serum),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0314,24 Hr. Urine for Creatinine Clearance,Pathology,Clinical Pathology & Microscopy,Urine,4,500,90,No,30/09/2026
+t-path-0315,CRP - C-Reactive Protein,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0316,CRYOGLOBULIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,950,171,No,30/09/2026
+t-path-0317,CRYPTOCOCCUS ANTIGEN CSF,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1700,306,No,30/09/2026
+t-path-0318,CSF Microprotein,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0319,CSF Rhinorrhoea,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0320,CTMT MULTI CHANNEL STRESS TEST (TMT) STRESS THALLIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0321,CULTURE & SENSITIVITY (AFB CULTURE),Pathology,Microbiology & Infectious Diseases,Swab,4,3000,540,No,30/09/2026
+t-path-0322,CULTURE AND SENSITIVITY ABSCESS,Pathology,Microbiology & Infectious Diseases,Swab,4,1500,270,No,30/09/2026
+t-path-0323,CULTURE AND SENSITIVITY BLOOD,Pathology,Microbiology & Infectious Diseases,Swab,4,1500,270,No,30/09/2026
+t-path-0324,CULTURE AND SENSITIVITY BLOOD (PAIRED),Pathology,Microbiology & Infectious Diseases,Swab,4,1500,270,No,30/09/2026
+t-path-0325,CULTURE AND SENSITIVITY DRAIN,Pathology,Microbiology & Infectious Diseases,Swab,4,1500,270,No,30/09/2026
+t-path-0326,CULTURE AND SENSITIVITY FUNGAL,Pathology,Microbiology & Infectious Diseases,Swab,4,1500,270,No,30/09/2026
+t-path-0327,CULTURE AND SENSITIVITY PUS,Pathology,Microbiology & Infectious Diseases,Swab,4,1200,216,No,30/09/2026
+t-path-0328,CULTURE AND SENSITIVITY STOOL,Pathology,Clinical Pathology & Microscopy,Swab,4,1500,270,No,30/09/2026
+t-path-0329,CULTURE AND SENSITIVITY URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,1200,216,No,30/09/2026
+t-path-0330,Cyclosporin A By CMIA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2600,468,No,30/09/2026
+t-path-0331,Cyfra (Ca) 21-1,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2800,504,No,30/09/2026
+t-path-0332,CYSTATIN-C,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1250,225,No,30/09/2026
+t-path-0333,CYSTIC FLBROSIS 5 MUTATIONS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,7500,1350,No,30/09/2026
+t-path-0334,CYSTICERCUS (Taenia solium),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0335,CYTOLOGY FLUID,Pathology,Clinical Pathology & Microscopy,Swab,4,1000,180,No,30/09/2026
+t-path-0336,Cytomegalo Virus (CMV) - IgG (CMV-IGG),Pathology,Serology & Infectious Immunology,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0337,Cytomegalo Virus (CMV) - IgM (CMV-IGM),Pathology,Serology & Infectious Immunology,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0338,D-DIMER Quantitative (DIMER),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0339,Dengue & Chikungunya PCR Combo Test,Pathology,Serology & Infectious Immunology,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0340,DENGUE BY PCR,Pathology,Serology & Infectious Immunology,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0341,DENGUE IGG IGM (Rapid),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0342,DENGUE PROFILE (Rapid),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0343,DENGUE PROFILE (Elisa),Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0344,DENGUE IgG & IgM (Elisa),Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0345,Dengue Real Time PCR,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0346,DENTAL CHECKUP,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0347,Desmoglein I Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2350,423,No,30/09/2026
+t-path-0348,Desmoglein III Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2350,423,No,30/09/2026
+t-path-0349,DHEA DEHYDROEPIANDROSTERONE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0350,DHEA SO4 (DEHYDROEPIANDROSTERONE SULPHATE),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0351,DHEAS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0352,DIALYSIS FLUID,Pathology,Clinical Pathology & Microscopy,Swab,4,200,36,No,30/09/2026
+t-path-0353,DIGOXIN LEVELS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0354,Dihydrotestosterone (DHT) - LC-MS/MS Method,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,3200,576,No,30/09/2026
+t-path-0355,Dihydrotestosterone (DHT) - ELISA Method,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,2300,414,No,30/09/2026
+t-path-0356,Diptheria IgG Antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0357,DMD PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5900,1062,No,30/09/2026
+t-path-0358,DMD/BMD-79 exons Deletion / Duplication Analysis MLPA Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,15000,2700,No,30/09/2026
+t-path-0359,Dopamine,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0360,DRUG SESITIVITY FOR AFB CULTURE,Pathology,Microbiology & Infectious Diseases,Swab,4,8500,1530,No,30/09/2026
+t-path-0361,Du Test,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0362,Dual Marker,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0363,dUMMMMMY MANTOX TEST,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0364,Dummy RENEL FUNCTION TEST,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0365,DUPLICATE REPORT WITH RECORDING & FILM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0366,E Histolytica Antigen Detection,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2700,486,No,30/09/2026
+t-path-0367,E.S.R. (Corrected),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0368,EBV IgG Antibody to EA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0369,EBV IgM Antibody to Viral,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0370,ECG (Rhythm Strip & Computerized Analysis),Cardiology,Cardiology / ECG,Digital Imaging,4,200,36,No,30/09/2026
+t-path-0371,Echinococcus (Hydatid Cyst) IgG Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1550,279,No,30/09/2026
+t-path-0372,Echinococcus (Hydatid Cyst) IgM Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0373,Video EEG Recording (Pediatric),Specialized,Neurodiagnostics / EEG,Digital Imaging,4,2500,450,No,30/09/2026
+t-path-0374,Extended Digital EEG with Provocation,Specialized,Neurodiagnostics / EEG,Digital Imaging,4,1500,270,No,30/09/2026
+t-path-0375,eGFR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0376,ELECTROLYTE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0377,Surface Electromyography (EMG Screen),Specialized,Neurodiagnostics / EMG,Digital Imaging,4,3000,540,No,30/09/2026
+t-path-0378,Repetitive Nerve Stimulation & EMG Study,Specialized,Neurodiagnostics / EMG,Digital Imaging,4,3500,630,No,30/09/2026
+t-path-0379,EMG \ NCV,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0380,EMG + NCV (WITH DISPOSABLE NEEDLE),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0381,ENA/ANA PROFILE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0382,Endomysial Antibody IgA Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2100,378,No,30/09/2026
+t-path-0383,Endomysial Antibody IgG Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0384,"Endomysial Antibody,Serum",Pathology,Serology & Infectious Immunology,Blood (Serum),4,2100,378,No,30/09/2026
+t-path-0385,ENT CHECKUP,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0386,ENTEROSCREEN IGG IGM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0387,ENZYMATIC CREATININE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0388,EPINEPHRINE BLOOD (ADRENALINE),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0389,"ER,PR",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0390,"ER,PR,Her-2 (c-erb-B2)",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3700,666,No,30/09/2026
+t-path-0391,"ER,PR,Her-2 (c-erb-B2) Ki 67",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0392,ERYTHROPOIETIN SERUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0393,ESR (Western),Pathology,Hematology & Hemostasis,Blood (EDTA),4,100,30,No,30/09/2026
+t-path-0394,ESTRADIOL/OESTROGEN (E2),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0395,EXTENDED CBC,Pathology,Hematology & Hemostasis,Blood (EDTA),4,400,72,No,30/09/2026
+t-path-0396,EYE CHECKUP (FUNDUS EXAMINATION),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0397,F M R (M.E.R),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0398,F.F.P SAMPLE PREPRATION,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0399,FACTOR IX,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0400,FACTOR V,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3200,576,No,30/09/2026
+t-path-0401,Factor V Leiden,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4900,882,No,30/09/2026
+t-path-0402,Factor V leiden mutation,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0403,FACTOR VII,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0404,FACTOR VIII,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0405,FACTOR X,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0406,FASTING PLASMA GLUCOSE (FBS),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0407,FAT GLOBULES URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,70,30,No,30/09/2026
+t-path-0408,Febrile Profile,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1300,234,No,30/09/2026
+t-path-0409,Ferritin,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0410,FGF-23,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2900,522,No,30/09/2026
+t-path-0411,Fibrin Degradation Products (FDP),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1450,261,No,30/09/2026
+t-path-0412,FIBRINOGEN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0413,FILARIA ANTIGEN TEST,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0414,FILARIA ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0415,FILARIA ANTIGEN,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0416,FIRST TRIMESTER SCAN (NT TRIPLET),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6600,1188,No,30/09/2026
+t-path-0417,FIRST TRIMESTER SCAN (NT TWINS),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4400,792,No,30/09/2026
+t-path-0418,FIRST TRIMESTER SCAN / NT Scan,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0419,Flowcytometic immunophenotping Report,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5500,990,No,30/09/2026
+t-path-0420,Influenza Panel (Flu A & Flu B Rapid PCR),Pathology,Microbiology & Infectious Diseases,Swab,4,7000,1260,No,30/09/2026
+t-path-0421,Comprehensive Respiratory Viral Panel (Flu / RSV / Adeno),Pathology,Microbiology & Infectious Diseases,Swab,4,7000,1260,No,30/09/2026
+t-path-0422,FLUID CREATININE,Pathology,Clinical Pathology & Microscopy,Swab,4,250,45,No,30/09/2026
+t-path-0423,FLUID ROUTINE EXAMINATION,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0424,FNAC Cytology,Pathology,Histopathology & Cytology,Swab,4,1500,270,No,30/09/2026
+t-path-0425,FOLATE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0426,FOLIC ACID,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0427,Food Intolerance Panel (Basic 50 Allergens),Pathology,Allergy & Immunology,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0428,Food Intolerance Panel (Comprehensive 200+ Allergens),Pathology,Allergy & Immunology,Blood (Serum),4,5000,900,No,30/09/2026
+t-path-0429,FRAGILE X CHROMOSOMAL ANALYSIS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0430,Free Androgen Index FAI,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0431,Free Beta HCG,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0432,FREE LIGHT CHAIN ASSAY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0433,FREE P.S.A,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0434,FREE T3 (FT3),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0435,FREE T3+FREE T4 (FT3+FT4),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0436,FREE T3+FREE T4+TSH (FT3+FT4+TSH),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0437,FREE T4 (FT4),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0438,FREE T4+TSH (FT4+TSH),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0439,FREE TESTO,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0440,Free-PSA (Prostate Specific Antigen) (FreePSA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0441,FRIEDREICH ATAXIA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0442,FRUCTOSAMINE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0443,FSH (Follicle Stimulating Hormone),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0444,FT3+TSH,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0445,FTA-Abs IgM antibodies to Treponem,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1700,306,No,30/09/2026
+t-path-0446,Fungus Test RT PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0447,G6PD Qualitative,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0448,G6PD QUANTITATIVE,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0449,GAD 65 Antibody for Type 1 diabetes,Pathology,Serology & Infectious Immunology,Blood (Serum),4,5100,918,No,30/09/2026
+t-path-0450,GAD-65 Antibody for Paraneoplastic Syndrome,Pathology,Serology & Infectious Immunology,Blood (Serum),4,6500,1170,No,30/09/2026
+t-path-0451,Galactose (Classical) Transferase (GALT),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2100,378,No,30/09/2026
+t-path-0452,Galactose Classical,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1750,315,No,30/09/2026
+t-path-0453,Gamma GT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0454,Ganglioside IgG Antibody Panel,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3300,594,No,30/09/2026
+t-path-0455,Ganglioside IgM Antibody Panel,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3300,594,No,30/09/2026
+t-path-0456,Gastrin Serum,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1350,243,No,30/09/2026
+t-path-0457,GBM ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1350,243,No,30/09/2026
+t-path-0458,GENE X-PERT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0459,GIARDIA ANTIGEN STOOL,Pathology,Clinical Pathology & Microscopy,Swab,4,1150,207,No,30/09/2026
+t-path-0460,GIEMSA STAIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0461,Glucagon Stimulation Test,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3300,594,No,30/09/2026
+t-path-0462,Glucose Charges,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,50,30,Yes,30/09/2026
+t-path-0463,GLUCOSE CSF,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,70,30,Yes,30/09/2026
+t-path-0464,GLUCOSE INSULIN RATIO,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,Yes,30/09/2026
+t-path-0465,GLUCOSE TOLERANCE TEST (100 gm Blood Glucose 1 Hour),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,Yes,30/09/2026
+t-path-0466,GLUCOSE TOLERANCE TEST (100 gm Blood Glucose 2 Hour),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,Yes,30/09/2026
+t-path-0467,GLUCOSE TOLERANCE TEST (100 gm Blood Glucose 3 Hour),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,Yes,30/09/2026
+t-path-0468,GLUCOSE TOLERANCE TEST (75 gm Blood 1 Hour),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,Yes,30/09/2026
+t-path-0469,GLUCOSE TOLERANCE TEST (75 gm Blood 2 Hour),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,Yes,30/09/2026
+t-path-0470,GLUCOSE TOLERANCE TEST (75 gm Blood 3 Hour),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,Yes,30/09/2026
+t-path-0471,GLUTAMIC ACID,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,7500,1350,No,30/09/2026
+t-path-0472,GRAM STAIN (FLUID) (GRAM),Pathology,Clinical Pathology & Microscopy,Swab,4,200,36,No,30/09/2026
+t-path-0473,Graph Only,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0474,GROWTH HORMONE (ORAL GLUCOSE SUPPRESSION TEST),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,900,162,Yes,30/09/2026
+t-path-0475,GROWTH HORMONE STIMULATION TEST,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0476,GTT (100 gm Blood Glucose 1 Hr.),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0477,GTT (100 gm Blood Glucose 2 Hr.),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0478,GTT (100 gm Blood Glucose 3 Hr.),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0479,GTT (75 gm Blood Glucose 1 Hr.),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0480,GTT (75 gm Blood Glucose 2 Hr.),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0481,GTT (75 gm Blood Glucose 3 Hr.),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0482,H1N1 RNA By RT PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0483,Haemoglobin (HB),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0484,HAEMOGLOBIN ELECTROPHORESIS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0485,Haemophilia Profile (Metropolis),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0486,Hams Test For PNH,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0487,Hand Hygiene Test,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0488,HANGING DROP PREPRATION (STOOL),Pathology,Clinical Pathology & Microscopy,Swab,4,200,36,No,30/09/2026
+t-path-0489,Haptoglobin,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0490,HB ELECTROPHORESIS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0491,HB ELECTROPHORESIS BY HPLC (HB ELECTRO BY HPLC METHOD),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0492,HB T&D (CBC 3 Part),Pathology,Hematology & Hemostasis,Blood (EDTA),4,300,54,No,30/09/2026
+t-path-0493,HBA1C By HPLC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0494,HbeAg,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0495,HBsAg (Australia Antigen),Pathology,Serology & Infectious Immunology,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0496,HBsAg ELISA (Screening Assay),Pathology,Serology & Infectious Immunology,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0497,HBsAg Quantitative / Confirmatory Assay,Pathology,Serology & Infectious Immunology,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0498,HBsAg Quantitative,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0499,HBV DNA Quantitative (Viral Load),Pathology,Serology & Infectious Immunology,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0500,HCV by ELISA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0501,HCV GENOTYPING BY PCR,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0502,HCV RNA (QUANTITATIVE),Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0503,High-density lipoprotein (HDL) (HDL CHOLESTEROL),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,350,63,No,30/09/2026
+t-path-0504,HE4 (EOC MARKER),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0505,Health Card,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0506,HEINZ BODIES,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0507,Helicobacter Pylori Antigen (Stool),Pathology,Clinical Pathology & Microscopy,Swab,4,1400,252,No,30/09/2026
+t-path-0508,HEPATITIS B VIRAL MARKER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0509,Hepatitis B Virus (HBV) HBV precore mutations,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5000,900,No,30/09/2026
+t-path-0510,HEPATITIS B VIRUS DNA (QUANTITATIVE),Pathology,Serology & Infectious Immunology,Blood (Serum),4,5000,900,No,30/09/2026
+t-path-0511,HCV RNA (QUALITATIVE),Pathology,Serology & Infectious Immunology,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0512,Hepatitis C Virus Genotyping,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6700,1206,No,30/09/2026
+t-path-0513,Hepatitis C Virus RNA Detection,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3900,702,No,30/09/2026
+t-path-0514,HEPATITIS VIRAL MARKER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3300,594,No,30/09/2026
+t-path-0515,HEPETITIS A,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0516,"HEPETITIS D,& E",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0517,Heptoglobin,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0518,HERPES (CSF + SERUM),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0519,Herpes Simplex Virus (HSV) - IgG/IgM (HSV-IgG),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0520,Herpes Simplex Virus (HSV) - IgM (HSV-IgM),Pathology,Serology & Infectious Immunology,Blood (Serum),4,550,99,No,30/09/2026
+t-path-0521,HERPES Simplex Virus (HSV) IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,450,81,No,30/09/2026
+t-path-0522,HERPES Simplex Virus (HSV) IgG & IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0523,HERPES Simplex Virus (HSV) IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,450,81,No,30/09/2026
+t-path-0524,HERPES SIMPLEX VIRUS DNA DETECTOR (PCR),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0525,Herpes Simplex Virus I (HSV) - IgG (HSV-IgG),Pathology,Serology & Infectious Immunology,Blood (Serum),4,550,99,No,30/09/2026
+t-path-0526,HEV IGG QUANTITATIVE,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1300,234,No,30/09/2026
+t-path-0527,HIGH SENSITIVE C-REACTIVE PROTEIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0528,HIGH SENSITIVITY C-REACTIVE PROTEIN (HS-CRP) (HS CRP),Pathology,Microbiology & Infectious Diseases,Swab,4,900,162,No,30/09/2026
+t-path-0529,HIRSUTISM PROFILE 1,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3100,558,No,30/09/2026
+t-path-0530,Histamine,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0531,HIV 1 & 2 ELISA (4th Gen Ag-Ab Combo),Pathology,Serology & Infectious Immunology,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0532,HIV 1&2 DNA DETECTOR (QUALITATIVE) PCR,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3700,666,No,30/09/2026
+t-path-0533,HIV 1&2 RNA VIRAL LOAD (PCR) SUPRATECH,Pathology,Serology & Infectious Immunology,Blood (Serum),4,7000,1260,No,30/09/2026
+t-path-0534,HIV 2 RNA,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3100,558,No,30/09/2026
+t-path-0535,HIV Combo (P24 Antigen+ Antibodies) 4 Gen.,Pathology,Serology & Infectious Immunology,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0536,HIV 1 & 2 Antibodies Qualitative Screen,Pathology,Serology & Infectious Immunology,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0537,HIV I & II,Pathology,Serology & Infectious Immunology,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0538,HIV I & II (ELISA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0539,HIV I & II Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0540,HIV I COMBO,Pathology,Serology & Infectious Immunology,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0541,"HIV Proviral DNA,DNA",Pathology,Serology & Infectious Immunology,Blood (Serum),4,3600,648,No,30/09/2026
+t-path-0542,HIV VIRUS P 24 ANTIGEN QUALITATIVE,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0543,HIV-1 Viral Load,Pathology,Serology & Infectious Immunology,Blood (Serum),4,5800,1044,No,30/09/2026
+t-path-0544,HIV-1 Viral load Taqman,Pathology,Serology & Infectious Immunology,Blood (Serum),4,5800,1044,No,30/09/2026
+t-path-0545,HIV-WESTERN BLOT,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0546,HLA B 27 BY FLOWCYTOMETRY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0547,HLAB27 By PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0548,HLAB-5/HLAB-51,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0549,HLA-CLASS II antigen DQ LOCUS,Pathology,Serology & Infectious Immunology,Blood (Serum),4,5200,936,No,30/09/2026
+t-path-0550,Holo Transcobalamin (Active Vitamin B12),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1250,225,No,30/09/2026
+t-path-0551,Holter Monitor,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0552,HOMA Index (FBS/Insulin Fasting),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,Yes,30/09/2026
+t-path-0553,Home Delivery Charges,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,30,30,No,30/09/2026
+t-path-0554,HOME VISIT HOME VISIT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0555,HOME VISIT (200),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0556,Homocysteine,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0557,FSH+LH+PRL,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0558,GROWTH HORMONE,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1150,207,No,30/09/2026
+t-path-0559,HPV DNA PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2300,414,No,30/09/2026
+t-path-0560,HSV CULTURE,Pathology,Microbiology & Infectious Diseases,Swab,4,1500,270,No,30/09/2026
+t-path-0561,HSV I & II IgM Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0562,Huntington Disease Mutation Analysis-Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4800,864,No,30/09/2026
+t-path-0563,HYDATID SEROLOGY (Anti Echinococcus IgG),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1550,279,No,30/09/2026
+t-path-0564,IBD Profile 1,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5200,936,No,30/09/2026
+t-path-0565,IGF - 1,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2800,504,No,30/09/2026
+t-path-0566,IGF BP3,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2950,531,No,30/09/2026
+t-path-0567,IgG-4,Pathology,Serology & Infectious Immunology,Blood (Serum),4,4600,828,No,30/09/2026
+t-path-0568,IGRA (TB Gold) ( (TB Gold) ),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0569,IgVH Gene Mutation,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,8700,1566,No,30/09/2026
+t-path-0570,Immature Platelet Fraction (IPF),Pathology,Hematology & Hemostasis,Blood (EDTA),4,800,144,No,30/09/2026
+t-path-0571,IMMUNOFIXATION SERUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,7100,1278,No,30/09/2026
+t-path-0572,IMMUNOGLOBULIN A (IGA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0573,IMMUNOGLOBULIN IgE SERUM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0574,"IMMUNOGLOBULIN-IgG, SERUM (IGG)",Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0575,Immunoglobulin M (IgM),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0576,IMMUNOHISTOCHEMISTRY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6500,1170,No,30/09/2026
+t-path-0577,INDIA INK PREPARATION FOR CRYPTOCOCCUS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0578,INHIBIN (B),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1900,342,No,30/09/2026
+t-path-0579,Insulin (Fasting) (InsF),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,Yes,30/09/2026
+t-path-0580,Insulin (Random),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0581,"INSULIN ,GLUCOSE TOLERANCE TEST,3SAMPLES",Pathology,Endocrinology & Special Hormones,Blood (Serum),4,2700,486,Yes,30/09/2026
+t-path-0582,INSULIN ANTIBODIES,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0583,Insulin fasting & post meal,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,2200,396,Yes,30/09/2026
+t-path-0584,"Insulin,post prandial (Inspp)",Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0585,Interleukin-6 (IL-6),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0586,"INTERLEUKIN-6, IL-6-Copy",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0587,INTRINSIC FACTOR ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2300,414,No,30/09/2026
+t-path-0588,IONIC CALCIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0589,IRON,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0590,IRON STUDY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0591,ISLET CELL Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2100,378,No,30/09/2026
+t-path-0592,IVP (Intravenous pyelogram),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0593,JAK-2 Mutation (CMPD) V617F,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5500,990,No,30/09/2026
+t-path-0594,Kappa And Lambda- Free (Free Lite),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0595,KAPPA LIGHT CHAIN BY FLOCYTROMETRY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0596,KARYOTYPING (Chromosomal Analysis) Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3200,576,No,30/09/2026
+t-path-0597,KARYOTYPING (Chromosomal Analysis) POC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,8500,1530,No,30/09/2026
+t-path-0598,KARYOTYPING (SANDOR),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0599,KIDNEY FUNCTION TEST (KFT),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0600,Kleihauer Betke Test,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0601,KOH PREPARATION FOR FUNGUS (FUNGAL STAIN),Pathology,Microbiology & Infectious Diseases,Swab,4,400,72,No,30/09/2026
+t-path-0602,l.s.spine ap/lat,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0603,LACTATE PLASMA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0604,Lactose Tolerance (5 Samples),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0605,Lamotrigine Level,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4100,738,No,30/09/2026
+t-path-0606,LAP-Score,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1100,198,No,30/09/2026
+t-path-0607,LDH (FLUID),Pathology,Clinical Pathology & Microscopy,Swab,4,700,126,No,30/09/2026
+t-path-0608,Lactate Dehydrogenase (LDH),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0609,LDL Cholesterol,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0610,LE CELL PHENOMENON,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0611,LEAD BLOOD,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1750,315,No,30/09/2026
+t-path-0612,LEISHMANIA ANTIBODY IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0613,LEPTIN SERUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3900,702,No,30/09/2026
+t-path-0614,LEPTOSPIRA ANTIGEN DETECTION,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0615,Leukemia Basic Panel by Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,9500,1710,No,30/09/2026
+t-path-0616,Leukemia Diagnostic Panel CLL/HCL/SLL Basic,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,9500,1710,No,30/09/2026
+t-path-0617,LH-Leutinising Hormone (LH),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0618,LIPASE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0619,LIPASE (FLUID),Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0620,LIPID PROFILE (LIPID),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,Yes,30/09/2026
+t-path-0621,LIPOPROTEIN - A (LP -A),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0622,LITHIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0623,LIVER ABSCESS FOR AMEOBA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0624,LIVER FUNCTION TEST (LFT),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0625,LKM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1850,333,No,30/09/2026
+t-path-0626,LPA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0627,LUPUS ANTICOAGULANT STUDY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0628,Lupus Anticoagulant test,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0629,Lyme Borrelia Burgdorferi IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1700,306,No,30/09/2026
+t-path-0630,Lymphocyte Subset Panel Basic,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0631,MACHINE / OT CHARGES,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0632,MAGNESIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0633,MAGNESIUM URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,300,54,No,30/09/2026
+t-path-0634,Malaria Antibody Test,Pathology,Serology & Infectious Immunology,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0635,PS MP (PSMP),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0636,MALARIA PARASITE DETECTION BY SMEAR EXAMINATION,Pathology,Serology & Infectious Immunology,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0637,Malarial Antigen,Pathology,Serology & Infectious Immunology,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0638,MATERNAL SCREENING - DUAL MARKER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0639,MATERNAL SCREENING - TRIPLE MARKER (TMT),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2700,486,No,30/09/2026
+t-path-0640,Measles Antibody IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0641,MEASLES IgG (Rubeola IgG) CSF,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0642,MEASLES IgM (Rubeola IgM) CSF,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0643,Measles (Rubeola) - IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0644,Measles (Rubeola) - IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0645,FMR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0646,Meningitis Viral Panel IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,4600,828,No,30/09/2026
+t-path-0647,MERCURY BLOOD,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0648,"Metanephrine Free,Plasma",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0649,Methhaemoglobin blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,950,171,No,30/09/2026
+t-path-0650,Methotrexate (Metropolis),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0651,Methyl Malonic Acid (Quantitative),Pathology,Serology & Infectious Immunology,Blood (Serum),4,9000,1620,No,30/09/2026
+t-path-0652,Mitochondrial Myopathy Mutation Detection-Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,7000,1260,No,30/09/2026
+t-path-0653,Mitochondrial (M2) Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0654,MONTOUXTEST (MT),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0655,MP by Fluorescent,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0656,MPO - ANCA (P - ANCA) (P-ANCA),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2400,432,No,30/09/2026
+t-path-0657,MRCP Pancreaticobiliary Review & Correlation,Radiology,Magnetic Resonance Imaging (MRI),MRI Scan,4,8000,1440,No,30/09/2026
+t-path-0658,MUMPS Antibody IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0659,Mumps (IgM),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0660,Musk Antibody Muscle Specific Kinase AB,Pathology,Serology & Infectious Immunology,Blood (Serum),4,6200,1116,No,30/09/2026
+t-path-0661,Myasthenia Gravis Profile,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,9900,1782,No,30/09/2026
+t-path-0662,MYOGLOBIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2100,378,No,30/09/2026
+t-path-0663,MYOGLOBIN - URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,1200,216,No,30/09/2026
+t-path-0664,Myositis Profile 11 Antigens,Pathology,Serology & Infectious Immunology,Blood (Serum),4,8500,1530,No,30/09/2026
+t-path-0665,NCV,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0666,NCV (Facial),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0667,Neonatal screening (TMS),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4900,882,No,30/09/2026
+t-path-0668,NEONATAL SCREEN-IV,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5200,936,No,30/09/2026
+t-path-0669,NEONETAL BLOOD SCREENING,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0670,Neuronal Antibody Profile,Pathology,Serology & Infectious Immunology,Blood (Serum),4,9000,1620,No,30/09/2026
+t-path-0671,New Test Charge,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0672,NF-Kappa-B,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3800,684,No,30/09/2026
+t-path-0673,NGS LUNGS (PULMO CARE) PANEL,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,18000,3240,No,30/09/2026
+t-path-0674,Nickel Serum,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0675,NICOTIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,550,99,No,30/09/2026
+t-path-0676,"Nicotine / Cotinine Quantitative, Serum",Pathology,Serology & Infectious Immunology,Blood (Serum),4,2900,522,No,30/09/2026
+t-path-0677,NIPT (Non Invasive prenatal screening Test) Supratech,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,15000,2700,No,30/09/2026
+t-path-0678,NMO (Aquaporin 4),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4300,774,No,30/09/2026
+t-path-0679,NOR ADRENALINE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0680,NORMETANEPHRINE (INCLUDES BOTH METANEPHRINE & (NORMETANEPHRINE (INCLUDES BOTH METANEPHRINE &),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,8000,1440,No,30/09/2026
+t-path-0681,"Nor-Metanephrine Free,Plasma",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0682,NORMETANEPHRINE) OLIGOCLONAL BAND (CSF),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4300,774,No,30/09/2026
+t-path-0683,NT-PROBNP,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0684,O.T. Culture,Pathology,Microbiology & Infectious Diseases,Swab,4,1200,216,No,30/09/2026
+t-path-0685,O.T. Swab culture -2,Pathology,Microbiology & Infectious Diseases,Swab,4,300,54,No,30/09/2026
+t-path-0686,O.T. Swab culture -3,Pathology,Microbiology & Infectious Diseases,Swab,4,450,81,No,30/09/2026
+t-path-0687,O.T. Swab culture -5,Pathology,Microbiology & Infectious Diseases,Swab,4,750,135,No,30/09/2026
+t-path-0688,O.T. Swab culture -6,Pathology,Microbiology & Infectious Diseases,Swab,4,900,162,No,30/09/2026
+t-path-0689,O.T. Swab culture -7,Pathology,Microbiology & Infectious Diseases,Swab,4,1050,189,No,30/09/2026
+t-path-0690,O.T. Swab culture -8,Pathology,Microbiology & Infectious Diseases,Swab,4,1200,216,No,30/09/2026
+t-path-0691,O.T. Swab culture 9,Pathology,Microbiology & Infectious Diseases,Swab,4,1350,243,No,30/09/2026
+t-path-0692,OCCULT BLOOD,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0693,OESTROGEN,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0694,OPG,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0695,OPG TEST,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0696,Opiates for Spot Urine,Pathology,Clinical Pathology & Microscopy,Urine,4,500,90,No,30/09/2026
+t-path-0697,Ornithine Quantitative Plasma,Pathology,Serology & Infectious Immunology,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0698,OSMOTIC FRAGILITY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,750,135,No,30/09/2026
+t-path-0699,OT & Air Sample Culture Panel,Pathology,Microbiology & Infectious Diseases,Swab,4,1500,270,No,30/09/2026
+t-path-0700,P S For Microfialaria,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0701,P.R.P SAMPLE PREPRATION,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0702,P-ANCA,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0703,PAP Smear Examination Report,Pathology,Histopathology & Cytology,Swab,4,800,144,No,30/09/2026
+t-path-0704,PARATHYROID HORMONE (Intact),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1300,234,No,30/09/2026
+t-path-0705,Parietal Cell Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2100,378,No,30/09/2026
+t-path-0706,PARVOVIRUS B19 DNA by PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2850,513,No,30/09/2026
+t-path-0707,Parvovirus B19 IgG Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2400,432,No,30/09/2026
+t-path-0708,Parvovirus B19 IgM Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2400,432,No,30/09/2026
+t-path-0709,Paul bunnel test,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0710,PCV PACKED CELLS VOLUME,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0711,Peripherial Smaer Eaxmination (PS),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0712,PERITONEAL FLUID EXAMINATION,Pathology,Clinical Pathology & Microscopy,Swab,4,550,99,No,30/09/2026
+t-path-0713,pH,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0714,PH VALUE (STOOL),Pathology,Clinical Pathology & Microscopy,Swab,4,70,30,No,30/09/2026
+t-path-0715,PHADIATOP ALLERGY TEST,Pathology,Allergy & Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0716,PHENOBARBITONE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,950,171,No,30/09/2026
+t-path-0717,PHENYLALANINE URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,1500,270,No,30/09/2026
+t-path-0718,PHENYLKETONURIA URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,1300,234,No,30/09/2026
+t-path-0719,PHENYTOIN / DILANTIN / EPTOIN,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0720,PHOSPHORUS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,350,63,No,30/09/2026
+t-path-0721,PHOSPHORUS URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,250,45,No,30/09/2026
+t-path-0722,PLA2 Receptor Antybody,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0723,Platelet Count,Pathology,Hematology & Hemostasis,Blood (EDTA),4,200,36,No,30/09/2026
+t-path-0724,PLEURAL FLUID EXAMINATION,Pathology,Clinical Pathology & Microscopy,Swab,4,550,99,No,30/09/2026
+t-path-0725,PNEUMOCYSTIS CARINII DETECTION,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0726,PNH Profile,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6100,1098,No,30/09/2026
+t-path-0727,POST COITAL TEST,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0728,POSTPRANDIAL PLASMA GLUCOSE (PMBS),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0729,POTASSIUM URINE (SPOT),Pathology,Clinical Pathology & Microscopy,Urine,4,200,36,No,30/09/2026
+t-path-0730,PR3 - ANCA (C-ANCA),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2400,432,No,30/09/2026
+t-path-0731,Preventive health check up,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,5000,900,No,30/09/2026
+t-path-0732,PROCALCITONIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0733,PROCEDURE CHARGES,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0734,Procedure Charges Diagnostics + (Sono Charges Extra),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0735,Procedure Charges Thearapautic + (Sono Charges Extra),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0736,Progesterone,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0737,Prolactin,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0738,PROSTATE SPECIFIC ANTIGEN (PSA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0739,Prostatic (Massage) Smear,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0740,PROTEIN - C,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3900,702,No,30/09/2026
+t-path-0741,PROTEIN - S,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3900,702,No,30/09/2026
+t-path-0742,SERUM PROTEIN ELECTROPHORESIS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0743,PROTEINS - CSF,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0744,PROTEINS URINE,Pathology,Clinical Pathology & Microscopy,Urine,4,250,45,No,30/09/2026
+t-path-0745,PROTHROMBIN TIME (PT),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0746,PSEUDO CHOLINESTERASE SERUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0747,PTTK (APTT),Pathology,Hematology & Hemostasis,Blood (EDTA),4,500,90,No,30/09/2026
+t-path-0748,PULMONARY FUNCTION/SPIROMETRY TEST WITH FILTER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0749,PUO Profile Pyrexia of Unknown origin,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0750,PUS ROUTINE EXAMINATION,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0751,PYRUVATE LEVELS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1950,351,No,30/09/2026
+t-path-0752,Unconjugated Estriol (uE3) - Quad Marker Screen,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0753,Quadraple Marker,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0754,Beta-HCG (First Trimester Double Marker Screen),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0755,INHIBIN-A,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0756,Alpha Fetoprotein (AFP) - Maternal Serum Marker,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0757,RA Factor Quantitative,Pathology,Serology & Infectious Immunology,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0758,RABIES ANTIBODY,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3600,648,No,30/09/2026
+t-path-0759,RANDOM BLOOD SUGAR (RBS),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,Yes,30/09/2026
+t-path-0760,RANDOM BLOOD SUGAR WITH URINE (RBS WITH URINE),Pathology,Clinical Pathology & Microscopy,Urine,4,100,30,Yes,30/09/2026
+t-path-0761,RAPID TYPHI IgG/ IgM (CARD TEST) (SEROLOGY),Pathology,Serology & Infectious Immunology,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0762,RBC RED BLOOD CELLS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0763,REDUCING SUBSTANCES STOOL (STOOLREDUCE),Pathology,Clinical Pathology & Microscopy,Swab,4,40,30,No,30/09/2026
+t-path-0764,REDUCING SUGAR (URINE),Pathology,Clinical Pathology & Microscopy,Urine,4,100,30,Yes,30/09/2026
+t-path-0765,RENIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3100,558,No,30/09/2026
+t-path-0766,"Cortisol, Serum (4PM)",Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0767,"Cortisol, Serum (8AM)",Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0768,Histopathology Small,Pathology,Histopathology & Cytology,Swab,4,1000,180,No,30/09/2026
+t-path-0769,Histopathology Large,Pathology,Histopathology & Cytology,Swab,4,2500,450,No,30/09/2026
+t-path-0770,Histopathology Medium,Pathology,Histopathology & Cytology,Swab,4,1800,324,No,30/09/2026
+t-path-0771,Serum Electrophorisis,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1000,180,No,30/09/2026
+t-path-0772,URINE MICROALBUMIN (MICROALBUMIN*),Pathology,Clinical Pathology & Microscopy,Urine,4,600,108,No,30/09/2026
+t-path-0773,Reticulocytes Count,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0774,RH ANTIBODY TITRE,Pathology,Serology & Infectious Immunology,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0775,RNS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0776,"RO (SSA-Soluble Substance A) Antibody,Serum",Pathology,Serology & Infectious Immunology,Blood (Serum),4,1300,234,No,30/09/2026
+t-path-0777,Rota Virus Antigen Detection,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0778,Rubella - IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,550,99,No,30/09/2026
+t-path-0779,Rubella - IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,550,99,No,30/09/2026
+t-path-0780,Rubella Virus Avidity Test (Metro),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0781,S.TRANSFERRIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1100,198,No,30/09/2026
+t-path-0782,SAAG,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0783,Sample Collection Charges,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,50,30,No,30/09/2026
+t-path-0784,"SCA (1,2,3,6,7,10&12 TYPES)",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,11500,2070,No,30/09/2026
+t-path-0785,SCA3 (MJD) SPINOCEREBELLAR ATAXIA TYPE 3 REPEATS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2700,486,No,30/09/2026
+t-path-0786,SCL-70 Antibody,Pathology,Serology & Infectious Immunology,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0787,Scrub typhus IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0788,Selenium Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0789,Semen Analysis,Pathology,Clinical Pathology & Microscopy,Swab,4,800,144,No,30/09/2026
+t-path-0790,SEMEN FRUCTOSE,Pathology,Clinical Pathology & Microscopy,Swab,4,100,30,No,30/09/2026
+t-path-0791,Serotonin,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3900,702,No,30/09/2026
+t-path-0792,SERUM ALCOHOL LEVEL,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0793,SERUM BILE ACID,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1700,306,No,30/09/2026
+t-path-0794,IGE,Pathology,Serology & Infectious Immunology,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0795,SERUM IODINE (IODINE LEVEL),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0796,Serum Ketone,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0797,SERUM LEAD LEVEL,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0798,SERUM OSMOLARITY-OSMOLALITY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0799,Serum Potassium - K,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0800,Serum Protein Creatinine Ratio,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0801,SERUM SODIUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0802,SGOT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0803,SGPT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0804,Sickling Test,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0805,SLIT SKIN SMEAR FOR LEPRA BACILLI,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0806,SMEAR FOR CRYPTOCOCCUS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0807,SMEAR FOR EOSINOPHILS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0808,SMEAR FOR LEPRA BACILLI,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0809,SODIUM URINE (SPOT),Pathology,Clinical Pathology & Microscopy,Urine,4,500,90,No,30/09/2026
+t-path-0810,"SODIUM,POTASSIUM",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0811,SONO ADDITIONAL SCREENING,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0812,SONO ARFI BREAST ELASTOGRAPHY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0813,SONO ARFI LIVER+UPPER ABDOMEN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0814,SONO ARFI LIVER-FIBRO SCAN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0815,Sono Aspiration Charges,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0816,SONO BLADDER/PROSTATE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0817,SONO FOLLICULAR MATURATION STUDY,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0818,SONO FOLLICULAR MATURATION STUDY (PER TERM),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0819,SONO FOLLOWUP,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0820,SONO FOLLOWUP OBSTETRIC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0821,SONO GUIDED (DIAGNOSTIC),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0822,SONO GUIDED (THERAPEUTIC),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0823,SONO- KUB,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0824,SONO LOWER + OBSTETRIC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0825,SONO LOWER ABDOMEN (F),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0826,SONO LOWER ABDOMEN (M),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0827,SONO LOWER ABDOMEN+OBSTETRIC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0828,Ultrasound Breast Screen (Bilateral High-Resolution),Radiology,Ultrasound / Sonography,Ultrasound Scan,4,2200,396,No,30/09/2026
+t-path-0829,Ultrasound Breast Screen (Single Side Review),Radiology,Ultrasound / Sonography,Ultrasound Scan,4,1500,270,No,30/09/2026
+t-path-0830,SONO OBST (FULL TERM),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0831,SONO OBSTETRIC (TRIPLET),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0832,SONO OBSTETRIC (TWINS),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0833,SONO OBSTETRIC+BIOPHYSICAL PROFILE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0834,SONO PELVIC REGION,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0835,SONO PREGNANCY TEST (VIABILITY SCAN),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0836,SONO REVIEW OF REPORTS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0837,SONO TVS (Additional),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0838,SONO UPPER+OBSTETRIC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0839,SONO URETHROGRAM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2500,450,No,30/09/2026
+t-path-0840,SONO USG DOPPLER ECO,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2000,360,No,30/09/2026
+t-path-0841,SONO WHOLE ABDOMEN (FEMALE),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0842,SONO WHOLE ABDOMEN (MALE),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0843,SONO- WHOLE ABDOMEN WHOLE ABDOMEN (Child),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0844,Special Staining,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0845,SPECIFIC GRAVITY (URINE),Pathology,Clinical Pathology & Microscopy,Urine,4,50,30,No,30/09/2026
+t-path-0846,Sperm Antibody-Total ASAB,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1100,198,No,30/09/2026
+t-path-0847,SPERM DNA FRAGMENTATION (SCD),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4500,810,No,30/09/2026
+t-path-0848,Spinal Muscular Atrophy (SMA) SMN1 Gene deletion Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3300,594,No,30/09/2026
+t-path-0849,SPO2 Report,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0850,SPUTUM FOR EOSINOPHILS,Pathology,Microbiology & Infectious Diseases,Swab,4,150,30,No,30/09/2026
+t-path-0851,SPUTUM ROUTINE,Pathology,Microbiology & Infectious Diseases,Swab,4,500,90,No,30/09/2026
+t-path-0852,STOOL EXAMINATION (STOOLHANG),Pathology,Clinical Pathology & Microscopy,Swab,4,350,63,No,30/09/2026
+t-path-0853,STOOL FAT GLOBULES,Pathology,Clinical Pathology & Microscopy,Swab,4,100,30,No,30/09/2026
+t-path-0854,Stool Fecal Elastase Test,Pathology,Clinical Pathology & Microscopy,Swab,4,3000,540,No,30/09/2026
+t-path-0855,STOOL FOR H. PYLORI,Pathology,Clinical Pathology & Microscopy,Swab,4,2100,378,No,30/09/2026
+t-path-0856,STOOL FOR STERCOBILINOGEN,Pathology,Clinical Pathology & Microscopy,Swab,4,150,30,No,30/09/2026
+t-path-0857,STOOL ROUTINE (Stool),Pathology,Clinical Pathology & Microscopy,Swab,4,250,45,No,30/09/2026
+t-path-0858,Syphilis Antibodies,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1100,198,No,30/09/2026
+t-path-0859,T&D (CBC 3 Part),Pathology,Hematology & Hemostasis,Blood (EDTA),4,250,45,No,30/09/2026
+t-path-0860,T (9;22) by Real Time PCR Bcr-Abl International Scale Blood,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0861,Tacrolimus by CMIA (Metropolis),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3600,648,No,30/09/2026
+t-path-0862,Tacrolimus by LCMS (Metropolis),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3600,648,No,30/09/2026
+t-path-0863,"Tacrolimus,Blood",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3100,558,No,30/09/2026
+t-path-0864,TB GOLD,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0865,TB MUCIN CLOT TEST,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0866,TB PCR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0867,TB- PCR (DNA) QUALITATIVE TEST (TB PCR),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3500,630,No,30/09/2026
+t-path-0868,TEST TMT (AEGON),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0869,Testosterone Total,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,900,162,No,30/09/2026
+t-path-0870,Tetanus Toxoid IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0871,TETANUS TOXOID INJECTION,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,50,30,No,30/09/2026
+t-path-0872,T3+T4+TSH (TFT),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0873,THROAT SWAB ROUTINE,Pathology,Microbiology & Infectious Diseases,Swab,4,150,30,No,30/09/2026
+t-path-0874,THROAT SWAB-ALBERT~S STAIN (KLB),Pathology,Microbiology & Infectious Diseases,Swab,4,150,30,No,30/09/2026
+t-path-0875,Thrombotic Profile,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,15500,2790,No,30/09/2026
+t-path-0876,TIBC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,500,90,No,30/09/2026
+t-path-0877,Tissue Transglutaminase - IgA (TTG-IgA),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1500,270,No,30/09/2026
+t-path-0878,TMT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0879,TORCH IGG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1850,333,No,30/09/2026
+t-path-0880,ToRCH 8 Profile,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0881,TORCH IGG & IGM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0882,TORCH IGM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1850,333,No,30/09/2026
+t-path-0883,TORCH TEST,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0884,TOTAL & DIFFERENTIAL COUNT (BODY FLUIDS),Pathology,Clinical Pathology & Microscopy,Swab,4,200,36,No,30/09/2026
+t-path-0885,TOTAL BILE ACIDS SERUM,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1700,306,No,30/09/2026
+t-path-0886,TOTAL CHOLESTEROL,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,180,32,No,30/09/2026
+t-path-0887,Total Protein,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0888,"TOTAL PROTEINS (ALB,GLB)",Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0889,TOTAL PROTEINS FLUID,Pathology,Clinical Pathology & Microscopy,Swab,4,180,32,No,30/09/2026
+t-path-0890,Total T3 (Triiodothyronine),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0891,Total T4 (Thyroxine),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0892,Toxoplasma gondii - IgG (Quantitative),Pathology,Serology & Infectious Immunology,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0893,Toxoplasma gondii - IgG Avidity Index,Pathology,Serology & Infectious Immunology,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0894,TOXO GONDII - IGM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0895,TOXOPLASMA IGG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,550,99,No,30/09/2026
+t-path-0896,TOXOPLASMA IGM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,550,99,No,30/09/2026
+t-path-0897,TPMT Enzyme Activity,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0898,TRANSFERRIN,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1100,198,No,30/09/2026
+t-path-0899,Tread mill Test (TMT),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0900,TREPONEMA PALLDUM HAEMAGGLUEINATION (TPHA),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0901,Triglycerides,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0902,TRIGLYCERIDES (Fluid),Pathology,Clinical Pathology & Microscopy,Swab,4,250,45,No,30/09/2026
+t-path-0903,Tripal Marker,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0904,ALPHA FETO PROTEIN (AFP) - (AFP ALPHA FETO PROTEIN),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,700,126,No,30/09/2026
+t-path-0905,Beta-HCG (Second Trimester Triple / Quad Screen),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0906,Unconjugated Estriol (uE3) - Fetal Wellbeing Screen,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0907,TROPONIN I (TROP I) (TROP I Quantitative),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0908,TROPONIN - T (QUANTITATIVE) (TROP-T),Pathology,Serology & Infectious Immunology,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0909,TSH,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,350,63,No,30/09/2026
+t-path-0910,TTG,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0911,TUBE,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0912,TUBE & CONTAINER,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,550,99,No,30/09/2026
+t-path-0913,TUMOR NECROSIS FACTOR ALPHA (TNFA),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3900,702,No,30/09/2026
+t-path-0914,Typhoid IgG & IgM,Pathology,Serology & Infectious Immunology,Blood (Serum),4,600,108,No,30/09/2026
+t-path-0915,TZANCK SMEAR,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0916,U1-snRNP,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2600,468,No,30/09/2026
+t-path-0917,UGT1A1 Gene Polymorphism,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,6000,1080,No,30/09/2026
+t-path-0918,URETHERAL SMEAR FOR GONOCOCCUS,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0919,URIC ACID,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,150,30,No,30/09/2026
+t-path-0920,Urinary Proteins Electophoresis,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,800,144,No,30/09/2026
+t-path-0921,URINARY URIC ACID,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,250,45,No,30/09/2026
+t-path-0922,URINARY VMA (24 Hrs),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,3300,594,No,30/09/2026
+t-path-0923,URINE (CHYLE),Pathology,Clinical Pathology & Microscopy,Urine,4,500,90,No,30/09/2026
+t-path-0924,URINE ACETON/KETONE BODIES (UK),Pathology,Clinical Pathology & Microscopy,Urine,4,80,30,No,30/09/2026
+t-path-0925,24 Hr. Urine Albumin,Pathology,Clinical Pathology & Microscopy,Urine,4,300,54,No,30/09/2026
+t-path-0926,URINE BS BP (BSBP),Pathology,Clinical Pathology & Microscopy,Urine,4,80,30,No,30/09/2026
+t-path-0927,URINE CALCIUM / CREATININE RATIO,Pathology,Clinical Pathology & Microscopy,Urine,4,1000,180,No,30/09/2026
+t-path-0928,Urine Creatinine,Pathology,Clinical Pathology & Microscopy,Urine,4,300,54,No,30/09/2026
+t-path-0929,URINE DRUG TEST,Pathology,Clinical Pathology & Microscopy,Urine,4,1200,216,No,30/09/2026
+t-path-0930,URINE FOR ALBUMIN & SUGAR,Pathology,Clinical Pathology & Microscopy,Urine,4,100,30,Yes,30/09/2026
+t-path-0931,Urine for Alkaptonuria (SRL),Pathology,Clinical Pathology & Microscopy,Urine,4,950,171,No,30/09/2026
+t-path-0932,URINE FOR CANNABIS,Pathology,Clinical Pathology & Microscopy,Urine,4,440,79,No,30/09/2026
+t-path-0933,URINE FOR OPIEATS,Pathology,Clinical Pathology & Microscopy,Urine,4,440,79,No,30/09/2026
+t-path-0934,URINE FOR PH VALUE,Pathology,Clinical Pathology & Microscopy,Urine,4,50,30,No,30/09/2026
+t-path-0935,URINE FOR SCHISTOSOMIASIS,Pathology,Clinical Pathology & Microscopy,Urine,4,150,30,No,30/09/2026
+t-path-0936,URINE GLUCOSE FASTING,Pathology,Clinical Pathology & Microscopy,Urine,4,50,30,Yes,30/09/2026
+t-path-0937,URINE HAEMOGLOBIN,Pathology,Clinical Pathology & Microscopy,Urine,4,350,63,No,30/09/2026
+t-path-0938,URINE METABOLIC PROFILE (Choithram),Pathology,Clinical Pathology & Microscopy,Urine,4,600,108,No,30/09/2026
+t-path-0939,Urine Microalbumin / Creatinine Ratio (UACR),Pathology,Clinical Pathology & Microscopy,Urine,4,800,144,No,30/09/2026
+t-path-0940,URINE MICROALBUMINURIA EXAMINATION (URINEMICROALB),Pathology,Clinical Pathology & Microscopy,Urine,4,600,108,No,30/09/2026
+t-path-0941,Urine Myoglobin (Metropolis),Pathology,Clinical Pathology & Microscopy,Urine,4,1000,180,No,30/09/2026
+t-path-0942,Urine Nicotine / Cotinine Qualitative,Pathology,Clinical Pathology & Microscopy,Urine,4,2000,360,No,30/09/2026
+t-path-0943,URINE ORGANIC ACID,Pathology,Clinical Pathology & Microscopy,Urine,4,1500,270,No,30/09/2026
+t-path-0944,URINE OSMOLARITY-OSMOLALITY,Pathology,Clinical Pathology & Microscopy,Urine,4,900,162,No,30/09/2026
+t-path-0945,Urine PREGNANCY TEST (UPT),Pathology,Clinical Pathology & Microscopy,Urine,4,200,36,No,30/09/2026
+t-path-0946,24 Hr. Urine PROTEIN,Pathology,Clinical Pathology & Microscopy,Urine,4,300,54,No,30/09/2026
+t-path-0947,URINE PROTEIN CREAT RATIO,Pathology,Clinical Pathology & Microscopy,Urine,4,700,126,No,30/09/2026
+t-path-0948,URINE ROUTINE (URE),Pathology,Clinical Pathology & Microscopy,Urine,4,100,30,No,30/09/2026
+t-path-0949,URINE SOD+POT,Pathology,Clinical Pathology & Microscopy,Urine,4,300,54,No,30/09/2026
+t-path-0950,URINE SODIUM,Pathology,Clinical Pathology & Microscopy,Urine,4,200,36,No,30/09/2026
+t-path-0951,URINE SUGAR FASTING,Pathology,Clinical Pathology & Microscopy,Urine,4,80,30,Yes,30/09/2026
+t-path-0952,URINE SUGAR PP,Pathology,Clinical Pathology & Microscopy,Urine,4,80,30,Yes,30/09/2026
+t-path-0953,URINE SUGAR (RANDOM),Pathology,Clinical Pathology & Microscopy,Urine,4,50,30,Yes,30/09/2026
+t-path-0954,URINE UROBILINOGEN,Pathology,Clinical Pathology & Microscopy,Urine,4,100,30,No,30/09/2026
+t-path-0955,URINE UROFLOWMETRY TEST,Pathology,Clinical Pathology & Microscopy,Urine,4,4500,810,No,30/09/2026
+t-path-0956,Carotid Doppler Screen (Clinical Evaluation),Specialized,Neurodiagnostics / Vascular,Digital Imaging,4,2200,396,No,30/09/2026
+t-path-0957,USG Local Region (Superficial Swelling / Lumps),Radiology,Ultrasound / Sonography,Ultrasound Scan,4,2200,396,No,30/09/2026
+t-path-0958,USG Local Region (Joint / Tendon Assessment),Radiology,Ultrasound / Sonography,Ultrasound Scan,4,2200,396,No,30/09/2026
+t-path-0959,USG SCROTAL,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,1800,324,No,30/09/2026
+t-path-0960,Vaccination Charges,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,300,54,No,30/09/2026
+t-path-0961,VAGINAL SMEAR (WET SMEAR),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0962,VARICELLA VIRUS IgG ANTIBODY (HERPES ZOSTER),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0963,VARICELLA VIRUS IgM ANTIBODY (HERPES ZOSTER),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1600,288,No,30/09/2026
+t-path-0964,Varicella Zoster Antibody IgG,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1400,252,No,30/09/2026
+t-path-0965,VARICELLA ZOSTER PCR (HERPES ZOSTER PCR),Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,2900,522,No,30/09/2026
+t-path-0966,VDRL (V.D.R.L (Quantitative) ),Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0967,VDRL,Pathology,Serology & Infectious Immunology,Blood (Serum),4,400,72,No,30/09/2026
+t-path-0968,VDRL TITRE,Pathology,Serology & Infectious Immunology,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0969,VGKC,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,8500,1530,No,30/09/2026
+t-path-0970,VITAMIN A ESTIMATION,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0971,VITAMIN B1,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,3300,594,No,30/09/2026
+t-path-0972,Vitamin B12 (VitB12),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,1200,216,No,30/09/2026
+t-path-0973,VITAMIN B2,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0974,VITAMIN B3,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,3400,612,No,30/09/2026
+t-path-0975,VITAMIN B6,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,4300,774,No,30/09/2026
+t-path-0976,VITAMIN B9,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,2200,396,No,30/09/2026
+t-path-0977,VITAMIN C,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0978,Vitamin D3 (Vit D3),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,3000,540,No,30/09/2026
+t-path-0979,VITAMIN E ESTIMATION,Pathology,Endocrinology & Special Hormones,Blood (Serum),4,4000,720,No,30/09/2026
+t-path-0980,VITAMIN K LEVELS (DCP - PIVKA-II),Pathology,Endocrinology & Special Hormones,Blood (Serum),4,2400,432,No,30/09/2026
+t-path-0981,Vw-Von Willebrand Antigen Citrated Plasma (Metropolis),Pathology,Serology & Infectious Immunology,Blood (Serum),4,7000,1260,No,30/09/2026
+t-path-0982,WBC DIFFERENTIAL COUNT,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,100,30,No,30/09/2026
+t-path-0983,Weil Felix test,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,850,153,No,30/09/2026
+t-path-0984,WET PREPRATION,Pathology,Clinical Biochemistry & Routine,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0985,WIDAL SLIDE TEST,Pathology,Serology & Infectious Immunology,Blood (Serum),4,200,36,No,30/09/2026
+t-path-0986,WIDAL TUBE TEST,Pathology,Serology & Infectious Immunology,Blood (Serum),4,450,81,No,30/09/2026
