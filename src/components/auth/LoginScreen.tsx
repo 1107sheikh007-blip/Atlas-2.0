@@ -103,7 +103,7 @@ export const LoginScreen: React.FC = () => {
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 font-medium">
-                Pathology & Radiology Enterprise Management Suite
+                <span className="font-bold text-sky-700 uppercase tracking-wider">clearity in every image...!</span> • Pathology & Radiology Enterprise Management Suite
               </p>
             </div>
           </div>

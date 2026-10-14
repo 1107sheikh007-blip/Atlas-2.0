@@ -108,7 +108,7 @@ export const Header: React.FC = () => {
                 </span>
               </div>
               <p className="text-[10px] text-slate-500 font-medium hidden sm:block leading-tight">
-                Pathology & Radiology Management Suite
+                <span className="font-bold text-sky-700 uppercase tracking-wider">clearity in every image...!</span> • Pathology & Radiology Management Suite
               </p>
             </div>
           </div>
