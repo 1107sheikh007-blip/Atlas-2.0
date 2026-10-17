@@ -175,8 +175,19 @@ export const PatientPortal: React.FC = () => {
     }>();
 
     masterPatientsList.forEach(p => {
+      const initialDocs: Array<{ name: string; specialty?: string; hospital?: string }> = [];
+      if (p.referringDoctorName && p.referringDoctorName !== 'Direct Walk-in') {
+        const ref = referrers.find(
+          r => r.id === p.referringDoctorId || r.name.toLowerCase() === p.referringDoctorName?.toLowerCase()
+        );
+        initialDocs.push({
+          name: p.referringDoctorName,
+          specialty: ref?.specialty || 'Assigned Referrer',
+          hospital: p.commissionBeneficiaryName || ref?.organizationName || ref?.hospital || ''
+        });
+      }
       meta.set(p.id, {
-        doctors: [],
+        doctors: initialDocs,
         ordersCount: 0,
         totalRevenue: 0,
         lastVisitDate: p.registeredAt || '',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, User, Phone, Mail, MapPin, Heart, Shield, AlertCircle, Loader2 } from 'lucide-react';
+import { X, Save, User, Phone, Mail, MapPin, Heart, Shield, AlertCircle, Loader2, Stethoscope, Building2, Lock, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Patient } from '../../types';
 import { useDiagnostic } from '../../context/DiagnosticContext';
 import { parsePatientNameParts } from '../../utils/dateUtils';
@@ -28,8 +28,26 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
   const [address, setAddress] = useState(patient.address || '');
   const [bloodGroup, setBloodGroup] = useState(patient.bloodGroup || '');
   const [abhaId, setAbhaId] = useState(patient.abhaId || '');
-  const [beneficiaryId, setBeneficiaryId] = useState(patient.beneficiaryId || '');
-  const { approvedReferrers } = useDiagnostic();
+  const { approvedReferrers, allOrders } = useDiagnostic();
+
+  // Referring Doctor & Affiliated Commission Beneficiary state (Super Admin exclusive)
+  const [referringDoctorId, setReferringDoctorId] = useState(
+    patient.referringDoctorId || patient.beneficiaryId || ''
+  );
+  const [isBeneficiaryDifferent, setIsBeneficiaryDifferent] = useState(
+    Boolean(
+      patient.commissionBeneficiaryId &&
+      patient.referringDoctorId &&
+      patient.commissionBeneficiaryId !== patient.referringDoctorId
+    )
+  );
+  const [commissionBeneficiaryId, setCommissionBeneficiaryId] = useState(
+    patient.commissionBeneficiaryId || patient.referringDoctorId || patient.beneficiaryId || ''
+  );
+
+  const patientOrdersCount = (allOrders || []).filter(
+    o => o.patientId === patient.id || (o.patient?.phone && o.patient.phone === patient.phone)
+  ).length;
   
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -72,6 +90,18 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
 
     setIsSaving(true);
     setTimeout(() => {
+      const selectedDoc = approvedReferrers.find(r => r.id === referringDoctorId);
+      const docName = selectedDoc ? selectedDoc.name : (referringDoctorId ? 'Direct Walk-in' : undefined);
+
+      const effectiveBenId = isBeneficiaryDifferent ? commissionBeneficiaryId : referringDoctorId;
+      const selectedBen = approvedReferrers.find(r => r.id === effectiveBenId);
+      let benName: string | undefined = undefined;
+      if (selectedBen) {
+        benName = selectedBen.organizationName || selectedBen.name;
+      } else if (docName) {
+        benName = selectedDoc?.organizationName || docName;
+      }
+
       onSave({
         name: combinedName,
         title,
@@ -84,7 +114,11 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
         address: address.trim(),
         bloodGroup: bloodGroup.trim() || undefined,
         abhaId: abhaId.trim() || undefined,
-        beneficiaryId: beneficiaryId || undefined
+        referringDoctorId: referringDoctorId || undefined,
+        referringDoctorName: docName,
+        commissionBeneficiaryId: effectiveBenId || undefined,
+        commissionBeneficiaryName: benName,
+        beneficiaryId: effectiveBenId || referringDoctorId || undefined
       });
       setIsSaving(false);
       onClose();
@@ -295,26 +329,103 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
             </div>
 
 
-            {/* Beneficiary Name / Auto-linked Commission */}
-            <div className="sm:col-span-2 space-y-1">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <Heart className="w-3.5 h-3.5 text-rose-600" /> Linked Beneficiary (Referring Doctor)
-              </label>
-              <select
-                value={beneficiaryId}
-                onChange={e => setBeneficiaryId(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
-              >
-                <option value="">-- No Linked Beneficiary --</option>
-                {approvedReferrers.map(r => (
-                  <option key={r.id} value={r.id}>
-                    {r.name} {r.organizationName ? `(${r.organizationName})` : ''} - {r.commissionPct}%
-                  </option>
-                ))}
-              </select>
-              <p className="text-[10px] text-slate-500 italic mt-1">
-                Changing this only affects future orders for this patient. Past orders retain their original beneficiary.
-              </p>
+            {/* Prescribing Doctor & Affiliated Commission Beneficiary (Super Admin Feature) */}
+            <div className="sm:col-span-2 p-4 bg-sky-50/70 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800/70 rounded-2xl space-y-3.5">
+              <div className="flex items-center justify-between border-b border-sky-100 dark:border-sky-900/60 pb-2">
+                <span className="text-xs font-black text-sky-900 dark:text-sky-200 uppercase tracking-wider flex items-center gap-1.5">
+                  <Stethoscope className="w-4 h-4 text-sky-600" /> Prescribing Doctor & Affiliated Beneficiary
+                </span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold border border-emerald-300 dark:border-emerald-800">
+                  <Shield className="w-3 h-3 text-emerald-600" /> Super Admin Control
+                </span>
+              </div>
+
+              {/* 1. Prescribing Doctor Selection */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+                  <span className="flex items-center gap-1">
+                    <User className="w-3.5 h-3.5 text-sky-600" /> Prescribing / Referring Doctor
+                  </span>
+                  {referringDoctorId && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setReferringDoctorId('');
+                        if (!isBeneficiaryDifferent) setCommissionBeneficiaryId('');
+                      }}
+                      className="text-[10px] text-rose-600 hover:underline font-semibold"
+                    >
+                      Clear Selection
+                    </button>
+                  )}
+                </label>
+                <select
+                  value={referringDoctorId}
+                  onChange={e => {
+                    const docId = e.target.value;
+                    setReferringDoctorId(docId);
+                    if (!isBeneficiaryDifferent) {
+                      setCommissionBeneficiaryId(docId);
+                    }
+                  }}
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
+                >
+                  <option value="">-- Direct Walk-in / Self-Prescribed --</option>
+                  {approvedReferrers.map(r => (
+                    <option key={r.id} value={r.id}>
+                      {r.name} {r.specialty ? `• ${r.specialty}` : ''} {r.organizationName ? `[${r.organizationName}]` : ''} ({r.commissionPct}%)
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 2. Decouple Beneficiary Option */}
+              <div className="pt-1">
+                <label className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={isBeneficiaryDifferent}
+                    onChange={e => {
+                      const checked = e.target.checked;
+                      setIsBeneficiaryDifferent(checked);
+                      if (!checked) {
+                        setCommissionBeneficiaryId(referringDoctorId);
+                      }
+                    }}
+                    className="w-4 h-4 text-sky-600 rounded-md border-slate-300 focus:ring-sky-500 cursor-pointer"
+                  />
+                  <span>Commission Beneficiary is different from Prescribing Doctor (e.g. Clinic / Hospital Organization)</span>
+                </label>
+              </div>
+
+              {/* 3. Beneficiary Selector (when decoupled) */}
+              {isBeneficiaryDifferent && (
+                <div className="space-y-1 pl-6 pt-1 animate-fade-in">
+                  <label className="text-xs font-bold text-cyan-900 dark:text-cyan-200 flex items-center gap-1.5">
+                    <Building2 className="w-3.5 h-3.5 text-cyan-600" /> Affiliated Commission Beneficiary Partner
+                  </label>
+                  <select
+                    value={commissionBeneficiaryId}
+                    onChange={e => setCommissionBeneficiaryId(e.target.value)}
+                    className="w-full bg-white dark:bg-slate-900 border border-cyan-300 dark:border-cyan-700 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 cursor-pointer"
+                  >
+                    <option value="">-- Direct / Walk-in Center Credit --</option>
+                    {approvedReferrers.map(r => (
+                      <option key={r.id} value={r.id}>
+                        {r.organizationName ? `${r.organizationName} (Dr. ${r.name})` : r.name} - {r.commissionPct}%
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* Temporal Beneficiary Locking Security Note */}
+              <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-[11px] text-amber-900 dark:text-amber-200 flex items-start gap-2">
+                <Lock className="w-3.5 h-3.5 text-amber-700 shrink-0 mt-0.5" />
+                <div className="leading-snug">
+                  <strong>Temporal Beneficiary Locking Rule:</strong> Modifying the referring doctor and affiliated beneficiary applies <em>only</em> to future bookings and invoices for this patient. The <strong>{patientOrdersCount} historical order(s)</strong> already registered will permanently preserve their original linked doctor and beneficiary.
+                </div>
+              </div>
             </div>
 
 

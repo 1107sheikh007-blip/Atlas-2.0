@@ -245,7 +245,7 @@ export const AdminDashboard: React.FC = () => {
 
   // Active Admin Sub-tab
   const [activeTab, setActiveTab] = useState<
-    'DASHBOARD' | 'ALL_ORDERS' | 'DOCTOR_ROSTER' | 'DOCTOR_APPROVALS' | 'REFERRAL_LEADERBOARD' | 'TEST_CATALOG' | 'ATTENDANCE' | 'PAYROLL' | 'DELETION_APPROVALS' | 'EXPENSES' | 'BRANCHES' | 'ACTIVITY_LOG' | 'MIS_OVERVIEW'
+    'DASHBOARD' | 'ALL_ORDERS' | 'DOCTOR_ROSTER' | 'REFERRAL_LEADERBOARD' | 'TEST_CATALOG' | 'ATTENDANCE' | 'PAYROLL' | 'DELETION_APPROVALS' | 'EXPENSES' | 'BRANCHES' | 'ACTIVITY_LOG' | 'MIS_OVERVIEW'
   >('DASHBOARD');
 
   // Patient Orders view switcher: View Orders Ledger vs Register New Patient Order
@@ -306,7 +306,7 @@ export const AdminDashboard: React.FC = () => {
   // Guard: Center Managers cannot access restricted tabs (Staff Credentials, Doctor Approvals, Referral & Affiliation, Center Branches)
   useEffect(() => {
     if (!isSuperAdmin) {
-      if (['PAYROLL', 'DOCTOR_APPROVALS', 'REFERRAL_LEADERBOARD', 'BRANCHES'].includes(activeTab)) {
+      if (['PAYROLL', 'REFERRAL_LEADERBOARD', 'BRANCHES'].includes(activeTab)) {
         setActiveTab('DASHBOARD');
       }
     }
@@ -366,7 +366,7 @@ export const AdminDashboard: React.FC = () => {
   // Referrals & Affiliations MIS Search Engine & Filter State
   const [referralDoctorFilter, setReferralDoctorFilter] = useState<string>('ALL');
   const [referralBeneficiaryFilter, setReferralBeneficiaryFilter] = useState<string>('ALL');
-  const [referralViewMode, setReferralViewMode] = useState<'MIS_SEARCH' | 'PARTNER_SUMMARY'>('MIS_SEARCH');
+  const [referralViewMode, setReferralViewMode] = useState<'MIS_SEARCH' | 'PARTNER_SUMMARY' | 'PENDING_APPROVALS'>('PARTNER_SUMMARY');
   const [misViewMode, setMisViewMode] = useState<'ORDER' | 'TEST'>('ORDER');
   const [isPrintMISModalOpen, setIsPrintMISModalOpen] = useState(false);
   const [isGeneratingMISPdf, setIsGeneratingMISPdf] = useState(false);
@@ -2123,12 +2123,11 @@ export const AdminDashboard: React.FC = () => {
             badgeColor: 'bg-teal-400'
           },
           { 
-            id: 'DOCTOR_APPROVALS', 
-            label: `Doctor Approvals ${pendingReferrers.length > 0 ? `(${pendingReferrers.length})` : ''}`,
+            id: 'REFERRAL_LEADERBOARD', 
+            label: `Referrals & Approvals ${pendingReferrers.length > 0 ? `(${pendingReferrers.length} Pending)` : ''}`,
             badge: pendingReferrers.length > 0,
             badgeColor: 'bg-amber-400'
           },
-          { id: 'REFERRAL_LEADERBOARD', label: 'Referral & Affiliation' },
           { id: 'TEST_CATALOG', label: `Test Catalog (${tests.length})` },
           { 
             id: 'ATTENDANCE', 
@@ -2149,8 +2148,8 @@ export const AdminDashboard: React.FC = () => {
           { id: 'MIS_OVERVIEW', label: 'Financial MIS' },
         ].filter(tab => {
           if (!isSuperAdmin) {
-            // Hide Staff Credentials, Deletion Gate, Doctor Approvals, Referral & Affiliation, and Center & Branches from Manager
-            if (['DELETION_APPROVALS', 'PAYROLL', 'DOCTOR_APPROVALS', 'REFERRAL_LEADERBOARD', 'BRANCHES'].includes(tab.id)) {
+            // Hide Staff Credentials, Deletion Gate, Referral & Approvals, and Center & Branches from Manager
+            if (['DELETION_APPROVALS', 'PAYROLL', 'REFERRAL_LEADERBOARD', 'BRANCHES'].includes(tab.id)) {
               return false;
             }
           }
@@ -4730,210 +4729,6 @@ export const AdminDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 2: DOCTOR APPROVALS ROSTER */}
-      {activeTab === 'DOCTOR_APPROVALS' && (
-        <div className="space-y-6">
-          <div className="bg-white border border-sky-100 rounded-3xl p-6 shadow-xs space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                <Clock className="w-4 h-4 text-amber-600" />
-                Pending Doctor Approvals ({pendingReferrers.length})
-              </h3>
-              <p className="text-xs text-slate-500">
-                Front-desk added doctors require Super Admin verification and profile review before activation in the doctor roster.
-              </p>
-            </div>
-
-            {pendingReferrers.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 text-xs bg-slate-50 rounded-2xl border border-slate-200">
-                No doctors currently awaiting approval. All registered referring doctors are reviewed.
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {pendingReferrers.map(doc => (
-                  <div key={doc.id} className="p-5 bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 rounded-2xl space-y-3.5 shadow-2xs hover:border-sky-300 dark:hover:border-sky-700/60 transition-colors">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-extrabold text-slate-900 dark:text-white text-sm">{doc.name}</h4>
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-700/60">
-                            PENDING APPROVAL
-                          </span>
-                        </div>
-                        {doc.qualification && (
-                          <p className="text-xs font-bold text-indigo-700 dark:text-indigo-400 mt-0.5">
-                            {doc.qualification} {doc.registrationNo ? `• Reg: ${doc.registrationNo}` : ''}
-                          </p>
-                        )}
-                        <p className="text-xs text-sky-700 dark:text-sky-400 font-semibold mt-0.5">
-                          {doc.specialty} • {doc.hospital}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1.5 text-xs shadow-2xs">
-                      {doc.qualification && (
-                        <div className="flex items-center justify-between">
-                          <span className="text-slate-500 dark:text-slate-400 font-bold text-[11px]">Degree / Qualification:</span>
-                          <span className="font-bold text-indigo-700 dark:text-indigo-300">
-                            {doc.qualification}
-                          </span>
-                        </div>
-                      )}
-                      {doc.registrationNo && (
-                        <div className="flex items-center justify-between">
-                          <span className="text-slate-500 dark:text-slate-400 font-bold text-[11px]">Medical Council Reg. No:</span>
-                          <span className="font-mono font-bold text-slate-800 dark:text-slate-200">{doc.registrationNo}</span>
-                        </div>
-                      )}
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-500 dark:text-slate-400 font-bold text-[11px]">Association:</span>
-                        <span className="font-bold text-slate-800 dark:text-slate-200">
-                          {doc.affiliationType === 'ORGANIZATION' 
-                            ? `Network: ${doc.organizationName || 'Partner Group'}`
-                            : 'Independent Practice'}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-500 dark:text-slate-400 font-bold text-[11px]">Hospital / Clinic:</span>
-                        <span className="font-semibold text-slate-700 dark:text-slate-300">{doc.hospital}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-500 dark:text-slate-400 font-bold text-[11px]">Contact Mobile:</span>
-                        <span className="font-mono font-bold text-slate-700 dark:text-slate-300">{doc.phone || 'Not provided'}</span>
-                      </div>
-                      <div className="flex items-center justify-between pt-1.5 border-t border-slate-100 dark:border-slate-800">
-                        <span className="text-amber-800 dark:text-amber-400 font-bold text-[11px]">Roster Status:</span>
-                        <span className="font-bold text-amber-800 dark:text-amber-300 text-[11px] bg-amber-50 dark:bg-amber-950/70 border border-amber-200 dark:border-amber-800/60 px-2 py-0.5 rounded-md">
-                          Awaiting Super Admin Approval
-                        </span>
-                      </div>
-                    </div>
-
-                    {isSuperAdmin ? (
-                      <div className="pt-2 border-t border-slate-200 dark:border-slate-700/60 flex gap-2">
-                        <button
-                          onClick={() => openApproveDoctorModal(doc)}
-                          className="flex-1 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
-                        >
-                          <UserCheck className="w-3.5 h-3.5" />
-                          Review Details & Approve Doctor
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (window.confirm(`Permanently delete registration for ${doc.name}?`)) {
-                              deleteReferringDoctor?.(doc.id);
-                              showToast(`Deleted ${doc.name}`);
-                            }
-                          }}
-                          className="px-3 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 dark:text-rose-300 dark:border-rose-800/60 text-xs font-bold rounded-xl cursor-pointer flex items-center gap-1 transition-colors"
-                          title="Permanently Delete Doctor Registration"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                          <span>Delete</span>
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="pt-2 border-t border-slate-200 dark:border-slate-700/60">
-                        <div className="w-full py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-semibold text-xs rounded-xl flex items-center justify-center gap-1.5">
-                          <Lock className="w-3.5 h-3.5 text-slate-500" />
-                          Locked: Super Admin Approval Required
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="bg-white border border-sky-100 rounded-3xl p-6 shadow-xs space-y-4">
-            <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-              <UserCheck className="w-4 h-4 text-emerald-600" />
-              Approved Referring Doctors ({approvedReferrers.length})
-            </h3>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-sky-50 text-sky-900 uppercase text-[10px] tracking-wider border-b border-sky-100 font-bold">
-                  <tr>
-                    <th className="p-3.5">Doctor & Specialty</th>
-                    <th className="p-3.5">Affiliation & Clinic</th>
-                    <th className="p-3.5">Contact & Registration</th>
-                    <th className="p-3.5">Patients Referred</th>
-                    <th className="p-3.5">Gross Revenue</th>
-                    <th className="p-3.5 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {approvedReferrers.map(doc => (
-                    <tr key={doc.id} className="hover:bg-slate-50">
-                      <td className="p-3.5">
-                        <span className="font-bold text-slate-900 block">{doc.name}</span>
-                        <span className="text-[11px] text-slate-500">{doc.qualification}</span>
-                      </td>
-                      <td className="p-3.5 text-slate-700">
-                        {doc.organizationName ? (
-                          <span className="text-purple-800 font-bold block">{doc.organizationName}</span>
-                        ) : null}
-                        <span>{doc.hospital}</span>
-                      </td>
-                      <td className="p-3.5">
-                        <span className="font-mono text-slate-800 font-bold block">{doc.phone || 'Not provided'}</span>
-                        {doc.registrationNo ? (
-                          <span className="text-[10px] text-teal-700 font-semibold block">Reg: {doc.registrationNo}</span>
-                        ) : (
-                          <span className="text-[10px] text-slate-400 block">Verified Practitioner</span>
-                        )}
-                      </td>
-                      <td className="p-3.5 font-bold text-slate-900">{doc.totalReferralsCount}</td>
-                      <td className="p-3.5 font-black text-sky-700">₹{doc.totalRevenueGenerated.toLocaleString()}</td>
-                      <td className="p-3.5 text-right space-x-1.5">
-                        <button
-                          onClick={() => {
-                            const waUrl = sendWelcomeDoctorWhatsApp(doc);
-                            window.open(waUrl, '_blank');
-                            showToast(`Sent welcome message to ${doc.name}`);
-                          }}
-                          className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-bold inline-flex items-center gap-1"
-                        >
-                          <Share2 className="w-3.5 h-3.5" /> Welcome WA
-                        </button>
-                        {isSuperAdmin && (
-                          <>
-                            <button
-                              onClick={() => openEditApprovedDoctorModal(doc)}
-                              className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
-                            >
-                              <Edit3 className="w-3 h-3 text-slate-500" />
-                              Edit Details
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (window.confirm(`Are you sure you want to permanently remove Dr. ${doc.name} from approved doctors?`)) {
-                                  deleteReferringDoctor?.(doc.id);
-                                  showToast(`Removed Dr. ${doc.name} from approved doctors.`);
-                                }
-                              }}
-                              className="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
-                              title="Permanently Delete Doctor"
-                            >
-                              <Trash2 className="w-3.5 h-3.5 text-rose-600" />
-                              <span>Delete</span>
-                            </button>
-                          </>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* TAB 3: REFERRAL PARTNERS, AFFILIATIONS & MIS SEARCH ENGINE */}
       {activeTab === 'REFERRAL_LEADERBOARD' && (
@@ -4956,29 +4751,55 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
-              {/* View Switcher: MIS Order-Level Search vs Partner Summary */}
+              {/* View Switcher: Doctor Approvals vs Partner Summary vs MIS Search */}
               <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold">
                 <button
                   type="button"
-                  onClick={() => setReferralViewMode('MIS_SEARCH')}
-                  className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
-                    referralViewMode === 'MIS_SEARCH'
-                      ? 'bg-sky-600 text-white shadow-xs'
+                  onClick={() => setReferralViewMode('PENDING_APPROVALS')}
+                  className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                    referralViewMode === 'PENDING_APPROVALS'
+                      ? 'bg-sky-600 text-white shadow-xs font-black'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  MIS Search & Patient Logs
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Doctor Approvals</span>
+                  {pendingReferrers.length > 0 && (
+                    <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
+                      referralViewMode === 'PENDING_APPROVALS' ? 'bg-amber-400 text-slate-900' : 'bg-amber-500 text-white'
+                    }`}>
+                      {pendingReferrers.length}
+                    </span>
+                  )}
                 </button>
                 <button
                   type="button"
                   onClick={() => setReferralViewMode('PARTNER_SUMMARY')}
-                  className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
                     referralViewMode === 'PARTNER_SUMMARY'
-                      ? 'bg-sky-600 text-white shadow-xs'
+                      ? 'bg-sky-600 text-white shadow-xs font-black'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  Partner Payout Summary
+                  <Award className="w-3.5 h-3.5" />
+                  <span>Partner Roster & Affiliation</span>
+                  <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
+                    referralViewMode === 'PARTNER_SUMMARY' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'
+                  }`}>
+                    {approvedReferrers.length}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setReferralViewMode('MIS_SEARCH')}
+                  className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                    referralViewMode === 'MIS_SEARCH'
+                      ? 'bg-sky-600 text-white shadow-xs font-black'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Search className="w-3.5 h-3.5" />
+                  <span>MIS Search & Patient Logs</span>
                 </button>
               </div>
 
@@ -5007,8 +4828,240 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
+          {/* Super Admin Alert Banner when Doctors are Awaiting Approval */}
+          {pendingReferrers.length > 0 && referralViewMode !== 'PENDING_APPROVALS' && (
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-100 text-amber-800 rounded-xl">
+                  <Clock className="w-5 h-5 animate-pulse" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-amber-900">
+                    {pendingReferrers.length} Referring Doctor{pendingReferrers.length > 1 ? 's' : ''} Awaiting Super Admin Approval
+                  </h4>
+                  <p className="text-[11px] text-amber-700">
+                    Doctors registered by the front-desk reception must be reviewed and verified by Super Admin before activation in the doctor roster.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setReferralViewMode('PENDING_APPROVALS')}
+                className="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer whitespace-nowrap"
+              >
+                Review Approvals ({pendingReferrers.length}) &rarr;
+              </button>
+            </div>
+          )}
+
+          {/* VIEW 0: PENDING APPROVALS & APPROVED ROSTER DIRECTORY */}
+          {referralViewMode === 'PENDING_APPROVALS' && (
+            <div className="space-y-6">
+              <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+                  <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-amber-600" />
+                    Pending Doctor Approvals ({pendingReferrers.length})
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Front-desk added doctors require Super Admin verification and profile review before activation.
+                  </p>
+                </div>
+
+                {pendingReferrers.length === 0 ? (
+                  <div className="p-8 text-center text-slate-400 text-xs bg-white rounded-2xl border border-slate-200">
+                    No doctors currently awaiting approval. All registered referring doctors are reviewed.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {pendingReferrers.map(doc => (
+                      <div key={doc.id} className="p-5 bg-white border border-slate-200 rounded-2xl space-y-3.5 shadow-2xs hover:border-sky-300 transition-colors">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-extrabold text-slate-900 text-sm">{doc.name}</h4>
+                              <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                                PENDING APPROVAL
+                              </span>
+                            </div>
+                            {doc.qualification && (
+                              <p className="text-xs font-bold text-indigo-700 mt-0.5">
+                                {doc.qualification} {doc.registrationNo ? `• Reg: ${doc.registrationNo}` : ''}
+                              </p>
+                            )}
+                            <p className="text-xs text-sky-700 font-semibold mt-0.5">
+                              {doc.specialty} • {doc.hospital}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1.5 text-xs shadow-2xs">
+                          {doc.qualification && (
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-500 font-bold text-[11px]">Degree / Qualification:</span>
+                              <span className="font-bold text-indigo-700">{doc.qualification}</span>
+                            </div>
+                          )}
+                          {doc.registrationNo && (
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-500 font-bold text-[11px]">Medical Council Reg. No:</span>
+                              <span className="font-mono font-bold text-slate-800">{doc.registrationNo}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between">
+                            <span className="text-slate-500 font-bold text-[11px]">Association:</span>
+                            <span className="font-bold text-slate-800">
+                              {doc.affiliationType === 'ORGANIZATION' 
+                                ? `Network: ${doc.organizationName || 'Partner Group'}`
+                                : 'Independent Practice'}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-slate-500 font-bold text-[11px]">Hospital / Clinic:</span>
+                            <span className="font-semibold text-slate-700">{doc.hospital}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-slate-500 font-bold text-[11px]">Contact Mobile:</span>
+                            <span className="font-mono font-bold text-slate-700">{doc.phone || 'Not provided'}</span>
+                          </div>
+                          <div className="flex items-center justify-between pt-1.5 border-t border-slate-200">
+                            <span className="text-amber-800 font-bold text-[11px]">Roster Status:</span>
+                            <span className="font-bold text-amber-800 text-[11px] bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md">
+                              Awaiting Super Admin Approval
+                            </span>
+                          </div>
+                        </div>
+
+                        {isSuperAdmin ? (
+                          <div className="pt-2 border-t border-slate-200 flex gap-2">
+                            <button
+                              onClick={() => openApproveDoctorModal(doc)}
+                              className="flex-1 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl transition-all shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
+                            >
+                              <UserCheck className="w-3.5 h-3.5" />
+                              Review Details & Approve Doctor
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (window.confirm(`Permanently delete registration for ${doc.name}?`)) {
+                                  deleteReferringDoctor?.(doc.id);
+                                  showToast(`Deleted ${doc.name}`);
+                                }
+                              }}
+                              className="px-3 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl cursor-pointer flex items-center gap-1 transition-colors"
+                              title="Permanently Delete Doctor Registration"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              <span>Delete</span>
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="pt-2 border-t border-slate-200">
+                            <div className="w-full py-2 bg-slate-100 border border-slate-200 text-slate-600 font-semibold text-xs rounded-xl flex items-center justify-center gap-1.5">
+                              <Lock className="w-3.5 h-3.5 text-slate-500" />
+                              Locked: Super Admin Approval Required
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Approved Referring Doctors Roster */}
+              <div className="bg-white border border-sky-100 rounded-3xl p-6 shadow-xs space-y-4">
+                <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                  <UserCheck className="w-4 h-4 text-emerald-600" />
+                  Approved Referring Doctors Directory ({approvedReferrers.length})
+                </h3>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-sky-50 text-sky-900 uppercase text-[10px] tracking-wider border-b border-sky-100 font-bold">
+                      <tr>
+                        <th className="p-3.5">Doctor & Specialty</th>
+                        <th className="p-3.5">Affiliation & Clinic</th>
+                        <th className="p-3.5">Contact & Registration</th>
+                        <th className="p-3.5">Patients Referred</th>
+                        <th className="p-3.5">Gross Revenue</th>
+                        <th className="p-3.5 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {approvedReferrers.map(doc => (
+                        <tr key={doc.id} className="hover:bg-slate-50">
+                          <td className="p-3.5">
+                            <span className="font-bold text-slate-900 block">{doc.name}</span>
+                            <span className="text-[11px] text-slate-500">{doc.qualification}</span>
+                          </td>
+                          <td className="p-3.5 text-slate-700">
+                            {doc.organizationName ? (
+                              <span className="text-purple-800 font-bold block">{doc.organizationName}</span>
+                            ) : null}
+                            <span>{doc.hospital}</span>
+                          </td>
+                          <td className="p-3.5">
+                            <span className="font-mono text-slate-800 font-bold block">{doc.phone || 'Not provided'}</span>
+                            {doc.registrationNo ? (
+                              <span className="text-[10px] text-teal-700 font-semibold block">Reg: {doc.registrationNo}</span>
+                            ) : (
+                              <span className="text-[10px] text-slate-400 block">Verified Practitioner</span>
+                            )}
+                          </td>
+                          <td className="p-3.5 font-bold text-slate-900">{doc.totalReferralsCount}</td>
+                          <td className="p-3.5 font-black text-sky-700">₹{doc.totalRevenueGenerated.toLocaleString()}</td>
+                          <td className="p-3.5 text-right space-x-1.5">
+                            <button
+                              onClick={() => {
+                                const waUrl = sendWelcomeDoctorWhatsApp(doc);
+                                window.open(waUrl, '_blank');
+                                showToast(`Sent welcome message to ${doc.name}`);
+                              }}
+                              className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
+                            >
+                              <Share2 className="w-3.5 h-3.5" /> Welcome WA
+                            </button>
+                            {isSuperAdmin && (
+                              <>
+                                <button
+                                  onClick={() => openEditApprovedDoctorModal(doc)}
+                                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
+                                >
+                                  <Edit3 className="w-3 h-3 text-slate-500" />
+                                  Edit Details
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (window.confirm(`Are you sure you want to permanently remove Dr. ${doc.name} from approved doctors?`)) {
+                                      deleteReferringDoctor?.(doc.id);
+                                      showToast(`Removed Dr. ${doc.name} from approved doctors.`);
+                                    }
+                                  }}
+                                  className="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
+                                  title="Permanently Delete Doctor"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                                  <span>Delete</span>
+                                </button>
+                              </>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* MIS Search Engine & Multi-Filter Control Box */}
-          <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4 space-y-3">
+          {referralViewMode !== 'PENDING_APPROVALS' && (
+            <>
+              <div className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4 space-y-3">
             {/* Top Row: Search Input across Patient Name, UHID, Phone, Doctor, Beneficiary, Tests */}
             <div className="flex flex-col sm:flex-row gap-3 items-center justify-between">
               <div className="relative flex-1 w-full">
@@ -5160,6 +5213,8 @@ export const AdminDashboard: React.FC = () => {
               <span className="text-[10px] text-amber-600">Pending disbursement</span>
             </div>
           </div>
+        </>
+      )}
 
           {/* VIEW 1: INTERACTIVE MIS SEARCH ENGINE & PATIENT COMMISSION LOGS */}
           {referralViewMode === 'MIS_SEARCH' && (

@@ -414,6 +414,34 @@ export const ReceptionPortal: React.FC = () => {
   const [newDoctorOrganizationName, setNewDoctorOrganizationName] = useState('');
   const [newDoctorNotes, setNewDoctorNotes] = useState('');
 
+  // Real-time duplicate doctor detection across master referrers roster
+  const matchedExistingDoctors = useMemo(() => {
+    const rawName = newDoctorName.trim().toLowerCase().replace(/^(dr\.?|doctor)\s+/i, '').replace(/[^\w\s]/g, '').trim();
+    const cleanPhone = newDoctorPhone.replace(/\D/g, '');
+    const cleanReg = newDoctorRegNo.trim().toLowerCase();
+
+    if (!rawName && cleanPhone.length < 8 && !cleanReg) return [];
+
+    return (referrers || []).filter(r => {
+      // 1. Phone match
+      if (cleanPhone.length >= 8 && r.phone) {
+        const rPhone = r.phone.replace(/\D/g, '');
+        if (rPhone && (rPhone.includes(cleanPhone) || cleanPhone.includes(rPhone))) return true;
+      }
+      // 2. Medical Registration number match
+      if (cleanReg && r.registrationNo) {
+        const rReg = r.registrationNo.trim().toLowerCase();
+        if (rReg && (rReg === cleanReg || rReg.includes(cleanReg))) return true;
+      }
+      // 3. Normalized Name match
+      if (rawName.length >= 3 && r.name) {
+        const rName = r.name.toLowerCase().replace(/^(dr\.?|doctor)\s+/i, '').replace(/[^\w\s]/g, '').trim();
+        if (rName === rawName || (rawName.length >= 4 && (rName.includes(rawName) || rawName.includes(rName)))) return true;
+      }
+      return false;
+    });
+  }, [newDoctorName, newDoctorPhone, newDoctorRegNo, referrers]);
+
   // Searchable Doctor Selector state & references
   const [doctorSearchQuery, setDoctorSearchQuery] = useState('');
   const [isDoctorDropdownOpen, setIsDoctorDropdownOpen] = useState(false);
@@ -791,6 +819,33 @@ export const ReceptionPortal: React.FC = () => {
       showToast('Please enter the doctor\'s full name.');
       return;
     }
+
+    if (matchedExistingDoctors.length > 0) {
+      const match = matchedExistingDoctors[0];
+      const chooseExisting = window.confirm(
+        `Doctor "${match.name}" already exists in the master roster (${match.specialty || 'Consultant'}${match.hospital ? ` at ${match.hospital}` : ''})!\n\n` +
+        `• Click "OK" to SELECT this existing doctor (Recommended to avoid duplicate records).\n` +
+        `• Click "Cancel" if this is a different doctor and you wish to submit a separate new registration.`
+      );
+      if (chooseExisting) {
+        setSelectedDoctorId(match.id);
+        if (!isBeneficiaryDifferent) setSelectedBeneficiaryId(match.id);
+        setIsAddingNewDoctor(false);
+        setIsStandaloneDoctorModalOpen(false);
+        setNewDoctorName('');
+        setNewDoctorQualification('');
+        setNewDoctorSpecialty('');
+        setNewDoctorHospital('');
+        setNewDoctorRegNo('');
+        setNewDoctorPhone('');
+        setNewDoctorEmail('');
+        setNewDoctorOrganizationName('');
+        setNewDoctorNotes('');
+        showToast(`Linked to existing doctor: ${match.name} (${match.id})`);
+        return;
+      }
+    }
+
     const createdId = addReferringDoctor({
       name: newDoctorName.trim(),
       qualification: newDoctorQualification.trim(),
@@ -3900,6 +3955,60 @@ export const ReceptionPortal: React.FC = () => {
                   />
                 </div>
               </div>
+
+              {/* Duplicate Doctor Alert & 1-Click Select Option */}
+              {matchedExistingDoctors.length > 0 && (
+                <div className="p-3 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-700/80 rounded-2xl space-y-2.5 animate-fade-in">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-amber-900 dark:text-amber-200 flex items-center gap-1.5">
+                      <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                      Doctor Already Available in Roster ({matchedExistingDoctors.length} Match)
+                    </span>
+                    <span className="text-[10px] text-amber-700 dark:text-amber-300 font-semibold">Avoid duplicate entries</span>
+                  </div>
+                  <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+                    {matchedExistingDoctors.map(matchedDoc => (
+                      <div key={matchedDoc.id} className="p-2.5 bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800 rounded-xl flex items-center justify-between gap-3 shadow-2xs">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-extrabold text-slate-900 dark:text-white text-xs truncate">{matchedDoc.name}</span>
+                            <span className={`px-1.5 py-0.2 rounded text-[9px] font-extrabold ${matchedDoc.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                              {matchedDoc.status}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                            {matchedDoc.specialty || 'Consultant'} {matchedDoc.hospital ? `• ${matchedDoc.hospital}` : ''} {matchedDoc.registrationNo ? `• Reg: ${matchedDoc.registrationNo}` : ''}
+                          </p>
+                          {matchedDoc.phone && <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono">Phone: {matchedDoc.phone}</p>}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedDoctorId(matchedDoc.id);
+                            if (!isBeneficiaryDifferent) setSelectedBeneficiaryId(matchedDoc.id);
+                            setIsAddingNewDoctor(false);
+                            setIsStandaloneDoctorModalOpen(false);
+                            setNewDoctorName('');
+                            setNewDoctorQualification('');
+                            setNewDoctorSpecialty('');
+                            setNewDoctorHospital('');
+                            setNewDoctorRegNo('');
+                            setNewDoctorPhone('');
+                            setNewDoctorEmail('');
+                            setNewDoctorOrganizationName('');
+                            setNewDoctorNotes('');
+                            showToast(`Selected existing doctor from roster: ${matchedDoc.name} (${matchedDoc.id})`);
+                          }}
+                          className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer shrink-0 flex items-center gap-1"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Select This Doctor
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>

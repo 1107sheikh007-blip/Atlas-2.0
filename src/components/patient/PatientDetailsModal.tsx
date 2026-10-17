@@ -267,6 +267,33 @@ export const PatientDetailsModal: React.FC<PatientDetailsModalProps> = ({
                   {patient.address || 'Address not provided'}
                 </span>
               </div>
+              <div className="sm:col-span-2 md:col-span-3 pt-2 mt-1 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 bg-sky-50/50 dark:bg-sky-950/20 p-2.5 rounded-xl border border-sky-100 dark:border-sky-900/40">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">Default Referring Doctor (Future Orders):</span>
+                    <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
+                      <Stethoscope className="w-3.5 h-3.5 text-sky-600" />
+                      {patient.referringDoctorName || 'Direct / Walk-in'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">Default Commission Beneficiary:</span>
+                    <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1">
+                      <HeartHandshake className="w-3.5 h-3.5 text-emerald-600" />
+                      {patient.commissionBeneficiaryName || patient.referringDoctorName || 'Direct Center / None'}
+                    </span>
+                  </div>
+                </div>
+                {canEdit && (
+                  <button
+                    type="button"
+                    onClick={() => onEdit && onEdit(patient)}
+                    className="text-xs font-bold text-sky-600 hover:text-sky-700 dark:text-sky-400 flex items-center gap-1 px-2.5 py-1 bg-white dark:bg-slate-900 rounded-lg border border-sky-200 dark:border-sky-800 shadow-2xs cursor-pointer shrink-0"
+                  >
+                    <Edit3 className="w-3 h-3" /> Edit Doctor & Beneficiary
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 

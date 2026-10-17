@@ -3095,22 +3095,41 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     let finalDoctorName = referringDoctorName || '';
 
     if (newDoctorDetails && newDoctorDetails.name.trim()) {
-      const createdId = addReferringDoctor({
-        name: newDoctorDetails.name,
-        specialty: newDoctorDetails.specialty || '',
-        qualification: newDoctorDetails.qualification || '',
-        registrationNo: newDoctorDetails.registrationNo || '',
-        hospital: newDoctorDetails.hospital || '',
-        phone: newDoctorDetails.phone || '',
-        email: newDoctorDetails.email || '',
-        commissionPct: 0,
-        affiliationType: newDoctorDetails.affiliationType || 'SELF',
-        organizationName: newDoctorDetails.organizationName || '',
-        status: 'PENDING_APPROVAL',
-        addedByRole: 'RECEPTIONIST'
+      const cleanPhone = (newDoctorDetails.phone || '').replace(/\D/g, '');
+      const cleanReg = (newDoctorDetails.registrationNo || '').trim().toLowerCase();
+      const rawName = newDoctorDetails.name.trim().toLowerCase().replace(/^(dr\.?|doctor)\s+/i, '').replace(/[^\w\s]/g, '').trim();
+
+      const existingDoc = referrers.find(r => {
+        if (cleanPhone && cleanPhone.length >= 8 && r.phone && r.phone.replace(/\D/g, '') === cleanPhone) return true;
+        if (cleanReg && r.registrationNo && r.registrationNo.trim().toLowerCase() === cleanReg) return true;
+        if (rawName.length >= 3 && r.name) {
+          const rName = r.name.toLowerCase().replace(/^(dr\.?|doctor)\s+/i, '').replace(/[^\w\s]/g, '').trim();
+          if (rName === rawName) return true;
+        }
+        return false;
       });
-      finalDoctorId = createdId;
-      finalDoctorName = newDoctorDetails.name;
+
+      if (existingDoc) {
+        finalDoctorId = existingDoc.id;
+        finalDoctorName = existingDoc.name;
+      } else {
+        const createdId = addReferringDoctor({
+          name: newDoctorDetails.name,
+          specialty: newDoctorDetails.specialty || '',
+          qualification: newDoctorDetails.qualification || '',
+          registrationNo: newDoctorDetails.registrationNo || '',
+          hospital: newDoctorDetails.hospital || '',
+          phone: newDoctorDetails.phone || '',
+          email: newDoctorDetails.email || '',
+          commissionPct: 0,
+          affiliationType: newDoctorDetails.affiliationType || 'SELF',
+          organizationName: newDoctorDetails.organizationName || '',
+          status: 'PENDING_APPROVAL',
+          addedByRole: 'RECEPTIONIST'
+        });
+        finalDoctorId = createdId;
+        finalDoctorName = newDoctorDetails.name;
+      }
     } else if (finalDoctorId) {
       const doc = referrers.find(r => r.id === finalDoctorId);
       if (doc) {
