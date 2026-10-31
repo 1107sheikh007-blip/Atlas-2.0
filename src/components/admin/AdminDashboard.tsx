@@ -4840,7 +4840,7 @@ export const AdminDashboard: React.FC = () => {
                   }`}
                 >
                   <Award className="w-3.5 h-3.5" />
-                  <span>Partner Roster & Affiliation</span>
+                  <span>Beneficiary and Affiliations</span>
                   <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
                     referralViewMode === 'PARTNER_SUMMARY' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'
                   }`}>
