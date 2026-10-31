@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Save, User, Phone, Mail, MapPin, Heart, Shield, AlertCircle, Loader2, Stethoscope, Building2, Lock, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Patient } from '../../types';
 import { useDiagnostic } from '../../context/DiagnosticContext';
-import { parsePatientNameParts } from '../../utils/dateUtils';
+import { parsePatientNameParts, normalizeAgeCalendar } from '../../utils/dateUtils';
 
 interface EditPatientModalProps {
   patient: Patient;
@@ -24,6 +24,13 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
   const [age, setAge] = useState<number | string>(patient.age !== undefined && patient.age !== null ? patient.age : '');
   const [ageMonths, setAgeMonths] = useState<number | string>(patient.ageMonths !== undefined && patient.ageMonths !== null ? patient.ageMonths : '');
   const [ageDays, setAgeDays] = useState<number | string>(patient.ageDays !== undefined && patient.ageDays !== null ? patient.ageDays : '');
+  const handleAgeBlur = () => {
+    if (age === '' && ageMonths === '' && ageDays === '') return;
+    const normalized = normalizeAgeCalendar(age, ageMonths, ageDays);
+    setAge(normalized.years);
+    setAgeMonths(normalized.months);
+    setAgeDays(normalized.days);
+  };
   const [gender, setGender] = useState<'Male' | 'Female' | 'Other'>(patient.gender || 'Male');
   const [phone, setPhone] = useState(patient.phone || '');
   const [email, setEmail] = useState(patient.email || '');
@@ -251,6 +258,7 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
                     max={130}
                     value={age}
                     onChange={e => setAge(e.target.value)}
+                    onBlur={handleAgeBlur}
                     placeholder="Years"
                     className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 pr-6"
                   />
@@ -260,9 +268,9 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
                   <input
                     type="number"
                     min={0}
-                    max={11}
                     value={ageMonths}
                     onChange={e => setAgeMonths(e.target.value)}
+                    onBlur={handleAgeBlur}
                     placeholder="Months"
                     className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 pr-6"
                   />
@@ -272,9 +280,9 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
                   <input
                     type="number"
                     min={0}
-                    max={31}
                     value={ageDays}
                     onChange={e => setAgeDays(e.target.value)}
+                    onBlur={handleAgeBlur}
                     placeholder="Days"
                     className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 pr-6"
                   />

@@ -735,3 +735,83 @@ export const parsePatientNameParts = (fullName: string): {
   const lastName = parts.slice(1).join(' ') || '';
   return { title, firstName, lastName };
 };
+
+/**
+ * Normalizes patient age components (Years, Months, Days) calendar-accurately
+ * relative to a given reference date (defaults to today).
+ * 
+ * Examples:
+ * - 22 Months -> 1 Year, 10 Months
+ * - 400 Days -> 1 Year, 1 Month, 5 Days (relative to reference date)
+ * - 62 Days relative to March 31 -> 2 Months, 3 Days
+ */
+export const normalizeAgeCalendar = (
+  yearsInput: number | string,
+  monthsInput: number | string,
+  daysInput: number | string,
+  ref: Date = new Date()
+): { years: number | ''; months: number | ''; days: number | '' } => {
+  const y = Number(yearsInput) || 0;
+  const m = Number(monthsInput) || 0;
+  const d = Number(daysInput) || 0;
+
+  if (y === 0 && m === 0 && d === 0) {
+    return {
+      years: yearsInput === 0 || yearsInput === '0' ? 0 : '',
+      months: monthsInput === 0 || monthsInput === '0' ? 0 : '',
+      days: daysInput === 0 || daysInput === '0' ? 0 : ''
+    };
+  }
+
+  const today = new Date(ref.getFullYear(), ref.getMonth(), ref.getDate());
+
+  // If days are 0, direct monthly breakdown
+  if (d === 0) {
+    const totalMonths = y * 12 + m;
+    const finalY = Math.floor(totalMonths / 12);
+    const finalM = totalMonths % 12;
+    return {
+      years: finalY > 0 ? finalY : (finalM > 0 ? '' : (yearsInput !== '' ? 0 : '')),
+      months: finalM > 0 ? finalM : '',
+      days: ''
+    };
+  }
+
+  // Helper to add/subtract months accurately
+  const addMonths = (date: Date, months: number): Date => {
+    const res = new Date(date);
+    const targetMonth = res.getMonth() + months;
+    res.setMonth(targetMonth);
+    const expectedMonth = ((targetMonth % 12) + 12) % 12;
+    if (res.getMonth() !== expectedMonth) {
+      res.setDate(0);
+    }
+    return res;
+  };
+
+  // 1. Calculate birth date backwards
+  let birthDate = addMonths(today, -(y * 12 + m));
+  birthDate.setDate(birthDate.getDate() - d);
+
+  // 2. Compute calendar elapsed time from birthDate to today
+  let diffY = today.getFullYear() - birthDate.getFullYear();
+  let diffM = today.getMonth() - birthDate.getMonth();
+  let diffD = today.getDate() - birthDate.getDate();
+
+  if (diffD < 0) {
+    diffM -= 1;
+    const daysInPrevMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    diffD += daysInPrevMonth;
+  }
+
+  if (diffM < 0) {
+    diffY -= 1;
+    diffM += 12;
+  }
+
+  return {
+    years: diffY > 0 ? diffY : '',
+    months: diffM > 0 ? diffM : '',
+    days: diffD > 0 ? diffD : ''
+  };
+};

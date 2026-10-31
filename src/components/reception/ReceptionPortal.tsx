@@ -10,7 +10,8 @@ import {
   getCurrent24HourTime,
   convert24To12HourTime,
   convert12To24HourTime,
-  parsePatientNameParts
+  parsePatientNameParts,
+  normalizeAgeCalendar
 } from '../../utils/dateUtils';
 import {
   UserPlus,
@@ -224,6 +225,13 @@ export const ReceptionPortal: React.FC = () => {
   const [newAge, setNewAge] = useState<number | ''>(initialDraft?.newAge !== undefined ? initialDraft.newAge : '');
   const [newAgeMonths, setNewAgeMonths] = useState<number | ''>(initialDraft?.newAgeMonths !== undefined ? initialDraft.newAgeMonths : '');
   const [newAgeDays, setNewAgeDays] = useState<number | ''>(initialDraft?.newAgeDays !== undefined ? initialDraft.newAgeDays : '');
+  const handleAgeBlur = () => {
+    if (newAge === '' && newAgeMonths === '' && newAgeDays === '') return;
+    const normalized = normalizeAgeCalendar(newAge, newAgeMonths, newAgeDays);
+    setNewAge(normalized.years);
+    setNewAgeMonths(normalized.months);
+    setNewAgeDays(normalized.days);
+  };
   const [newGender, setNewGender] = useState<'Male' | 'Female' | 'Other'>(initialDraft?.newGender || 'Male');
   const [newPhone, setNewPhone] = useState(initialDraft?.newPhone || '');
   const [newEmail, setNewEmail] = useState(initialDraft?.newEmail || '');
@@ -1771,6 +1779,7 @@ export const ReceptionPortal: React.FC = () => {
                             max={120}
                             value={newAge}
                             onChange={e => setNewAge(e.target.value === '' ? '' : Number(e.target.value))}
+                            onBlur={handleAgeBlur}
                             placeholder="Years"
                             className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white dark:focus:bg-slate-800 pr-7"
                           />
@@ -1780,9 +1789,9 @@ export const ReceptionPortal: React.FC = () => {
                           <input
                             type="number"
                             min={0}
-                            max={11}
                             value={newAgeMonths}
                             onChange={e => setNewAgeMonths(e.target.value === '' ? '' : Number(e.target.value))}
+                            onBlur={handleAgeBlur}
                             placeholder="Months"
                             className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white dark:focus:bg-slate-800 pr-7"
                           />
@@ -1792,9 +1801,9 @@ export const ReceptionPortal: React.FC = () => {
                           <input
                             type="number"
                             min={0}
-                            max={31}
                             value={newAgeDays}
                             onChange={e => setNewAgeDays(e.target.value === '' ? '' : Number(e.target.value))}
+                            onBlur={handleAgeBlur}
                             placeholder="Days"
                             className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white dark:focus:bg-slate-800 pr-7"
                           />
