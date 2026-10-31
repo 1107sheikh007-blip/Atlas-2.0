@@ -251,10 +251,6 @@ export const PatientDetailsModal: React.FC<PatientDetailsModalProps> = ({
                 </span>
               </div>
               <div>
-                <span className="text-slate-400 font-medium block">Email Address:</span>
-                <span className="font-medium text-slate-800 dark:text-slate-200">{patient.email || 'None on record'}</span>
-              </div>
-              <div>
                 <span className="text-slate-400 font-medium block">Blood Group:</span>
                 <span className="font-extrabold text-rose-600">{patient.bloodGroup || 'Unspecified'}</span>
               </div>
@@ -268,12 +264,6 @@ export const PatientDetailsModal: React.FC<PatientDetailsModalProps> = ({
                 <span className="text-slate-400 font-medium block">Registered Date:</span>
                 <span className="font-medium text-slate-700 dark:text-slate-300">
                   {formatSafeDate(patient.registeredAt)}
-                </span>
-              </div>
-              <div className="sm:col-span-2 md:col-span-1">
-                <span className="text-slate-400 font-medium block">Residential Address:</span>
-                <span className="font-medium text-slate-800 dark:text-slate-200">
-                  {patient.address || 'Address not provided'}
                 </span>
               </div>
               <div className="sm:col-span-2 md:col-span-3 pt-2 mt-1 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 bg-sky-50/50 dark:bg-sky-950/20 p-2.5 rounded-xl border border-sky-100 dark:border-sky-900/40">

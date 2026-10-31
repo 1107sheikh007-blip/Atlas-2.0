@@ -314,20 +314,6 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
               />
             </div>
 
-            {/* Email */}
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <Mail className="w-3.5 h-3.5 text-sky-600" /> Email Address (Optional)
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="patient@example.com"
-                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
-
             {/* Blood Group */}
             <div className="space-y-1">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
@@ -462,21 +448,6 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
                   <strong>Temporal Beneficiary Locking Rule:</strong> Modifying the referring doctor and affiliated beneficiary applies <em>only</em> to future bookings and invoices for this patient. The <strong>{patientOrdersCount} historical order(s)</strong> already registered will permanently preserve their original linked doctor and beneficiary.
                 </div>
               </div>
-            </div>
-
-
-            {/* Residential Address */}
-            <div className="sm:col-span-2 space-y-1">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-sky-600" /> Residential Address
-              </label>
-              <textarea
-                rows={2}
-                value={address}
-                onChange={e => setAddress(e.target.value)}
-                placeholder="House #, Street, Colony, City, Pin Code"
-                className="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
-              />
             </div>
           </div>
 
