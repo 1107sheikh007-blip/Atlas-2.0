@@ -1587,7 +1587,11 @@ export const AdminDashboard: React.FC = () => {
   // Matching helper to relate patient order with a doctor or organization partner
   const isOrderMatchingReferrer = useCallback((ord: DiagnosticOrder, r: ReferringDoctor) => {
     const rawDocName = (ord.referringDoctorName || '').trim();
-    const isWalkInOrder = !ord.referringDoctorId && !ord.commissionBeneficiaryId && (!rawDocName || /walk[\s-]*in|direct|^self$/i.test(rawDocName));
+    const rawBenName = (ord.commissionBeneficiaryName || '').trim();
+    // Only exclude as walk-in if NEITHER referring doctor NOR beneficiary is assigned to a real partner
+    const isWalkInOrder = !ord.referringDoctorId && !ord.commissionBeneficiaryId && 
+      (!rawDocName || /walk[\s-]*in|direct|^self$/i.test(rawDocName)) &&
+      (!rawBenName || /walk[\s-]*in|direct|^self$/i.test(rawBenName));
     if (isWalkInOrder) return false;
 
     if (ord.referringDoctorId && ord.referringDoctorId === r.id) return true;
