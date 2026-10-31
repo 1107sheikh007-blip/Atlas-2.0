@@ -1851,38 +1851,6 @@ export const ReceptionPortal: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Returning Record Autodetection Pill */}
-                  {(() => {
-                    const firstTrim = newFirstName.trim().toLowerCase();
-                    const fullTrim = newName.trim().toLowerCase();
-                    if ((firstTrim.length >= 3 || fullTrim.length >= 3) && !selectedPatientId) {
-                      const matched = allKnownPatients.find(p => {
-                        const pNameLower = (p.name || '').toLowerCase();
-                        return (
-                          (fullTrim.length >= 3 && pNameLower.includes(fullTrim)) ||
-                          (firstTrim.length >= 3 && pNameLower.includes(firstTrim))
-                        );
-                      });
-                      if (matched) {
-                        return (
-                          <div className="p-2 rounded-xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 flex items-center justify-between text-[11px] animate-fade-in">
-                            <span className="text-sky-800 dark:text-sky-300 font-semibold truncate mr-2">
-                              Record found for <strong>{matched.name}</strong> ({matched.phone || matched.id})
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => handleSelectExistingPatient(matched)}
-                              className="px-2.5 py-0.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-[10px] font-bold cursor-pointer shrink-0 transition-colors"
-                            >
-                              Autofill
-                            </button>
-                          </div>
-                        );
-                      }
-                    }
-                    return null;
-                  })()}
-
                   {/* Combined Full Name Preview Badge (Google Sheets & Invoice sync string) */}
                   <div className="px-3 py-1.5 rounded-xl bg-sky-50/70 dark:bg-sky-950/30 border border-sky-100 dark:border-sky-800/40 text-[11px] flex items-center justify-between">
                     <span className="text-slate-600 dark:text-slate-400 font-medium">
@@ -1939,14 +1907,14 @@ export const ReceptionPortal: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="sm:col-span-2">
+                    <div className="sm:col-span-3">
                       <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Gender *
                       </label>
                       <select
                         value={newGender}
                         onChange={e => setNewGender(e.target.value as any)}
-                        className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
+                        className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
                       >
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -1954,7 +1922,7 @@ export const ReceptionPortal: React.FC = () => {
                       </select>
                     </div>
 
-                    <div className="sm:col-span-4">
+                    <div className="sm:col-span-3">
                       <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
                         Mobile (WhatsApp) *
                       </label>
@@ -1965,42 +1933,6 @@ export const ReceptionPortal: React.FC = () => {
                         onChange={e => setNewPhone(e.target.value)}
                         placeholder="+91 98765 00000"
                         className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white dark:focus:bg-slate-800"
-                      />
-                      {(() => {
-                        const cleanNum = newPhone.replace(/\D/g, '');
-                        if (cleanNum.length >= 7 && !selectedPatientId) {
-                          const matched = allKnownPatients.find(p => (p.phone || '').replace(/\D/g, '').endsWith(cleanNum.slice(-10)));
-                          if (matched) {
-                            return (
-                              <div className="mt-1.5 p-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 flex items-center justify-between text-[11px] animate-fade-in">
-                                <span className="text-amber-800 dark:text-amber-300 font-semibold truncate mr-2">
-                                  Returning Patient: <strong>{matched.name}</strong>
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() => handleSelectExistingPatient(matched)}
-                                  className="px-2.5 py-0.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-[10px] font-bold cursor-pointer shrink-0 transition-colors"
-                                >
-                                  Autofill
-                                </button>
-                              </div>
-                            );
-                          }
-                        }
-                        return null;
-                      })()}
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 uppercase mb-1">
-                        ABDM / ABHA ID
-                      </label>
-                      <input
-                        type="text"
-                        value={newAbhaId}
-                        onChange={e => setNewAbhaId(e.target.value)}
-                        placeholder="91-XXXX-XXXX-XXXX"
-                        className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-white font-mono focus:outline-none focus:ring-2 focus:ring-sky-500"
                       />
                     </div>
                   </div>

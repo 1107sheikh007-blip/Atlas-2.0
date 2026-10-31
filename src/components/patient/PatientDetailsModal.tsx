@@ -255,12 +255,6 @@ export const PatientDetailsModal: React.FC<PatientDetailsModalProps> = ({
                 <span className="font-extrabold text-rose-600">{patient.bloodGroup || 'Unspecified'}</span>
               </div>
               <div>
-                <span className="text-slate-400 font-medium block">ABDM / ABHA ID:</span>
-                <span className="font-mono font-semibold text-slate-700 dark:text-slate-300">
-                  {patient.abhaId || 'Not linked'}
-                </span>
-              </div>
-              <div>
                 <span className="text-slate-400 font-medium block">Registered Date:</span>
                 <span className="font-medium text-slate-700 dark:text-slate-300">
                   {formatSafeDate(patient.registeredAt)}
