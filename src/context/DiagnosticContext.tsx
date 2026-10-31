@@ -2413,8 +2413,9 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const normalizeDocNameKey = (name?: string) =>
     String(name || '')
       .toLowerCase()
-      .replace(/^(dr\.?|mr\.?|mrs\.?|ms\.?)\s+/i, '')
+      .replace(/^(dr\.?|doctor|mr\.?|mrs\.?|ms\.?)\s*/i, '')
       .replace(/[^a-z0-9]/g, '')
+      .replace(/sh/g, 's')
       .trim();
 
   const approvedReferrers = useMemo(() => {

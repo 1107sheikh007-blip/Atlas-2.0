@@ -1578,8 +1578,9 @@ export const AdminDashboard: React.FC = () => {
     if (!str) return '';
     return str
       .toLowerCase()
-      .replace(/^(dr\.?|mr\.?|mrs\.?|ms\.?|prof\.?|pt\.?)\s+/i, '')
+      .replace(/^(dr\.?|doctor|mr\.?|mrs\.?|ms\.?|prof\.?|pt\.?)\s*/i, '')
       .replace(/[^a-z0-9]/g, '')
+      .replace(/sh/g, 's')
       .trim();
   }, []);
 
