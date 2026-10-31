@@ -469,10 +469,14 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map((t: DiagnosticTestItem) => ({
-            ...t,
-            subDepartment: t.subDepartment || resolveTestSubDepartment(t)
-          }));
+          return parsed.map((t: DiagnosticTestItem) => {
+            const rawSub = String(t.subDepartment || '').trim();
+            const isDateString = rawSub.includes('GMT') || rawSub.includes(':') || rawSub.includes('2026') || rawSub.includes('Standard Time');
+            return {
+              ...t,
+              subDepartment: (!rawSub || isDateString) ? resolveTestSubDepartment(t) : rawSub
+            };
+          });
         }
       }
       return INITIAL_TESTS;
@@ -507,10 +511,14 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           })();
           const sanitized = res.tests
             .filter(t => !liveDelTests.has(String(t.id || '').trim().toLowerCase()) && !liveDelTests.has(String(t.code || '').trim().toLowerCase()) && !liveDelTests.has(String(t.name || '').trim().toLowerCase()))
-            .map(t => ({
-              ...t,
-              subDepartment: t.subDepartment || resolveTestSubDepartment(t)
-            }));
+            .map(t => {
+              const rawSub = String(t.subDepartment || '').trim();
+              const isDateString = rawSub.includes('GMT') || rawSub.includes(':') || rawSub.includes('2026') || rawSub.includes('Standard Time');
+              return {
+                ...t,
+                subDepartment: (!rawSub || isDateString) ? resolveTestSubDepartment(t) : rawSub
+              };
+            });
           setTests(sanitized);
         }
       } catch {
