@@ -2452,10 +2452,8 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
         // Clean specialty if corrupted by Google Sheet cell shift with PENDING_APPROVAL
         let cleanSpec = r.specialty;
-        if (!cleanSpec || cleanSpec === 'PENDING_APPROVAL' || cleanSpec === 'APPROVED' || cleanSpec === '0') {
-          cleanSpec = (r.affiliationType === 'ORGANIZATION' || r.hospital?.toLowerCase().includes('hospital'))
-            ? 'Multi-Specialty Center'
-            : 'Consultant Physician';
+        if (cleanSpec === 'PENDING_APPROVAL' || cleanSpec === 'APPROVED' || cleanSpec === '0') {
+          cleanSpec = '';
         }
 
         const calculatedCount = liveStats ? liveStats.count : r.totalReferralsCount;
@@ -2482,16 +2480,43 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       approvedReferrers.map(r => normalizeDocNameKey(r.name)).filter(Boolean)
     );
     const seenPending = new Set<string>();
-    return referrers.filter(r => {
-      if (r.status !== 'PENDING_APPROVAL') return false;
-      const key = normalizeDocNameKey(r.name);
-      // Never show a doctor in Pending Approval if a doctor with the same name is already Approved!
-      if (key && approvedNameKeys.has(key)) return false;
-      const dedupKey = key || r.id;
-      if (seenPending.has(dedupKey)) return false;
-      seenPending.add(dedupKey);
-      return true;
-    });
+    return referrers
+      .filter(r => {
+        if (r.status !== 'PENDING_APPROVAL') return false;
+        const key = normalizeDocNameKey(r.name);
+        // Never show a doctor in Pending Approval if a doctor with the same name is already Approved!
+        if (key && approvedNameKeys.has(key)) return false;
+        const dedupKey = key || r.id;
+        if (seenPending.has(dedupKey)) return false;
+        seenPending.add(dedupKey);
+        return true;
+      })
+      .map(r => {
+        // Sanitize any cell-shifted or madeup values from Google Sheets
+        let cleanSpec = r.specialty;
+        if (cleanSpec === 'PENDING_APPROVAL' || cleanSpec === 'APPROVED' || cleanSpec === '0') {
+          cleanSpec = '';
+        }
+        let cleanQual = r.qualification;
+        if (cleanQual === 'PENDING_APPROVAL' || cleanQual === 'APPROVED' || cleanQual === '0') {
+          cleanQual = '';
+        }
+        let cleanReg = r.registrationNo;
+        if (cleanReg === 'SELF' || cleanReg === 'ORGANIZATION' || cleanReg === 'PENDING_APPROVAL') {
+          cleanReg = '';
+        }
+        let cleanPhone = r.phone;
+        if (cleanPhone === r.name || cleanPhone === 'SELF' || cleanPhone === 'ORGANIZATION' || cleanPhone === 'PENDING_APPROVAL') {
+          cleanPhone = '';
+        }
+        return {
+          ...r,
+          specialty: cleanSpec,
+          qualification: cleanQual,
+          registrationNo: cleanReg,
+          phone: cleanPhone
+        };
+      });
   }, [referrers, approvedReferrers]);
 
   const addReferringDoctor = (docData: Omit<ReferringDoctor, 'id' | 'totalReferralsCount' | 'totalRevenueGenerated' | 'totalCommissionEarned' | 'payoutPaid' | 'addedAt'>) => {

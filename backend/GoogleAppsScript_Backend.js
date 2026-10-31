@@ -1709,11 +1709,13 @@ function fetchDoctorsFromSheet(docSheet) {
     var dRow = dData[d];
     var getVal = function(name, defaultIdx, defaultVal) {
       var lower = name.toLowerCase();
+      // Strict exact column match first
       if (colMap[lower] !== undefined && dRow[colMap[lower]] !== undefined && dRow[colMap[lower]] !== "") {
         return dRow[colMap[lower]];
       }
+      // Specific exact match patterns
       for (var k in colMap) {
-        if ((k.indexOf(lower) >= 0 || lower.indexOf(k) >= 0) && dRow[colMap[k]] !== undefined && dRow[colMap[k]] !== "") {
+        if (k === lower && dRow[colMap[k]] !== undefined && dRow[colMap[k]] !== "") {
           return dRow[colMap[k]];
         }
       }
@@ -1723,7 +1725,7 @@ function fetchDoctorsFromSheet(docSheet) {
     var docName = String(getVal("Doctor Name", 1, dRow[1] || dRow[0] || "")).trim();
     if (!docName) continue;
 
-    var rawStatus = String(getVal("Status", 11, "")).trim().toUpperCase();
+    var rawStatus = String(getVal("Status", 7, "")).trim().toUpperCase();
     var finalStatus = "APPROVED";
     if (rawStatus === "PENDING_APPROVAL" || rawStatus === "PENDING") {
       finalStatus = "PENDING_APPROVAL";
@@ -1731,26 +1733,35 @@ function fetchDoctorsFromSheet(docSheet) {
       finalStatus = "REJECTED";
     }
 
-    var docId = String(getVal("Doctor ID", 0, dRow[0] || ("ref-" + d))).trim();
+    var docId = String(getVal("Doctor ID", 16, dRow[16] || ("ref-" + d))).trim();
     if (!docId) docId = "ref-" + d;
+
+    var rawPhone = String(getVal("Phone", 4, "")).trim();
+    if (rawPhone === docName || rawPhone === "SELF" || rawPhone === "ORGANIZATION" || rawPhone === "PENDING_APPROVAL") {
+      rawPhone = "";
+    }
+    var rawRegNo = String(getVal("Registration No", 14, "")).trim();
+    if (rawRegNo === "SELF" || rawRegNo === "ORGANIZATION" || rawRegNo === "PENDING_APPROVAL") {
+      rawRegNo = "";
+    }
 
     var item = {
       id: docId,
       name: docName,
-      qualification: String(getVal("Degree / Qualification", 2, getVal("Qualification", -1, ""))).trim(),
-      specialty: String(getVal("Specialty / Department", 3, "")).trim(),
-      hospital: String(getVal("Hospital / Clinic Name", 4, "")).trim(),
-      registrationNo: String(getVal("Registration No", 5, "")).trim(),
-      phone: String(getVal("Phone", 6, "")).trim(),
-      email: String(getVal("Email", 7, "")).trim(),
-      commissionPct: Number(getVal("Commission (%)", 8, 0)) || 0,
-      affiliationType: String(getVal("Affiliation Type", 9, "SELF")).trim(),
-      organizationName: String(getVal("Organization Name", 10, "")).trim(),
+      qualification: String(getVal("Degree / Qualification", 13, "")).trim(),
+      specialty: String(getVal("Specialty / Department", 2, "")).trim(),
+      hospital: String(getVal("Hospital / Clinic Name", 3, "")).trim(),
+      registrationNo: rawRegNo,
+      phone: rawPhone,
+      email: String(getVal("Email", 17, "")).trim(),
+      commissionPct: Number(getVal("Commission (%)", 15, 0)) || 0,
+      affiliationType: String(getVal("Affiliation Type", 5, "SELF")).trim(),
+      organizationName: String(getVal("Organization Name", 6, "")).trim(),
       status: finalStatus,
-      totalReferralsCount: Number(getVal("Total Referrals", 12, 0)) || 0,
-      totalRevenueGenerated: Number(getVal("Revenue Generated (₹)", 13, 0)) || 0,
-      totalCommissionEarned: Number(getVal("Commission Earned (₹)", 14, 0)) || 0,
-      payoutPaid: Number(getVal("Payout Paid (₹)", 15, 0)) || 0
+      totalReferralsCount: Number(getVal("Total Referrals", 8, 0)) || 0,
+      totalRevenueGenerated: Number(getVal("Revenue Generated (₹)", 9, 0)) || 0,
+      totalCommissionEarned: Number(getVal("Commission Earned (₹)", 10, 0)) || 0,
+      payoutPaid: Number(getVal("Payout Paid (₹)", 11, 0)) || 0
     };
 
     var normNameKey = docName.toLowerCase().replace(/^(dr\.?|mr\.?|mrs\.?|ms\.?)\s+/i, '').replace(/[^a-z0-9]/g, '').trim();

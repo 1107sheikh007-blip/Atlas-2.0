@@ -460,6 +460,7 @@ export const AdminDashboard: React.FC = () => {
   const [referralEndDate, setReferralEndDate] = useState('');
   const [referralAffiliationFilter, setReferralAffiliationFilter] = useState<'ALL' | 'SELF' | 'ORGANIZATION'>('ALL');
   const [referralSearch, setReferralSearch] = useState('');
+  const [directoryDocSearch, setDirectoryDocSearch] = useState('');
 
   // Log Hours Modal
   const [loggingHoursStaff, setLoggingHoursStaff] = useState<StaffEmployee | null>(null);
@@ -967,9 +968,9 @@ export const AdminDashboard: React.FC = () => {
     try {
       addReferringDoctor({
         name: newPartnerName.trim(),
-        specialty: newPartnerSpecialty.trim() || 'General Physician',
-        qualification: newPartnerQualification.trim() || 'MBBS',
-        hospital: newPartnerHospital.trim() || 'Clinical Practice',
+        specialty: newPartnerSpecialty.trim(),
+        qualification: newPartnerQualification.trim(),
+        hospital: newPartnerHospital.trim(),
         affiliationType: newPartnerAffiliationType,
         organizationName: newPartnerAffiliationType === 'ORGANIZATION' ? newPartnerOrgName.trim() : '',
         phone: newPartnerPhone.trim() || '',
@@ -4941,14 +4942,38 @@ export const AdminDashboard: React.FC = () => {
           {referralViewMode === 'PENDING_APPROVALS' && (
             <div className="space-y-6">
               <div className="bg-slate-50/80 border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-                  <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-amber-600" />
-                    Pending Doctor Approvals ({pendingReferrers.length})
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    Front-desk added doctors require Super Admin verification and profile review before activation.
-                  </p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200">
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-amber-600" />
+                      Pending Doctor Approvals ({pendingReferrers.length})
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      Front-desk added doctors require Super Admin verification and profile review before activation.
+                    </p>
+                  </div>
+
+                  {/* Doctor Search for Pending Approvals */}
+                  <div className="relative w-full sm:w-80">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      value={directoryDocSearch}
+                      onChange={e => setDirectoryDocSearch(e.target.value)}
+                      placeholder="Search doctor, clinic or contact..."
+                      className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-2xs"
+                    />
+                    {directoryDocSearch && (
+                      <button
+                        type="button"
+                        onClick={() => setDirectoryDocSearch('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 cursor-pointer"
+                        title="Clear search"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {pendingReferrers.length === 0 ? (
@@ -4957,7 +4982,19 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {pendingReferrers.map(doc => (
+                    {pendingReferrers
+                      .filter(doc => {
+                        if (!directoryDocSearch.trim()) return true;
+                        const q = directoryDocSearch.toLowerCase();
+                        return (
+                          (doc.name || '').toLowerCase().includes(q) ||
+                          (doc.specialty || '').toLowerCase().includes(q) ||
+                          (doc.hospital || '').toLowerCase().includes(q) ||
+                          (doc.organizationName || '').toLowerCase().includes(q) ||
+                          (doc.phone || '').includes(q)
+                        );
+                      })
+                      .map(doc => (
                       <div key={doc.id} className="p-5 bg-white border border-slate-200 rounded-2xl space-y-3.5 shadow-2xs hover:border-sky-300 transition-colors">
                         <div className="flex justify-between items-start">
                           <div>
@@ -4972,25 +5009,27 @@ export const AdminDashboard: React.FC = () => {
                                 {doc.qualification} {doc.registrationNo ? `• Reg: ${doc.registrationNo}` : ''}
                               </p>
                             )}
-                            <p className="text-xs text-sky-700 font-semibold mt-0.5">
-                              {doc.specialty} • {doc.hospital}
-                            </p>
+                            {(doc.specialty || doc.hospital) ? (
+                              <p className="text-xs text-sky-700 font-semibold mt-0.5">
+                                {[doc.specialty, doc.hospital].filter(Boolean).join(' • ')}
+                              </p>
+                            ) : null}
                           </div>
                         </div>
 
                         <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1.5 text-xs shadow-2xs">
-                          {doc.qualification && (
+                          {doc.qualification ? (
                             <div className="flex items-center justify-between">
                               <span className="text-slate-500 font-bold text-[11px]">Degree / Qualification:</span>
                               <span className="font-bold text-indigo-700">{doc.qualification}</span>
                             </div>
-                          )}
-                          {doc.registrationNo && (
+                          ) : null}
+                          {doc.registrationNo ? (
                             <div className="flex items-center justify-between">
                               <span className="text-slate-500 font-bold text-[11px]">Medical Council Reg. No:</span>
                               <span className="font-mono font-bold text-slate-800">{doc.registrationNo}</span>
                             </div>
-                          )}
+                          ) : null}
                           <div className="flex items-center justify-between">
                             <span className="text-slate-500 font-bold text-[11px]">Association:</span>
                             <span className="font-bold text-slate-800">
@@ -4999,14 +5038,18 @@ export const AdminDashboard: React.FC = () => {
                                 : 'Independent Practice'}
                             </span>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-slate-500 font-bold text-[11px]">Hospital / Clinic:</span>
-                            <span className="font-semibold text-slate-700">{doc.hospital}</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-slate-500 font-bold text-[11px]">Contact Mobile:</span>
-                            <span className="font-mono font-bold text-slate-700">{doc.phone || 'Not provided'}</span>
-                          </div>
+                          {doc.hospital ? (
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-500 font-bold text-[11px]">Hospital / Clinic:</span>
+                              <span className="font-semibold text-slate-700">{doc.hospital}</span>
+                            </div>
+                          ) : null}
+                          {doc.phone ? (
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-500 font-bold text-[11px]">Contact Mobile:</span>
+                              <span className="font-mono font-bold text-slate-700">{doc.phone}</span>
+                            </div>
+                          ) : null}
                           <div className="flex items-center justify-between pt-1.5 border-t border-slate-200">
                             <span className="text-amber-800 font-bold text-[11px]">Roster Status:</span>
                             <span className="font-bold text-amber-800 text-[11px] bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md">
@@ -5055,10 +5098,34 @@ export const AdminDashboard: React.FC = () => {
 
               {/* Approved Referring Doctors Roster */}
               <div className="bg-white border border-sky-100 rounded-3xl p-6 shadow-xs space-y-4">
-                <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                  <UserCheck className="w-4 h-4 text-emerald-600" />
-                  Approved Referring Doctors Directory ({approvedReferrers.length})
-                </h3>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                  <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                    <UserCheck className="w-4 h-4 text-emerald-600" />
+                    Approved Referring Doctors Directory ({approvedReferrers.length})
+                  </h3>
+
+                  {/* Doctor Search Input */}
+                  <div className="relative w-full sm:w-80">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      value={directoryDocSearch}
+                      onChange={e => setDirectoryDocSearch(e.target.value)}
+                      placeholder="Search doctor name, clinic, specialty..."
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-2xs"
+                    />
+                    {directoryDocSearch && (
+                      <button
+                        type="button"
+                        onClick={() => setDirectoryDocSearch('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 cursor-pointer"
+                        title="Clear search"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
@@ -5073,7 +5140,19 @@ export const AdminDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {approvedReferrers.map(doc => (
+                      {approvedReferrers
+                        .filter(doc => {
+                          if (!directoryDocSearch.trim()) return true;
+                          const q = directoryDocSearch.toLowerCase();
+                          return (
+                            (doc.name || '').toLowerCase().includes(q) ||
+                            (doc.specialty || '').toLowerCase().includes(q) ||
+                            (doc.hospital || '').toLowerCase().includes(q) ||
+                            (doc.organizationName || '').toLowerCase().includes(q) ||
+                            (doc.phone || '').includes(q)
+                          );
+                        })
+                        .map(doc => (
                         <tr key={doc.id} className="hover:bg-slate-50">
                           <td className="p-3.5">
                             <span className="font-bold text-slate-900 block">{doc.name}</span>
