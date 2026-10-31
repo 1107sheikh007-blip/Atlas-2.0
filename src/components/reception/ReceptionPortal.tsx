@@ -108,27 +108,21 @@ export const ReceptionPortal: React.FC = () => {
   // Tab State
   const [activeTab, setActiveTab] = useState<'REGISTRATION' | 'ORDERS_QUEUE' | 'APPOINTMENTS'>('REGISTRATION');
 
-  // Draft persistence storage key & loader
+  // Draft persistence storage key & loader (Cleaned: no automatic draft caching)
   const DRAFT_STORAGE_KEY = 'ATL_PATIENT_ORDER_DRAFT';
-  
-
-    const initialDraft = useMemo(() => {
+  useEffect(() => {
     try {
-      const saved = localStorage.getItem(DRAFT_STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
     } catch {}
-    return null;
   }, []);
 
+  const initialDraft = null as any;
+
   // Patient Status & Missed Appointment on Invoice
-  const [patientStatusRemark, setPatientStatusRemark] = useState<string>(() => {
-    const saved = initialDraft?.patientStatusRemark;
-    if (saved === 'Standard Walk-in / OPD') return 'Standard Walk-in';
-    return saved || 'Standard Walk-in';
-  });
-  const [customStatusRemark, setCustomStatusRemark] = useState<string>(initialDraft?.customStatusRemark || '');
-  const [hasMissedAppointment, setHasMissedAppointment] = useState<boolean>(initialDraft?.hasMissedAppointment ?? false);
-  const [missedAppointmentNotes, setMissedAppointmentNotes] = useState<string>(initialDraft?.missedAppointmentNotes || '');
+  const [patientStatusRemark, setPatientStatusRemark] = useState<string>('Standard Walk-in');
+  const [customStatusRemark, setCustomStatusRemark] = useState<string>('');
+  const [hasMissedAppointment, setHasMissedAppointment] = useState<boolean>(false);
+  const [missedAppointmentNotes, setMissedAppointmentNotes] = useState<string>('');
 
   // Appointments Tab Management
   const [aptSearch, setAptSearch] = useState('');
@@ -637,122 +631,38 @@ export const ReceptionPortal: React.FC = () => {
     }
   }, [orderBeingEdited, tests]);
 
-  // Continuous Auto-Save of Order Draft to localStorage
-  useEffect(() => {
-    if (orderBeingEdited) return; // Do not overwrite regular registration draft while editing existing order
-    const hasAnyContent = Boolean(
-      selectedPatientId ||
-      newFirstName.trim() ||
-      newName.trim() ||
-      newPhone.trim() ||
-      selectedTestIds.length > 0 ||
-      selectedDoctorId ||
-      orderNotes.trim() ||
-      discountPct > 0 ||
-      (paidAmount !== '' && Number(paidAmount) > 0)
-    );
-
-    if (hasAnyContent) {
-      const draft = {
-        patientStatusRemark,
-        customStatusRemark,
-        hasMissedAppointment,
-        missedAppointmentNotes,
-        patientSearch,
-        selectedPatientId,
-        newTitle,
-        newFirstName,
-        newLastName,
-        newName,
-        newAge,
-        newGender,
-        newPhone,
-        newEmail,
-        newAddress,
-        newAbhaId,
-        appointmentDate,
-        appointmentTime,
-        selectedTestIds,
-        selectedDoctorId,
-        isBeneficiaryDifferent,
-        selectedBeneficiaryId,
-        discountPct,
-        discountReason,
-        paymentMode,
-        paidAmount,
-        orderNotes
-      };
-      try {
-        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
-      } catch (e) {
-        console.error('Failed to auto-save patient order draft', e);
-      }
-    }
-  }, [
-    patientStatusRemark,
-    customStatusRemark,
-    hasMissedAppointment,
-    missedAppointmentNotes,
-    patientSearch,
-    selectedPatientId,
-    newTitle,
-    newFirstName,
-    newLastName,
-    newName,
-    newAge,
-    newAgeMonths,
-    newAgeDays,
-    newGender,
-    newPhone,
-    newEmail,
-    newAddress,
-    newAbhaId,
-    appointmentDate,
-    appointmentTime,
-    selectedTestIds,
-    selectedDoctorId,
-    isBeneficiaryDifferent,
-    selectedBeneficiaryId,
-    discountPct,
-    discountReason,
-    paymentMode,
-    paidAmount,
-    orderNotes
-  ]);
-
+  // Draft auto-saving completely removed per user instruction
   const handleClearDraft = () => {
-    if (window.confirm('Clear all unsaved patient information and selected tests from this draft?')) {
-      setSelectedPatientId('');
-      setPatientSearch('');
-      setNewTitle('Mr.');
-      setNewFirstName('');
-      setNewLastName('');
-      setNewName('');
-      setNewAge('');
-      setNewAgeMonths('');
-      setNewAgeDays('');
-      setNewGender('Male');
-      setNewPhone('');
-      setNewEmail('');
-      setNewAddress('');
-      setNewAbhaId('');
-      setSelectedTestIds([]);
-      setSelectedDoctorId('');
-      setIsBeneficiaryDifferent(false);
-      setSelectedBeneficiaryId('');
-      setDiscountPct(0);
-      setDiscountReason('');
-      setPaidAmount('');
-      setOrderNotes('');
-      setPatientStatusRemark('Standard Walk-in');
-      setCustomStatusRemark('');
-      setHasMissedAppointment(false);
-      setMissedAppointmentNotes('');
-      try {
-        localStorage.removeItem(DRAFT_STORAGE_KEY);
-      } catch {}
-      showToast('Patient order draft cleared.');
-    }
+    setSelectedPatientId('');
+    setPatientSearch('');
+    setNewTitle('Mr.');
+    setNewFirstName('');
+    setNewLastName('');
+    setNewName('');
+    setNewAge('');
+    setNewAgeMonths('');
+    setNewAgeDays('');
+    setNewGender('Male');
+    setNewPhone('');
+    setNewEmail('');
+    setNewAddress('');
+    setNewAbhaId('');
+    setSelectedTestIds([]);
+    setSelectedDoctorId('');
+    setIsBeneficiaryDifferent(false);
+    setSelectedBeneficiaryId('');
+    setDiscountPct(0);
+    setDiscountReason('');
+    setPaidAmount('');
+    setOrderNotes('');
+    setPatientStatusRemark('Standard Walk-in');
+    setCustomStatusRemark('');
+    setHasMissedAppointment(false);
+    setMissedAppointmentNotes('');
+    try {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+    } catch {}
+    showToast('Intake fields reset.');
   };
 
   // Edit Scheduled Appointment Modal State in Reception
@@ -1595,22 +1505,6 @@ export const ReceptionPortal: React.FC = () => {
                     1. Patient Identification & Demographics
                   </h3>
                   <div className="flex items-center gap-2">
-                    {(Boolean(newName || selectedPatientId || selectedTestIds.length > 0 || selectedDoctorId)) && (
-                      <>
-                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          Auto-saved Draft
-                        </span>
-                        <button
-                          type="button"
-                          onClick={handleClearDraft}
-                          className="text-[10px] font-bold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2 py-0.5 rounded-full transition-colors cursor-pointer"
-                          title="Reset and clear current registration draft"
-                        >
-                          Clear Draft
-                        </button>
-                      </>
-                    )}
                     <span className="text-[11px] font-semibold text-slate-400">
                       Walk-in / OPD / IPD
                     </span>
