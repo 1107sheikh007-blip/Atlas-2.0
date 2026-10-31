@@ -6413,16 +6413,27 @@ export const AdminDashboard: React.FC = () => {
                 <select
                   value={testSampleType}
                   onChange={e => setTestSampleType(e.target.value as TestSampleType)}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold"
                 >
-                  <option value="Blood (EDTA)">Blood (EDTA)</option>
-                  <option value="Blood (Serum)">Blood (Serum)</option>
-                  <option value="Urine">Urine</option>
-                  <option value="Digital Imaging">Digital Imaging</option>
-                  <option value="Ultrasound Scan">Ultrasound Scan</option>
-                  <option value="MRI Scan">MRI Scan</option>
-                  <option value="CT Scan">CT Scan</option>
-                  <option value="Swab">Swab</option>
+                  <optgroup label="Blood Specimens">
+                    <option value="Blood (EDTA)">Blood (EDTA)</option>
+                    <option value="Blood (Serum)">Blood (Serum)</option>
+                    <option value="Blood (Clot Activator)">Blood (Clot Activator)</option>
+                    <option value="Blood (Sodium Citrate)">Blood (Sodium Citrate)</option>
+                    <option value="Blood (Sodium Heparin)">Blood (Sodium Heparin)</option>
+                    <option value="Blood (Sodium Fluoride)">Blood (Sodium Fluoride)</option>
+                    <option value="Blood (SST Gel)">Blood (SST Gel)</option>
+                  </optgroup>
+                  <optgroup label="Other Laboratory Specimens">
+                    <option value="Urine">Urine</option>
+                    <option value="Swab">Swab</option>
+                  </optgroup>
+                  <optgroup label="Radiology & Imaging Scans">
+                    <option value="Digital Imaging">Digital Imaging</option>
+                    <option value="Ultrasound Scan">Ultrasound Scan</option>
+                    <option value="MRI Scan">MRI Scan</option>
+                    <option value="CT Scan">CT Scan</option>
+                  </optgroup>
                 </select>
               </div>
 

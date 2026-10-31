@@ -2,7 +2,20 @@ export type UserRole = 'SUPER_ADMIN' | 'CENTER_MANAGER' | 'RECEPTIONIST' | 'DIAG
 
 export type DiagnosticCategory = 'Radiology' | 'Pathology' | 'Cardiology' | 'Specialized';
 
-export type TestSampleType = 'Blood (EDTA)' | 'Blood (Serum)' | 'Urine' | 'Digital Imaging' | 'Ultrasound Scan' | 'MRI Scan' | 'CT Scan' | 'Swab';
+export type TestSampleType =
+  | 'Blood (EDTA)'
+  | 'Blood (Serum)'
+  | 'Blood (Clot Activator)'
+  | 'Blood (Sodium Citrate)'
+  | 'Blood (Sodium Heparin)'
+  | 'Blood (Sodium Fluoride)'
+  | 'Blood (SST Gel)'
+  | 'Urine'
+  | 'Digital Imaging'
+  | 'Ultrasound Scan'
+  | 'MRI Scan'
+  | 'CT Scan'
+  | 'Swab';
 
 export type ReferralStatus = 'APPROVED' | 'PENDING_APPROVAL' | 'REJECTED';
 
