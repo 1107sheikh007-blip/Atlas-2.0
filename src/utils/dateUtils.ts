@@ -684,8 +684,8 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
       }
       const rawM = String(ord.paymentMode || '');
       if (rawM.toLowerCase().includes('split')) {
-        const cMatch = rawM.match(/cash\s*[:\s]*([0-9]+(?:\.[0-9]+)?)/i);
-        const uMatch = rawM.match(/(?:upi|online|qr|card|bank)\s*[:\s\/]*([0-9]+(?:\.[0-9]+)?)/i);
+        const cMatch = rawM.match(/cash[^0-9]*([0-9]+(?:\.[0-9]+)?)/i);
+        const uMatch = rawM.match(/(?:upi|online|qr|card|bank)[^0-9]*([0-9]+(?:\.[0-9]+)?)/i);
         const cVal = cMatch ? parseFloat(cMatch[1]) : Math.round(numPaid / 2);
         const uVal = uMatch ? parseFloat(uMatch[1]) : (numPaid - cVal);
         return {
@@ -732,8 +732,8 @@ export const getOrderPaymentSplit = (ord: {
 
   // Case 2: String describes split e.g. "Split: Cash 500 + UPI / QR 500" or "Split: Cash 50 + UPI 2200"
   if (mode.toLowerCase().includes('split')) {
-    const cashMatch = mode.match(/cash\s*[:\s]*([0-9]+(?:\.[0-9]+)?)/i);
-    const upiMatch = mode.match(/(?:upi|online|qr|card|bank)\s*[:\s\/]*([0-9]+(?:\.[0-9]+)?)/i);
+    const cashMatch = mode.match(/cash[^0-9]*([0-9]+(?:\.[0-9]+)?)/i);
+    const upiMatch = mode.match(/(?:upi|online|qr|card|bank)[^0-9]*([0-9]+(?:\.[0-9]+)?)/i);
     const c = cashMatch ? parseFloat(cashMatch[1]) : 0;
     const u = upiMatch ? parseFloat(upiMatch[1]) : 0;
     if (c > 0 || u > 0) {
