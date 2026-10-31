@@ -519,7 +519,23 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
                 subDepartment: (!rawSub || isDateString) ? resolveTestSubDepartment(t) : rawSub
               };
             });
-          setTests(sanitized);
+          
+          setTests(prev => {
+            // Retain any newly added/local tests that are not yet returned in Google Sheets
+            const fetchedIds = new Set(sanitized.map(t => String(t.id || '').trim().toLowerCase()));
+            const fetchedCodes = new Set(sanitized.map(t => String(t.code || '').trim().toLowerCase()));
+            const fetchedNames = new Set(sanitized.map(t => String(t.name || '').trim().toLowerCase()));
+            
+            const localOnlyTests = prev.filter(t => {
+              const id = String(t.id || '').trim().toLowerCase();
+              const code = String(t.code || '').trim().toLowerCase();
+              const name = String(t.name || '').trim().toLowerCase();
+              const isDeleted = liveDelTests.has(id) || liveDelTests.has(code) || liveDelTests.has(name);
+              return !isDeleted && !fetchedIds.has(id) && (!code || !fetchedCodes.has(code)) && (!name || !fetchedNames.has(name));
+            });
+
+            return [...localOnlyTests, ...sanitized];
+          });
         }
       } catch {
         // Offline mode: gracefully falls back to local storage
@@ -4143,7 +4159,21 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           ...t,
           subDepartment: t.subDepartment || resolveTestSubDepartment(t)
         }));
-      setTests(sanitized);
+      setTests(prev => {
+        const fetchedIds = new Set(sanitized.map(t => String(t.id || '').trim().toLowerCase()));
+        const fetchedCodes = new Set(sanitized.map(t => String(t.code || '').trim().toLowerCase()));
+        const fetchedNames = new Set(sanitized.map(t => String(t.name || '').trim().toLowerCase()));
+        
+        const localOnlyTests = prev.filter(t => {
+          const id = String(t.id || '').trim().toLowerCase();
+          const code = String(t.code || '').trim().toLowerCase();
+          const name = String(t.name || '').trim().toLowerCase();
+          const isDeleted = liveDelTests.has(id) || liveDelTests.has(code) || liveDelTests.has(name);
+          return !isDeleted && !fetchedIds.has(id) && (!code || !fetchedCodes.has(code)) && (!name || !fetchedNames.has(name));
+        });
+
+        return [...localOnlyTests, ...sanitized];
+      });
       logActivity('SYNC_PERFORMED', `Reloaded ${sanitized.length} tests and live prices from Google Sheets`);
       return { success: true, message: `Successfully updated ${sanitized.length} tests with live prices from Google Sheets!` };
     }
