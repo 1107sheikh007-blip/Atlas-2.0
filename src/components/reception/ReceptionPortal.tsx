@@ -177,7 +177,7 @@ export const ReceptionPortal: React.FC = () => {
   const [selectedPatientId, setSelectedPatientId] = useState<string>(initialDraft?.selectedPatientId || '');
   
   // New Patient Form fields
-  const [newTitle, setNewTitle] = useState<'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Dr.'>(() => {
+  const [newTitle, setNewTitle] = useState<'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Baby' | 'Dr.'>(() => {
     if (initialDraft?.newTitle) return initialDraft.newTitle;
     if (initialDraft?.newName) return parsePatientNameParts(initialDraft.newName).title;
     return 'Mr.';
@@ -202,7 +202,7 @@ export const ReceptionPortal: React.FC = () => {
     return parts.join(' ').trim();
   });
 
-  const handleTitleChange = (val: 'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Dr.') => {
+  const handleTitleChange = (val: 'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Baby' | 'Dr.') => {
     setNewTitle(val);
     if (val === 'Mr.' || val === 'Mast.') {
       setNewGender('Male');
@@ -226,6 +226,8 @@ export const ReceptionPortal: React.FC = () => {
   };
 
   const [newAge, setNewAge] = useState<number | ''>(initialDraft?.newAge !== undefined ? initialDraft.newAge : '');
+  const [newAgeMonths, setNewAgeMonths] = useState<number | ''>(initialDraft?.newAgeMonths !== undefined ? initialDraft.newAgeMonths : '');
+  const [newAgeDays, setNewAgeDays] = useState<number | ''>(initialDraft?.newAgeDays !== undefined ? initialDraft.newAgeDays : '');
   const [newGender, setNewGender] = useState<'Male' | 'Female' | 'Other'>(initialDraft?.newGender || 'Male');
   const [newPhone, setNewPhone] = useState(initialDraft?.newPhone || '');
   const [newEmail, setNewEmail] = useState(initialDraft?.newEmail || '');
@@ -543,6 +545,8 @@ export const ReceptionPortal: React.FC = () => {
       const combined = [titleVal, firstVal, lastVal].filter(Boolean).join(' ').trim() || (orderBeingEdited.patient?.name || '');
       setNewName(combined);
       setNewAge(orderBeingEdited.patient?.age !== undefined ? orderBeingEdited.patient.age : '');
+      setNewAgeMonths(orderBeingEdited.patient?.ageMonths !== undefined ? orderBeingEdited.patient.ageMonths : '');
+      setNewAgeDays(orderBeingEdited.patient?.ageDays !== undefined ? orderBeingEdited.patient.ageDays : '');
       setNewGender(orderBeingEdited.patient?.gender || 'Male');
       setNewPhone(orderBeingEdited.patient?.phone || '');
       setNewEmail(orderBeingEdited.patient?.email || '');
@@ -693,6 +697,8 @@ export const ReceptionPortal: React.FC = () => {
     newLastName,
     newName,
     newAge,
+    newAgeMonths,
+    newAgeDays,
     newGender,
     newPhone,
     newEmail,
@@ -720,6 +726,8 @@ export const ReceptionPortal: React.FC = () => {
       setNewLastName('');
       setNewName('');
       setNewAge('');
+      setNewAgeMonths('');
+      setNewAgeDays('');
       setNewGender('Male');
       setNewPhone('');
       setNewEmail('');
@@ -809,7 +817,7 @@ export const ReceptionPortal: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [queueSearch, setQueueSearch] = useState('');
   const [queueStatusFilter, setQueueStatusFilter] = useState<string>('ALL');
-  const [queueDateRange, setQueueDateRange] = useState<DatePresetType>('ALL');
+  const [queueDateRange, setQueueDateRange] = useState<DatePresetType>('TODAY');
   const [queueStartDate, setQueueStartDate] = useState<string>('');
   const [queueEndDate, setQueueEndDate] = useState<string>('');
 
@@ -932,7 +940,9 @@ export const ReceptionPortal: React.FC = () => {
     setNewLastName(lastVal);
     const fullCombined = [titleVal, firstVal, lastVal].filter(Boolean).join(' ').trim() || p.name;
     setNewName(fullCombined);
-    setNewAge(p.age);
+    setNewAge(p.age !== undefined && p.age !== null ? p.age : '');
+    setNewAgeMonths(p.ageMonths !== undefined && p.ageMonths !== null ? p.ageMonths : '');
+    setNewAgeDays(p.ageDays !== undefined && p.ageDays !== null ? p.ageDays : '');
     setNewGender(p.gender);
     setNewPhone(p.phone);
     setNewEmail(p.email || '');
@@ -1106,8 +1116,8 @@ export const ReceptionPortal: React.FC = () => {
     try {
       const combinedFullName = [newTitle, newFirstName.trim(), newLastName.trim()].filter(Boolean).join(' ').trim() || newName.trim();
 
-      if (!selectedPatientId && (!newFirstName.trim() || !newPhone.trim() || newAge === '')) {
-        showToast('Please provide patient first name, age, and phone number.');
+      if (!selectedPatientId && (!newFirstName.trim() || !newPhone.trim() || (newAge === '' && newAgeMonths === '' && newAgeDays === ''))) {
+        showToast('Please provide patient first name, age (years, months, or days), and phone number.');
         return;
       }
 
@@ -1126,7 +1136,10 @@ export const ReceptionPortal: React.FC = () => {
           title: newTitle,
           firstName: newFirstName.trim(),
           lastName: newLastName.trim(),
-          age: Number(newAge),
+          age: Number(newAge) || 0,
+          ageMonths: Number(newAgeMonths) || 0,
+          ageDays: Number(newAgeDays) || 0,
+          ageDisplay: [Number(newAge) > 0 ? `${Number(newAge)}Y` : '', Number(newAgeMonths) > 0 ? `${Number(newAgeMonths)}M` : '', Number(newAgeDays) > 0 ? `${Number(newAgeDays)}D` : ''].filter(Boolean).join(' ') || `${Number(newAge) || 0}Y`,
           gender: newGender,
           phone: newPhone.trim(),
           email: newEmail.trim() || '',
@@ -1151,7 +1164,14 @@ export const ReceptionPortal: React.FC = () => {
           title: newTitle,
           firstName: newFirstName.trim() || orderBeingEdited.patient.firstName,
           lastName: newLastName.trim() || orderBeingEdited.patient.lastName,
-          age: (newAge !== '' ? Number(newAge) : orderBeingEdited.patient.age) || 30,
+          age: (newAge !== '' ? Number(newAge) : (orderBeingEdited.patient?.age || 0)) || 0,
+          ageMonths: (newAgeMonths !== '' ? Number(newAgeMonths) : (orderBeingEdited.patient?.ageMonths || 0)) || 0,
+          ageDays: (newAgeDays !== '' ? Number(newAgeDays) : (orderBeingEdited.patient?.ageDays || 0)) || 0,
+          ageDisplay: [
+            (newAge !== '' ? Number(newAge) : (orderBeingEdited.patient?.age || 0)) > 0 ? `${(newAge !== '' ? Number(newAge) : (orderBeingEdited.patient?.age || 0))}Y` : '',
+            (newAgeMonths !== '' ? Number(newAgeMonths) : (orderBeingEdited.patient?.ageMonths || 0)) > 0 ? `${(newAgeMonths !== '' ? Number(newAgeMonths) : (orderBeingEdited.patient?.ageMonths || 0))}M` : '',
+            (newAgeDays !== '' ? Number(newAgeDays) : (orderBeingEdited.patient?.ageDays || 0)) > 0 ? `${(newAgeDays !== '' ? Number(newAgeDays) : (orderBeingEdited.patient?.ageDays || 0))}D` : ''
+          ].filter(Boolean).join(' ') || `${(newAge !== '' ? Number(newAge) : (orderBeingEdited.patient?.age || 0)) || 0}Y`,
           gender: newGender || orderBeingEdited.patient.gender || 'Male',
           phone: newPhone.trim() || orderBeingEdited.patient.phone || '',
           email: newEmail.trim() || orderBeingEdited.patient.email || '',
@@ -1210,6 +1230,8 @@ export const ReceptionPortal: React.FC = () => {
         setNewLastName('');
         setNewName('');
         setNewAge('');
+        setNewAgeMonths('');
+        setNewAgeDays('');
         setNewPhone('');
         setNewEmail('');
         setNewAddress('');
@@ -1277,6 +1299,8 @@ export const ReceptionPortal: React.FC = () => {
       setNewLastName('');
       setNewName('');
       setNewAge('');
+      setNewAgeMonths('');
+      setNewAgeDays('');
       setNewPhone('');
       setNewEmail('');
       setNewAddress('');
@@ -1785,6 +1809,7 @@ export const ReceptionPortal: React.FC = () => {
                         <option value="Mrs.">Mrs.</option>
                         <option value="Ms.">Ms.</option>
                         <option value="Mast.">Mast.</option>
+                        <option value="Baby">Baby</option>
                         <option value="Dr.">Dr.</option>
                       </select>
                     </div>
@@ -2000,14 +2025,7 @@ export const ReceptionPortal: React.FC = () => {
                     <Send className="w-4 h-4 text-cyan-600" />
                     2. Referring Doctor / Partner Organization
                   </h3>
-                  <button
-                    type="button"
-                    onClick={() => setIsStandaloneDoctorModalOpen(true)}
-                    className="text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-3 py-1.5 rounded-xl border border-sky-200 flex items-center gap-1 cursor-pointer transition-all"
-                  >
-                    <UserPlus className="w-3.5 h-3.5 text-sky-600" />
-                    + Register Doctor to Roster
-                  </button>
+
                 </div>
 
                 <div ref={doctorDropdownRef} className="relative">
@@ -2240,17 +2258,9 @@ export const ReceptionPortal: React.FC = () => {
                               <p className="text-xs text-slate-500">
                                 No doctors found matching "{doctorSearchQuery}"
                               </p>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setNewDoctorName(doctorSearchQuery);
-                                  setIsStandaloneDoctorModalOpen(true);
-                                  setIsDoctorDropdownOpen(false);
-                                }}
-                                className="mt-2 text-xs font-bold text-sky-600 hover:text-sky-700 hover:underline cursor-pointer"
-                              >
-                                + Register "{doctorSearchQuery}" to Roster
-                              </button>
+                              <p className="mt-2 text-[11px] text-slate-400">
+                                Contact Super Admin / Manager to add doctors to the roster.
+                              </p>
                             </div>
                           )}
                         </div>

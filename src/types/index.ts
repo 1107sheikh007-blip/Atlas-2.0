@@ -52,7 +52,7 @@ export interface ReferringDoctor {
   email: string;
   commissionPct: number; // e.g. 15%
   status: ReferralStatus;
-  addedByRole: 'RECEPTIONIST' | 'SUPER_ADMIN';
+  addedByRole: 'RECEPTIONIST' | 'SUPER_ADMIN' | 'CENTER_MANAGER';
   addedAt: string;
   approvedAt?: string;
   totalReferralsCount: number;
@@ -123,10 +123,13 @@ export interface DiagnosticTestItem {
 export interface Patient {
   id: string; // UHID e.g. ATL-P-10024
   name: string;
-  title?: 'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Dr.' | string;
+  title?: 'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Baby' | 'Dr.' | string;
   firstName?: string;
   lastName?: string;
   age: number;
+  ageMonths?: number;
+  ageDays?: number;
+  ageDisplay?: string;
   gender: 'Male' | 'Female' | 'Other';
   phone: string;
   email?: string;

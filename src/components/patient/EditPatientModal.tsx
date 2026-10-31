@@ -16,12 +16,14 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
   onSave
 }) => {
   const initialParsed = parsePatientNameParts(patient.name || '');
-  const [title, setTitle] = useState<'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Dr.'>(
+  const [title, setTitle] = useState<'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Baby' | 'Dr.'>(
     (patient.title as any) || initialParsed.title || (patient.gender === 'Female' ? 'Mrs.' : 'Mr.')
   );
   const [firstName, setFirstName] = useState(patient.firstName || initialParsed.firstName || '');
   const [lastName, setLastName] = useState(patient.lastName || initialParsed.lastName || '');
-  const [age, setAge] = useState<number | string>(patient.age || '');
+  const [age, setAge] = useState<number | string>(patient.age !== undefined && patient.age !== null ? patient.age : '');
+  const [ageMonths, setAgeMonths] = useState<number | string>(patient.ageMonths !== undefined && patient.ageMonths !== null ? patient.ageMonths : '');
+  const [ageDays, setAgeDays] = useState<number | string>(patient.ageDays !== undefined && patient.ageDays !== null ? patient.ageDays : '');
   const [gender, setGender] = useState<'Male' | 'Female' | 'Other'>(patient.gender || 'Male');
   const [phone, setPhone] = useState(patient.phone || '');
   const [email, setEmail] = useState(patient.email || '');
@@ -71,15 +73,17 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
     const trimmedLast = lastName.trim();
     const combinedName = [title, trimmedFirst, trimmedLast].filter(Boolean).join(' ').trim();
     const trimmedPhone = phone.trim();
-    const numAge = Number(age);
+    const numAge = Number(age) || 0;
+    const numMonths = Number(ageMonths) || 0;
+    const numDays = Number(ageDays) || 0;
 
     if (!trimmedFirst) {
       setError('Patient First Name is required.');
       return;
     }
 
-    if (isNaN(numAge) || numAge <= 0 || numAge > 130) {
-      setError('Please provide a valid age between 1 and 130 years.');
+    if (numAge < 0 || numAge > 130 || (numAge === 0 && numMonths === 0 && numDays === 0)) {
+      setError('Please provide a valid age in years, months, or days.');
       return;
     }
 
@@ -108,6 +112,9 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
         firstName: trimmedFirst,
         lastName: trimmedLast,
         age: numAge,
+        ageMonths: numMonths,
+        ageDays: numDays,
+        ageDisplay: [numAge > 0 ? `${numAge}Y` : '', numMonths > 0 ? `${numMonths}M` : '', numDays > 0 ? `${numDays}D` : ''].filter(Boolean).join(' ') || `${numAge}Y`,
         gender,
         phone: trimmedPhone,
         email: email.trim(),
@@ -186,6 +193,7 @@ export const EditPatientModal: React.FC<EditPatientModalProps> = ({
                   <option value="Mrs.">Mrs.</option>
                   <option value="Ms.">Ms.</option>
                   <option value="Mast.">Mast.</option>
+                  <option value="Baby">Baby</option>
                   <option value="Dr.">Dr.</option>
                 </select>
               </div>

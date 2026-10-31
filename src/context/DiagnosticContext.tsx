@@ -1342,17 +1342,19 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
               const dirtyEntry =
                 dirtyOrderUpdatesRef.current.get(soId) ||
                 dirtyOrderUpdatesRef.current.get(soInv);
-              const isRecentlyEdited = !!dirtyEntry && (Date.now() - dirtyEntry.timestamp < 15000);
+              const isRecentlyEdited = !!dirtyEntry && (Date.now() - dirtyEntry.timestamp < 180000);
               sheetMap.set(so.id, isRecentlyEdited ? { ...so, ...dirtyEntry.order } : { ...so, syncedToGoogleSheets: true });
             });
 
-            // Keep only un-synced dirty orders that were created in this exact browser within last 15s
+            // Preserve local orders that are dirty, un-synced, or pending sheet write
             prev.forEach(po => {
               const poId = String(po.id || '').trim().toLowerCase();
               const poInv = String(po.invoiceNumber || '').trim().toLowerCase();
               const dirtyEntry = dirtyOrderUpdatesRef.current.get(poId) || dirtyOrderUpdatesRef.current.get(poInv);
-              if (dirtyEntry && (Date.now() - dirtyEntry.timestamp < 15000) && !sheetMap.has(po.id)) {
+              if (dirtyEntry && (Date.now() - dirtyEntry.timestamp < 180000)) {
                 sheetMap.set(po.id, dirtyEntry.order);
+              } else if (po.syncedToGoogleSheets === false && !sheetMap.has(po.id)) {
+                sheetMap.set(po.id, po);
               }
             });
 
@@ -3993,8 +3995,16 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       id: `t-${Date.now().toString().slice(-4)}`,
       subDepartment: testData.subDepartment || resolveTestSubDepartment(testData)
     };
-    setTests(prev => [newT, ...prev]);
+    setTests(prev => {
+      const next = [newT, ...prev];
+      try {
+        localStorage.setItem(`${STORAGE_PREFIX}TESTS`, JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+    // Immediately attempt individual test price update and trigger background full catalog sync
     updateTestPriceInGoogleSheets(newT).catch(console.warn);
+    syncFullTestCatalogToGoogleSheets([newT, ...tests]).catch(console.warn);
     logActivity('TEST_ADDED', `Added new diagnostic test to catalog: ${newT.name} (₹${newT.price})`, { testId: newT.id });
   };
 

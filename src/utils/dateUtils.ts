@@ -682,17 +682,43 @@ export const sanitizeOrdersCollection = (rawOrders: any[], existingPatients: Pat
 };
 
 /**
+ * Formats a patient's age in Years, Months, and Days
+ */
+export const formatPatientAgeDisplay = (
+  patient?: Partial<Patient> | { age?: number | string; ageMonths?: number; ageDays?: number; ageDisplay?: string } | null
+): string => {
+  if (!patient) return '';
+  if (patient.ageDisplay && typeof patient.ageDisplay === 'string' && patient.ageDisplay.trim()) {
+    return patient.ageDisplay.trim();
+  }
+  const y = typeof patient.age === 'number' ? patient.age : parseInt(String(patient.age || '0'), 10) || 0;
+  const m = typeof patient.ageMonths === 'number' ? patient.ageMonths : parseInt(String(patient.ageMonths || '0'), 10) || 0;
+  const d = typeof patient.ageDays === 'number' ? patient.ageDays : parseInt(String(patient.ageDays || '0'), 10) || 0;
+
+  const parts: string[] = [];
+  if (y > 0) parts.push(`${y}Y`);
+  if (m > 0) parts.push(`${m}M`);
+  if (d > 0) parts.push(`${d}D`);
+
+  if (parts.length > 0) return parts.join(' ');
+  if (y === 0 && (m > 0 || d > 0)) {
+    return [m > 0 ? `${m}M` : '', d > 0 ? `${d}D` : ''].filter(Boolean).join(' ');
+  }
+  return y > 0 ? `${y}Y` : '0Y';
+};
+
+/**
  * Parses full human name into title ('Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Dr.'), firstName, and lastName
  */
 export const parsePatientNameParts = (fullName: string): {
-  title: 'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Dr.';
+  title: 'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Baby' | 'Dr.';
   firstName: string;
   lastName: string;
 } => {
   if (!fullName) return { title: 'Mr.', firstName: '', lastName: '' };
   const raw = fullName.trim();
-  const match = raw.match(/^(Dr\.|Mr\.|Mrs\.|Ms\.|Mast\.|Dr|Mr|Mrs|Ms|Mast)\s+(.*)$/i);
-  let title: 'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Dr.' = 'Mr.';
+  const match = raw.match(/^(Dr\.|Mr\.|Mrs\.|Ms\.|Mast\.|Baby\.?|Dr|Mr|Mrs|Ms|Mast|Baby)\s+(.*)$/i);
+  let title: 'Mr.' | 'Mrs.' | 'Ms.' | 'Mast.' | 'Baby' | 'Dr.' = 'Mr.';
   let remainder = raw;
   if (match) {
     const rawTitle = match[1].toLowerCase().replace(/\./g, '');
@@ -700,6 +726,7 @@ export const parsePatientNameParts = (fullName: string): {
     else if (rawTitle === 'mrs') title = 'Mrs.';
     else if (rawTitle === 'ms') title = 'Ms.';
     else if (rawTitle === 'mast') title = 'Mast.';
+    else if (rawTitle === 'baby') title = 'Baby';
     else title = 'Mr.';
     remainder = match[2].trim();
   }

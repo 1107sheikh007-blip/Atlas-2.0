@@ -70,7 +70,8 @@ import {
   Printer,
   Download,
   Loader2,
-  RefreshCw
+  RefreshCw,
+  UserPlus
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -177,6 +178,7 @@ export const AdminDashboard: React.FC = () => {
     updateDoctorCommission,
     recordDoctorPayout,
     sendWelcomeDoctorWhatsApp,
+    addReferringDoctor,
     staff,
     addStaff,
     updateStaffHours,
@@ -345,6 +347,17 @@ export const AdminDashboard: React.FC = () => {
 
   // Approving & Editing Doctor State Modal & Editable Fields (Super Admin)
   const [approvingDoctor, setApprovingDoctor] = useState<ReferringDoctor | null>(null);
+  const [isRegisterPartnerModalOpen, setIsRegisterPartnerModalOpen] = useState(false);
+  const [newPartnerName, setNewPartnerName] = useState('');
+  const [newPartnerSpecialty, setNewPartnerSpecialty] = useState('');
+  const [newPartnerQualification, setNewPartnerQualification] = useState('');
+  const [newPartnerHospital, setNewPartnerHospital] = useState('');
+  const [newPartnerAffiliationType, setNewPartnerAffiliationType] = useState<'SELF' | 'ORGANIZATION'>('SELF');
+  const [newPartnerOrgName, setNewPartnerOrgName] = useState('');
+  const [newPartnerPhone, setNewPartnerPhone] = useState('');
+  const [newPartnerEmail, setNewPartnerEmail] = useState('');
+  const [newPartnerRegNo, setNewPartnerRegNo] = useState('');
+  const [newPartnerNotes, setNewPartnerNotes] = useState('');
   const [editingApprovedDoctor, setEditingApprovedDoctor] = useState<ReferringDoctor | null>(null);
   const [editApproveName, setEditApproveName] = useState('');
   const [editApproveSpecialty, setEditApproveSpecialty] = useState('');
@@ -939,6 +952,45 @@ export const AdminDashboard: React.FC = () => {
     setEditApproveEmail(doc.email || '');
     setEditApproveRegNo(doc.registrationNo || '');
     setEditApproveNotes(doc.notes || '');
+  };
+
+  const handleRegisterNewPartner = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPartnerName.trim()) {
+      showToast('Doctor / Partner name is mandatory.');
+      return;
+    }
+    try {
+      addReferringDoctor({
+        name: newPartnerName.trim(),
+        specialty: newPartnerSpecialty.trim() || 'General Physician',
+        qualification: newPartnerQualification.trim() || 'MBBS',
+        hospital: newPartnerHospital.trim() || 'Clinical Practice',
+        affiliationType: newPartnerAffiliationType,
+        organizationName: newPartnerAffiliationType === 'ORGANIZATION' ? newPartnerOrgName.trim() : '',
+        phone: newPartnerPhone.trim() || '',
+        email: newPartnerEmail.trim() || '',
+        registrationNo: newPartnerRegNo.trim() || undefined,
+        notes: newPartnerNotes.trim() || undefined,
+        commissionPct: 0,
+        addedByRole: isSuperAdmin ? 'SUPER_ADMIN' : 'CENTER_MANAGER',
+        status: 'APPROVED'
+      });
+      showToast(`Doctor ${newPartnerName.trim()} registered and activated in roster successfully!`);
+      setIsRegisterPartnerModalOpen(false);
+      setNewPartnerName('');
+      setNewPartnerSpecialty('');
+      setNewPartnerQualification('');
+      setNewPartnerHospital('');
+      setNewPartnerAffiliationType('SELF');
+      setNewPartnerOrgName('');
+      setNewPartnerPhone('');
+      setNewPartnerEmail('');
+      setNewPartnerRegNo('');
+      setNewPartnerNotes('');
+    } catch (err: any) {
+      showToast('Failed to register doctor partner: ' + (err?.message || 'Error'));
+    }
   };
 
   const handleConfirmApproval = () => {
@@ -4815,6 +4867,19 @@ export const AdminDashboard: React.FC = () => {
                 <span>{isGeneratingMISPdf ? 'Compiling PDF...' : 'Download PDF'}</span>
               </button>
 
+              {/* Add Referral Partner Button (Super Admin & Manager) */}
+              {(isSuperAdmin || currentRole === 'CENTER_MANAGER') && (
+                <button
+                  type="button"
+                  onClick={() => setIsRegisterPartnerModalOpen(true)}
+                  className="px-3.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  title="Add new Referring Doctor or Healthcare Partner directly"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>+ Add Referral Partner</span>
+                </button>
+              )}
+
               {/* Print / Export MIS Report Button */}
               <button
                 type="button"
@@ -6840,6 +6905,174 @@ export const AdminDashboard: React.FC = () => {
       )}
 
       {/* MODAL: Edit Approved Doctor Details (Super Admin) */}
+      
+      {/* MODAL: Register New Doctor Partner */}
+      {isRegisterPartnerModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in"
+          onClick={e => {
+            if (e.target === e.currentTarget) setIsRegisterPartnerModalOpen(false);
+          }}
+        >
+          <div className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-2xl animate-scale-up">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 bg-sky-50 text-sky-600 rounded-xl">
+                  <UserPlus className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-base">Add Referring Doctor / Healthcare Partner</h3>
+                  <p className="text-[11px] text-slate-500">Register doctor to the active roster for clinical referral tracking</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsRegisterPartnerModalOpen(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-all cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleRegisterNewPartner} className="space-y-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Doctor Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={newPartnerName}
+                    onChange={e => setNewPartnerName(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold focus:ring-2 focus:ring-sky-500"
+                    placeholder="e.g. Dr. Rajesh Kumar"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Degree / Qualification</label>
+                  <input
+                    type="text"
+                    value={newPartnerQualification}
+                    onChange={e => setNewPartnerQualification(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:ring-2 focus:ring-sky-500"
+                    placeholder="e.g. MBBS, MD (Medicine)"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Clinical Specialty</label>
+                  <input
+                    type="text"
+                    value={newPartnerSpecialty}
+                    onChange={e => setNewPartnerSpecialty(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:ring-2 focus:ring-sky-500"
+                    placeholder="e.g. Cardiology, Orthopedics"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Hospital / Clinic Name</label>
+                  <input
+                    type="text"
+                    value={newPartnerHospital}
+                    onChange={e => setNewPartnerHospital(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:ring-2 focus:ring-sky-500"
+                    placeholder="e.g. Apollo Hospital / Private Clinic"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Affiliation Entity Type</label>
+                  <select
+                    value={newPartnerAffiliationType}
+                    onChange={e => setNewPartnerAffiliationType(e.target.value as 'SELF' | 'ORGANIZATION')}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-semibold focus:ring-2 focus:ring-sky-500"
+                  >
+                    <option value="SELF">Individual Doctor (Self Practice)</option>
+                    <option value="ORGANIZATION">Organization / Hospital / Polyclinic</option>
+                  </select>
+                </div>
+                {newPartnerAffiliationType === 'ORGANIZATION' && (
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Beneficiary Organization Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={newPartnerOrgName}
+                      onChange={e => setNewPartnerOrgName(e.target.value)}
+                      className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold focus:ring-2 focus:ring-sky-500"
+                      placeholder="e.g. City Health Polyclinic"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Mobile / WhatsApp</label>
+                  <input
+                    type="text"
+                    value={newPartnerPhone}
+                    onChange={e => setNewPartnerPhone(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:ring-2 focus:ring-sky-500"
+                    placeholder="10-digit number"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Email Address</label>
+                  <input
+                    type="email"
+                    value={newPartnerEmail}
+                    onChange={e => setNewPartnerEmail(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:ring-2 focus:ring-sky-500"
+                    placeholder="doctor@example.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 mb-1">Medical Reg No (MCI/SMC)</label>
+                  <input
+                    type="text"
+                    value={newPartnerRegNo}
+                    onChange={e => setNewPartnerRegNo(e.target.value)}
+                    className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:ring-2 focus:ring-sky-500"
+                    placeholder="e.g. MCI-98765"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">Administrative Notes</label>
+                <input
+                  type="text"
+                  value={newPartnerNotes}
+                  onChange={e => setNewPartnerNotes(e.target.value)}
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 focus:ring-2 focus:ring-sky-500"
+                  placeholder="Optional remarks or center association"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsRegisterPartnerModalOpen(false)}
+                  className="px-4 py-2 border border-slate-300 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-xs transition-all cursor-pointer"
+                >
+                  Save & Activate Doctor
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {editingApprovedDoctor && isSuperAdmin && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in"

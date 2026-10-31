@@ -58,10 +58,19 @@ export const PatientDetailsModal: React.FC<PatientDetailsModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose, selectedReportOrder, selectedInvoiceOrder]);
 
-  // Orders for this patient
-  const patientOrders = orders.filter(
-    o => o.patientId === patient.id || (o.patient && o.patient.id === patient.id)
-  );
+  // Orders for this patient - match by patientId, patient.id, or normalized phone/name
+  const patientOrders = orders.filter(o => {
+    if (o.isDeleted || o.deletionPendingApproval) return false;
+    if (o.patientId && (o.patientId === patient.id || o.patientId.toLowerCase() === patient.id.toLowerCase())) return true;
+    if (o.patient?.id && (o.patient.id === patient.id || o.patient.id.toLowerCase() === patient.id.toLowerCase())) return true;
+    if (patient.phone && o.patient?.phone) {
+      const p1 = patient.phone.replace(/[^0-9]/g, '').slice(-10);
+      const p2 = o.patient.phone.replace(/[^0-9]/g, '').slice(-10);
+      if (p1 && p2 && p1 === p2) return true;
+    }
+    if (patient.name && o.patient?.name && patient.name.trim().toLowerCase() === o.patient.name.trim().toLowerCase()) return true;
+    return false;
+  });
 
   // Compute all Affiliated Doctors for this patient
   const affiliatedDoctorsMap = new Map<string, {
