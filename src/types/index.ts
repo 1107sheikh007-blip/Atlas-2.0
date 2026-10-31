@@ -3,6 +3,13 @@ export type UserRole = 'SUPER_ADMIN' | 'CENTER_MANAGER' | 'RECEPTIONIST' | 'DIAG
 export type DiagnosticCategory = 'Radiology' | 'Pathology' | 'Cardiology' | 'Specialized';
 
 export type TestSampleType =
+  | 'Tube (EDTA)'
+  | 'Tube (Serum)'
+  | 'Tube (Clot Activator)'
+  | 'Tube (Sodium Citrate)'
+  | 'Tube (Sodium Heparin)'
+  | 'Tube (Sodium Fluoride)'
+  | 'Tube (SST Gel)'
   | 'Blood (EDTA)'
   | 'Blood (Serum)'
   | 'Blood (Clot Activator)'

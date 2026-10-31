@@ -436,7 +436,7 @@ export const AdminDashboard: React.FC = () => {
   const [testName, setTestName] = useState('');
   const [testCategory, setTestCategory] = useState<DiagnosticCategory>('Pathology');
   const [testDepartment, setTestDepartment] = useState('Biochemistry');
-  const [testSampleType, setTestSampleType] = useState<TestSampleType>('Blood (EDTA)');
+  const [testSampleType, setTestSampleType] = useState<TestSampleType>('Tube (EDTA)');
   const [testPrice, setTestPrice] = useState<number | ''>(500);
   const [testTatHours, setTestTatHours] = useState<number | ''>(4);
   const [testSearch, setTestSearch] = useState('');
@@ -6498,13 +6498,13 @@ export const AdminDashboard: React.FC = () => {
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold"
                 >
                   <optgroup label="Blood Specimens">
-                    <option value="Blood (EDTA)">Blood (EDTA)</option>
-                    <option value="Blood (Serum)">Blood (Serum)</option>
-                    <option value="Blood (Clot Activator)">Blood (Clot Activator)</option>
-                    <option value="Blood (Sodium Citrate)">Blood (Sodium Citrate)</option>
-                    <option value="Blood (Sodium Heparin)">Blood (Sodium Heparin)</option>
-                    <option value="Blood (Sodium Fluoride)">Blood (Sodium Fluoride)</option>
-                    <option value="Blood (SST Gel)">Blood (SST Gel)</option>
+                    <option value="Tube (EDTA)">Tube (EDTA)</option>
+                    <option value="Tube (Serum)">Tube (Serum)</option>
+                    <option value="Tube (Clot Activator)">Tube (Clot Activator)</option>
+                    <option value="Tube (Sodium Citrate)">Tube (Sodium Citrate)</option>
+                    <option value="Tube (Sodium Heparin)">Tube (Sodium Heparin)</option>
+                    <option value="Tube (Sodium Fluoride)">Tube (Sodium Fluoride)</option>
+                    <option value="Tube (SST Gel)">Tube (SST Gel)</option>
                   </optgroup>
                   <optgroup label="Other Laboratory Specimens">
                     <option value="Urine">Urine</option>
