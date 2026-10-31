@@ -10,7 +10,7 @@ import {
 } from '../types';
 
 export const EMBEDDED_GOOGLE_SHEETS_URL =
-  'https://script.google.com/macros/s/AKfycbyHSu0pGl1tVgVAmzaweD6W79gp_1uKSbBrYy0Wb7wpNkjKud7W59W5moUtUZeQfQ/exec';
+  'https://script.google.com/macros/s/AKfycbwQ7i77xgy85wOZpyuoO802v9lWqfi5kGzfPgrvr2pf7UZH8GWdAktpjJ0BV5DRY8g/exec';
 
 export const setGoogleSheetsUrl = (url: string) => {
   try {
@@ -46,8 +46,8 @@ export const getGoogleSheetsUrl = (): string => {
     if (saved) {
       const parsed = JSON.parse(saved);
       const current = String(parsed.webAppUrl || parsed.customEndpoint || '').trim();
-      // If previously stored URL was the old default deployment, migrate to new master URL
-      if (current.includes('AKfycbzJTcM5BSIGM5lGgyXVju3fMl9sovknr0hLKTSRaBX3wE5l_ayZfpOwj3rGF34EMF8y')) {
+      // Auto-migrate previous deployment URLs to the new master URL
+      if (current.includes('AKfycbyHSu0pGl1tVgVAmzaweD6W79gp_1uKSbBrYy0Wb7wpNkjKud7W59W5moUtUZeQfQ') || current.includes('AKfycbzJTcM5BSIGM5lGgyXVju3fMl9sovknr0hLKTSRaBX3wE5l_ayZfpOwj3rGF34EMF8y')) {
         setGoogleSheetsUrl(EMBEDDED_GOOGLE_SHEETS_URL);
         return EMBEDDED_GOOGLE_SHEETS_URL;
       }
