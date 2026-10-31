@@ -296,7 +296,8 @@ export const ReceptionPortal: React.FC = () => {
     const q = (patientSearch || '').trim().toLowerCase();
     const cleanDigits = q.replace(/\D/g, '');
     if (!q) {
-      return isPatientSearchFocused ? allKnownPatients.slice(0, 8) : [];
+      // When empty and focused, show the most recent patients (up to 30)
+      return isPatientSearchFocused ? allKnownPatients.slice(0, 30) : [];
     }
     return allKnownPatients.filter(p => {
       const nameMatch = (p.name || '').toLowerCase().includes(q);
@@ -307,7 +308,7 @@ export const ReceptionPortal: React.FC = () => {
       const emailMatch = (p.email || '').toLowerCase().includes(q);
       const abhaMatch = (p.abhaId || '').toLowerCase().includes(q);
       return nameMatch || idMatch || phoneMatch || emailMatch || abhaMatch;
-    }).slice(0, 15);
+    }).slice(0, 50);
   }, [allKnownPatients, patientSearch, isPatientSearchFocused]);
 
   // Appointment Date & Time
@@ -1647,8 +1648,14 @@ export const ReceptionPortal: React.FC = () => {
                       {filteredPatientsForSearch.length > 0 ? (
                         <>
                           <div className="px-3.5 py-1.5 bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider flex justify-between items-center">
-                            <span>{patientSearch.trim() ? 'Matching Patients' : 'Recent Registered Patients'}</span>
-                            <span className="text-[9px] text-sky-700 font-semibold">{filteredPatientsForSearch.length} found</span>
+                            <span>
+                              {patientSearch.trim()
+                                ? `Matching Patients (${filteredPatientsForSearch.length})`
+                                : `Recent Patients (Showing ${filteredPatientsForSearch.length} of ${allKnownPatients.length})`}
+                            </span>
+                            <span className="text-[9px] text-sky-700 font-semibold">
+                              {patientSearch.trim() ? `${filteredPatientsForSearch.length} found` : `Total ${allKnownPatients.length} registered`}
+                            </span>
                           </div>
                           {filteredPatientsForSearch.map(p => (
                             <div
