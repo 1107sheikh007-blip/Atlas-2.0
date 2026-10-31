@@ -45,7 +45,7 @@ import {
   INITIAL_EXPENSES,
   INITIAL_DOCTOR_ROSTER,
   resolveTestSubDepartment
-} from '../data/mockData';
+} from '../data/initialData';
 import {
   syncOrderToGoogleSheets,
   syncExpenseToGoogleSheets,

@@ -96,7 +96,7 @@ import { DateRangeFilter, DatePresetType, isDateInSelectedRange, computePresetDa
 import { ReceptionPortal } from '../reception/ReceptionPortal';
 import { EditPatientModal } from '../patient/EditPatientModal';
 import { Patient } from '../../types';
-import { resolveTestSubDepartment } from '../../data/mockData';
+import { resolveTestSubDepartment } from '../../data/initialData';
 import { DoctorRosterTab } from './DoctorRosterTab';
 
 export function parseCleanTime(val?: string, isEnd = false, fallback = '09:00 AM'): string {
