@@ -37,13 +37,6 @@ import {
 import {
   INITIAL_CENTERS,
   INITIAL_TESTS,
-  INITIAL_REFERRERS,
-  INITIAL_PATIENTS,
-  INITIAL_ORDERS,
-  INITIAL_REPORTS,
-  INITIAL_STAFF,
-  INITIAL_EXPENSES,
-  INITIAL_DOCTOR_ROSTER,
   resolveTestSubDepartment
 } from '../data/initialData';
 import {
@@ -267,7 +260,7 @@ interface DiagnosticContextType {
 
 const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undefined);
 
-const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V12_';
+const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V13_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
 // Auto-purge stale cached data from earlier builds if needed
@@ -306,7 +299,6 @@ export const synthesizeOrderActivity = (ord: DiagnosticOrder): ActivityLogItem =
   };
 };
 
-const INITIAL_APPOINTMENTS: PatientAppointment[] = [];
 
 export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => {
@@ -724,10 +716,10 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const savedDel = localStorage.getItem(`${STORAGE_PREFIX}DELETED_REFERRER_IDS`);
       const delList: string[] = savedDel ? JSON.parse(savedDel) : [];
       const saved = localStorage.getItem(`${STORAGE_PREFIX}REFERRERS`);
-      const list = saved ? JSON.parse(saved) : INITIAL_REFERRERS;
+      const list = saved ? JSON.parse(saved) : [];
       return list.filter((r: ReferringDoctor) => r.name !== 'Dr. Siddharth Mukherjee' && !delList.includes(r.id));
     } catch {
-      return INITIAL_REFERRERS;
+      return [];
     }
   });
 
@@ -751,9 +743,9 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           if (valid.length > 0) return valid;
         }
       }
-      return INITIAL_DOCTOR_ROSTER;
+      return [];
     } catch {
-      return INITIAL_DOCTOR_ROSTER;
+      return [];
     }
   });
 
@@ -776,9 +768,9 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           return parsed.filter((p: Patient) => !delList.includes(p.id));
         }
       }
-      return INITIAL_PATIENTS.filter(p => !delList.includes(p.id));
+      return [];
     } catch {
-      return INITIAL_PATIENTS;
+      return [];
     }
   });
 
@@ -818,13 +810,9 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           return sanitized;
         }
       }
-      const initialSanitized = sanitizeOrdersCollection(INITIAL_ORDERS.filter(o => !delList.includes(o.id) && !delList.includes(o.invoiceNumber)));
-      try {
-        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(initialSanitized));
-      } catch (e) {}
-      return initialSanitized;
+      return [];
     } catch {
-      return sanitizeOrdersCollection(INITIAL_ORDERS);
+      return [];
     }
   });
 
@@ -842,7 +830,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const [reports, setReports] = useState<DiagnosticReport[]>(() => {
     const saved = localStorage.getItem(`${STORAGE_PREFIX}REPORTS`);
-    return saved ? JSON.parse(saved) : INITIAL_REPORTS;
+    return saved ? JSON.parse(saved) : [];
   });
 
   const CLEAN_STAFF: StaffEmployee[] = [
@@ -1122,10 +1110,10 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const savedDel = localStorage.getItem(`${STORAGE_PREFIX}DELETED_EXPENSE_IDS`);
       const delList: string[] = savedDel ? JSON.parse(savedDel) : [];
       const saved = localStorage.getItem(`${STORAGE_PREFIX}EXPENSES`);
-      const list: OperatingExpense[] = saved ? JSON.parse(saved) : INITIAL_EXPENSES;
+      const list: OperatingExpense[] = saved ? JSON.parse(saved) : [];
       return list.filter(e => !delList.includes(e.id));
     } catch {
-      return INITIAL_EXPENSES;
+      return [];
     }
   });
 
@@ -1134,10 +1122,10 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const savedDel = localStorage.getItem(`${STORAGE_PREFIX}DELETED_APPOINTMENT_IDS`);
       const delList: string[] = savedDel ? JSON.parse(savedDel) : [];
       const saved = localStorage.getItem(`${STORAGE_PREFIX}APPOINTMENTS`);
-      const list: PatientAppointment[] = saved ? JSON.parse(saved) : INITIAL_APPOINTMENTS;
+      const list: PatientAppointment[] = saved ? JSON.parse(saved) : [];
       return list.filter(a => !delList.includes(a.id));
     } catch {
-      return INITIAL_APPOINTMENTS;
+      return [];
     }
   });
 
@@ -1643,7 +1631,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           isSyncActive = false;
         }
       }
-    }, 20000);
+    }, 10000);
 
     // 4. Instant cross-tab sync on the same computer via localStorage event
     const handleStorage = (e: StorageEvent) => {
@@ -4261,16 +4249,17 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const resetAllData = () => {
     localStorage.clear();
     setTests(INITIAL_TESTS);
-    setReferrers(INITIAL_REFERRERS);
-    setPatients(INITIAL_PATIENTS);
-    setAllOrders(INITIAL_ORDERS);
-    setReports(INITIAL_REPORTS);
-    setStaff(INITIAL_STAFF);
-    setAllExpenses(INITIAL_EXPENSES);
+    setReferrers([]);
+    setPatients([]);
+    setAllOrders([]);
+    setReports([]);
+    setStaff(CLEAN_STAFF);
+    setAllExpenses([]);
     setCenters(INITIAL_CENTERS);
     setActivities([]);
     setAttendanceLogs([]);
-    setDoctorRoster(INITIAL_DOCTOR_ROSTER);
+    setDoctorRoster([]);
+    pullOrdersFromGoogleSheets(true).catch(() => {});
   };
 
   return (
