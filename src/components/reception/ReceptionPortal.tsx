@@ -511,16 +511,46 @@ export const ReceptionPortal: React.FC = () => {
 
   // Filtered lists for Doctor Combobox
   const filteredDoctors = useMemo(() => {
-    const query = doctorSearchQuery.trim().toLowerCase();
+    const rawQuery = doctorSearchQuery.trim().toLowerCase();
+    const cleanTokens = rawQuery
+      .replace(/^(dr\.?|doctor)\s+/i, '')
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(Boolean);
+
     const match = (doc: any) => {
-      if (!query) return true;
+      if (!rawQuery) return true;
       const name = (doc.name || '').toLowerCase();
       const spec = (doc.specialty || '').toLowerCase();
       const hosp = (doc.hospital || '').toLowerCase();
       const org = (doc.organizationName || '').toLowerCase();
-      const phone = (doc.phone || '').toLowerCase();
-      const reg = (doc.registrationNumber || '').toLowerCase();
-      return name.includes(query) || spec.includes(query) || hosp.includes(query) || org.includes(query) || phone.includes(query) || reg.includes(query);
+      const phone = (doc.phone || '').replace(/\D/g, '');
+      const reg = (doc.registrationNo || doc.registrationNumber || '').toLowerCase();
+      const queryPhone = rawQuery.replace(/\D/g, '');
+
+      // Direct substring matches
+      if (
+        name.includes(rawQuery) ||
+        spec.includes(rawQuery) ||
+        hosp.includes(rawQuery) ||
+        org.includes(rawQuery) ||
+        reg.includes(rawQuery)
+      ) {
+        return true;
+      }
+
+      // Phone match
+      if (queryPhone.length >= 4 && phone.includes(queryPhone)) {
+        return true;
+      }
+
+      // Tokenized / normalized doctor name match (handles 'sachin' matching 'Dr. Sachin', 'dr sachin', 'SACHIN', etc.)
+      const docNormalized = name.replace(/^(dr\.?|doctor)\s+/i, '').replace(/[^\w\s]/g, ' ');
+      if (cleanTokens.length > 0 && cleanTokens.every(token => docNormalized.includes(token))) {
+        return true;
+      }
+
+      return false;
     };
     return {
       approved: approvedReferrers.filter(match),

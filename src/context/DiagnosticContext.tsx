@@ -2417,15 +2417,56 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       .trim();
 
   const approvedReferrers = useMemo(() => {
-    const seen = new Set<string>();
-    return referrers.filter(r => {
-      if (r.status !== 'APPROVED') return false;
-      const key = normalizeDocNameKey(r.name) || r.id;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
+    // Compute accurate live referral count & revenue from actual orders in the system
+    const statsMap = new Map<string, { count: number; revenue: number }>();
+    (allOrders || []).forEach(ord => {
+      if (ord.isDeleted) return;
+      const amt = Number(ord.totalAmount) || Number(ord.subtotal) || 0;
+      const docKey = normalizeDocNameKey(ord.referringDoctorName);
+      const benKey = normalizeDocNameKey(ord.commissionBeneficiaryName);
+
+      const matchedKeys = new Set<string>();
+      if (docKey) matchedKeys.add(docKey);
+      if (benKey) matchedKeys.add(benKey);
+
+      matchedKeys.forEach(k => {
+        const cur = statsMap.get(k) || { count: 0, revenue: 0 };
+        cur.count += 1;
+        cur.revenue += amt;
+        statsMap.set(k, cur);
+      });
     });
-  }, [referrers]);
+
+    const seen = new Set<string>();
+    return referrers
+      .filter(r => r.status === 'APPROVED')
+      .map(r => {
+        const normKey = normalizeDocNameKey(r.name);
+        const liveStats = normKey ? statsMap.get(normKey) : undefined;
+        
+        // If doctor is SELF and organizationName is '0' or empty, use doctor's name
+        let cleanOrg = r.organizationName;
+        if (r.affiliationType === 'SELF' && (!cleanOrg || cleanOrg === '0' || cleanOrg === 'None')) {
+          cleanOrg = r.name;
+        }
+
+        const calculatedCount = liveStats ? liveStats.count : r.totalReferralsCount;
+        const calculatedRev = liveStats ? liveStats.revenue : r.totalRevenueGenerated;
+
+        return {
+          ...r,
+          organizationName: cleanOrg,
+          totalReferralsCount: calculatedCount,
+          totalRevenueGenerated: calculatedRev
+        };
+      })
+      .filter(r => {
+        const key = normalizeDocNameKey(r.name) || r.id;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+  }, [referrers, allOrders]);
 
   const pendingReferrers = useMemo(() => {
     const approvedNameKeys = new Set(

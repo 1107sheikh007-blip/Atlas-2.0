@@ -5068,10 +5068,12 @@ export const AdminDashboard: React.FC = () => {
                             <span className="text-[11px] text-slate-500">{doc.qualification}</span>
                           </td>
                           <td className="p-3.5 text-slate-700">
-                            {doc.organizationName ? (
+                            {doc.organizationName && doc.organizationName !== '0' && doc.organizationName !== 'None' ? (
                               <span className="text-purple-800 font-bold block">{doc.organizationName}</span>
-                            ) : null}
-                            <span>{doc.hospital}</span>
+                            ) : (doc.affiliationType === 'SELF' ? (
+                              <span className="text-purple-800 font-bold block">{doc.name}</span>
+                            ) : null)}
+                            <span>{doc.hospital && doc.hospital !== '0' ? doc.hospital : 'Direct Clinic'}</span>
                           </td>
                           <td className="p-3.5">
                             <span className="font-mono text-slate-800 font-bold block">{doc.phone || 'Not provided'}</span>
