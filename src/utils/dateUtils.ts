@@ -377,15 +377,16 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
   }
 
   let validDate = '';
-  // Check if rawCreatedAt is a legitimate order booking timestamp (not a recent Google Sheet sync timestamp)
-  const isCreatedAtSyncTimestamp = rawCreatedAt && (rawCreatedAt.includes('Z') || rawCreatedAt.includes('+05:30')) && dateFromInvoice && !rawCreatedAt.startsWith(dateFromInvoice.slice(0, 10));
-
-  if (dateFromInvoice && (!rawCreatedAt || isCreatedAtSyncTimestamp)) {
-    // Preserve true booking date from invoice number, while keeping time of rawCreatedAt if present
-    const timePart = (rawCreatedAt && rawCreatedAt.includes('T')) ? rawCreatedAt.split('T')[1] : '12:00:00.000+05:30';
-    validDate = parseDateToISO(`${dateFromInvoice.slice(0, 10)}T${timePart}`);
+  // If rawCreatedAt has a genuine booking date (e.g. 2026-10-25T11:50:00), respect it as the absolute truth.
+  // Only fallback to invoice-encoded date if rawCreatedAt is completely missing or is an invalid date.
+  if (rawCreatedAt && !rawCreatedAt.includes('T') && !rawCreatedAt.includes('-') && dateFromInvoice) {
+    validDate = dateFromInvoice;
+  } else if (rawCreatedAt) {
+    validDate = parseDateToISO(rawCreatedAt);
+  } else if (dateFromInvoice) {
+    validDate = dateFromInvoice;
   } else {
-    validDate = parseDateToISO(rawCreatedAt || (rawInvoice.includes('T') ? rawInvoice : '') || ord.createdAt || dateFromInvoice);
+    validDate = parseDateToISO(rawInvoice.includes('T') ? rawInvoice : (ord.createdAt || new Date().toISOString()));
   }
 
   // Helper to validate human name vs system code / price number
