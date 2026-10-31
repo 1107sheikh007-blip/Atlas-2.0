@@ -1997,7 +1997,7 @@ function purgeDuplicateOrdersFromAllSheets(ss) {
       for (var c = 0; c < headerRow.length; c++) {
         var h = headerRow[c];
         if (h.indexOf("invoice") >= 0 || h === "inv" || h.indexOf("bill no") >= 0 || h.indexOf("bill #") >= 0) colInv = c;
-        else if (h.indexOf("date") >= 0 || h.indexOf("time") >= 0) colDate = c;
+        else if ((h.indexOf("date") >= 0 || h.indexOf("time") >= 0) && h.indexOf("sync") < 0) colDate = c;
         else if (h.indexOf("uhid") >= 0 || h.indexOf("patient id") >= 0 || h === "pid") colUhid = c;
         else if (h.indexOf("patient name") >= 0 || h === "patient" || h === "name" || h === "client" || h === "patient_name") colName = c;
         else if (h.indexOf("phone") >= 0 || h.indexOf("mobile") >= 0 || h.indexOf("contact") >= 0 || h.indexOf("whatsapp") >= 0) colPhone = c;
@@ -2095,7 +2095,7 @@ function fetchAllOrdersFromSheets(ss) {
         var h = headerRow[c];
         if (h.indexOf("order id") >= 0 || h === "order #" || h === "ord id") colId = c;
         else if (h.indexOf("invoice") >= 0 || h === "inv" || h.indexOf("bill no") >= 0 || h.indexOf("bill #") >= 0) colInv = c;
-        else if (h.indexOf("date") >= 0 || h.indexOf("time") >= 0) colDate = c;
+        else if ((h.indexOf("date") >= 0 || h.indexOf("time") >= 0) && h.indexOf("sync") < 0) colDate = c;
         else if (h.indexOf("uhid") >= 0 || h.indexOf("patient id") >= 0 || h === "pid") colUhid = c;
         else if (h.indexOf("patient name") >= 0 || h === "patient" || h === "name" || h === "client" || h === "patient_name") colName = c;
         else if (h.indexOf("age/gender") >= 0 || h.indexOf("age / gender") >= 0 || h.indexOf("age & gender") >= 0 || h === "age/sex") { colAge = c; colGender = c; }
