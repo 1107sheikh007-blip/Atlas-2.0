@@ -2240,20 +2240,20 @@ export const AdminDashboard: React.FC = () => {
       )}
 
             {/* Executive Welcome & Live Ops Status Strip */}
-          <div className="p-5 sm:p-6 bg-gradient-to-r from-sky-900 via-indigo-950 to-slate-900 text-white rounded-3xl shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="p-5 sm:p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-3xl shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-sky-500/30 text-sky-200 border border-sky-400/30">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-50 text-sky-700 border border-sky-200 dark:bg-sky-950/60 dark:text-sky-300 dark:border-sky-800">
                   Live Enterprise Command Hub
                 </span>
-                <span className="text-xs text-slate-300 font-mono">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                   {new Date().toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })}
                 </span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight mt-1">
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white mt-1.5">
                 Executive Diagnostics Dashboard
               </h2>
-              <p className="text-xs text-sky-200/80 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Real-time Net P&L financial portal, live staff duty attendance roster, and total patient orders registry.
               </p>
             </div>
@@ -2262,26 +2262,24 @@ export const AdminDashboard: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentRole('RECEPTIONIST')}
-                className="px-4 py-2 bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-xs cursor-pointer active:scale-95"
+                className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-xs cursor-pointer active:scale-95"
                 title="Create Patient Invoices, Book Appointments & Manage Billing"
               >
                 <Plus className="w-4 h-4" />
                 <span>+ Make New Invoice</span>
               </button>
-
               <button
                 type="button"
                 onClick={handlePullOrders}
                 disabled={isPullingOrders}
-                className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-white/20 cursor-pointer disabled:opacity-60"
-                title="Synchronize all orders with Google Sheets & Cloud Hub"
+                className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-200 dark:border-slate-700 cursor-pointer disabled:opacity-60"
+                title="Refresh and sync data directly from Google Sheets"
               >
-                <DownloadCloud className={`w-3.5 h-3.5 ${isPullingOrders ? 'animate-bounce' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 ${isPullingOrders ? 'animate-spin' : ''}`} />
                 <span>{isPullingOrders ? 'Syncing...' : 'Sync Now'}</span>
               </button>
             </div>
           </div>
-
           {/* DASHBOARD REAL-TIME DATE RANGE FILTER CONTROL */}
           <div className="p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
@@ -2384,7 +2382,7 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* 3 CORE CLICKABLE TILES REQUIRED BY SPECIFICATION */}
+          {/* 3 CORE CLICKABLE TILES - Unified Clean Aesthetics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* TILE 1: NET PROFIT OR LOSS TILE (Clickable) */}
             {(() => {
@@ -2393,62 +2391,56 @@ export const AdminDashboard: React.FC = () => {
               return (
                 <div
                   onClick={() => setIsFinancialDrilldownOpen(true)}
-                  className={`relative overflow-hidden p-6 rounded-3xl border-2 shadow-xs cursor-pointer transition-all hover:scale-[1.01] hover:shadow-xl active:scale-95 group ${
-                    isProfit
-                      ? 'bg-gradient-to-br from-emerald-50 via-teal-50/40 to-white dark:from-emerald-950/50 dark:via-slate-900/90 dark:to-slate-950 border-emerald-300 dark:border-emerald-500/40 hover:border-emerald-500 dark:hover:border-emerald-400 dark:shadow-emerald-950/20'
-                      : 'bg-gradient-to-br from-rose-50 via-amber-50/30 to-white dark:from-rose-950/50 dark:via-slate-900/90 dark:to-slate-950 border-rose-300 dark:border-rose-500/40 hover:border-rose-500 dark:hover:border-rose-400 dark:shadow-rose-950/20'
-                  }`}
+                  className="relative overflow-hidden p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs cursor-pointer transition-all hover:scale-[1.01] hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 active:scale-95 group"
                   title="Click to open complete Financial Profit & Loss Breakdown"
                 >
                   <div className="flex items-center justify-between">
                     <span
-                      className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-2xs ${
+                      className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                         isProfit
-                          ? 'bg-emerald-600 text-white dark:bg-emerald-500 dark:text-emerald-950'
-                          : 'bg-rose-600 text-white dark:bg-rose-500 dark:text-white animate-pulse'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800'
+                          : 'bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800 animate-pulse'
                       }`}
                     >
-                      {isProfit ? 'Net Profit (In Black)' : 'Net Loss (In Red)'}
+                      {isProfit ? 'Net Operating Balance' : 'Net Loss (In Red)'}
                     </span>
                     <div
-                      className={`p-3 rounded-2xl ${
+                      className={`p-2.5 rounded-2xl ${
                         isProfit
-                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300 dark:border dark:border-emerald-500/30'
-                          : 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-300 dark:border dark:border-rose-500/30'
+                          ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400'
+                          : 'bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400'
                       }`}
                     >
-                      {isProfit ? <TrendingUp className="w-6 h-6" /> : <TrendingDown className="w-6 h-6" />}
+                      {isProfit ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
                     </div>
                   </div>
 
-                  <div className="mt-5">
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
-                      Net Operating Balance ({dashboardDateLabel})
+                  <div className="mt-4">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+                      Net Balance ({dashboardDateLabel})
                     </span>
                     <div
                       className={`text-3xl sm:text-4xl font-black tracking-tight mt-1 ${
-                        isProfit ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'
+                        isProfit ? 'text-slate-900 dark:text-white' : 'text-rose-600 dark:text-rose-400'
                       }`}
                     >
                       {isProfit ? '+' : '-'}₹{Math.abs(dashboardMetrics.netPnL).toLocaleString()}
                     </div>
                   </div>
 
-                  <div className="mt-5 pt-3.5 border-t border-slate-200/70 dark:border-slate-800 grid grid-cols-2 gap-2 text-xs">
+                  <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-2 text-xs">
                     <div>
-                      <span className="text-[10px] text-slate-400 dark:text-slate-400 block font-bold uppercase">Incoming Revenue</span>
-                      <span className="font-extrabold text-slate-800 dark:text-slate-100 text-sm">₹{dashboardMetrics.totalPaid.toLocaleString()}</span>
+                      <span className="text-[10px] text-slate-400 block font-bold uppercase">Incoming Revenue</span>
+                      <span className="font-extrabold text-slate-800 dark:text-slate-200 text-sm">₹{dashboardMetrics.totalPaid.toLocaleString()}</span>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] text-slate-400 dark:text-slate-400 block font-bold uppercase">Operating Expenses</span>
-                      <span className="font-extrabold text-rose-700 dark:text-rose-400 text-sm">₹{dashboardMetrics.totalExp.toLocaleString()}</span>
+                      <span className="text-[10px] text-slate-400 block font-bold uppercase">Operating Expenses</span>
+                      <span className="font-extrabold text-rose-600 dark:text-rose-400 text-sm">₹{dashboardMetrics.totalExp.toLocaleString()}</span>
                     </div>
                   </div>
 
-                  <div className={`mt-4 flex items-center justify-between text-xs font-bold ${
-                    isProfit ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'
-                  } group-hover:translate-x-0.5 transition-transform`}>
-                    <span>Click to view full financial portal drill-down</span>
+                  <div className="mt-4 flex items-center justify-between text-xs font-bold text-sky-600 dark:text-sky-400 group-hover:translate-x-0.5 transition-transform">
+                    <span>View full financial drill-down</span>
                     <span className="text-sm">→</span>
                   </div>
                 </div>
@@ -2461,41 +2453,41 @@ export const AdminDashboard: React.FC = () => {
                 setSelectedDrilldownStaff(null);
                 setIsStaffAttendanceDrilldownOpen(true);
               }}
-              className="relative overflow-hidden p-6 rounded-3xl border-2 border-sky-300 dark:border-sky-500/40 bg-gradient-to-br from-sky-50 via-cyan-50/40 to-white dark:from-sky-950/50 dark:via-slate-900/90 dark:to-slate-950 shadow-xs cursor-pointer transition-all hover:scale-[1.01] hover:border-sky-500 dark:hover:border-sky-400 hover:shadow-xl active:scale-95 group dark:shadow-sky-950/20"
+              className="relative overflow-hidden p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs cursor-pointer transition-all hover:scale-[1.01] hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 active:scale-95 group"
               title="Click to view all logged-in staff and their individual activities & invoices"
             >
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-sky-600 text-white dark:bg-sky-500 dark:text-slate-950 shadow-2xs">
-                  Live Staff Attendance
+                <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-50 text-sky-700 border border-sky-200 dark:bg-sky-950/60 dark:text-sky-300 dark:border-sky-800">
+                  Live Staff Duty
                 </span>
-                <div className="p-3 rounded-2xl bg-sky-100 text-sky-700 dark:bg-sky-900/60 dark:text-sky-300 dark:border dark:border-sky-500/30">
-                  <Users className="w-6 h-6" />
+                <div className="p-2.5 rounded-2xl bg-sky-50 text-sky-600 dark:bg-sky-950/60 dark:text-sky-400">
+                  <Users className="w-5 h-5" />
                 </div>
               </div>
 
-              <div className="mt-5">
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+              <div className="mt-4">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
                   Staff Logged In Right Now
                 </span>
-                <div className="text-3xl sm:text-4xl font-black text-sky-950 dark:text-sky-200 tracking-tight mt-1">
+                <div className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight mt-1">
                   {onlineStaffList.length}{' '}
-                  <span className="text-base font-bold text-slate-400 dark:text-slate-400">/ {staff.length} Logged In</span>
+                  <span className="text-base font-bold text-slate-400">/ {staff.length} Logged In</span>
                 </div>
               </div>
 
-              <div className="mt-5 pt-3.5 border-t border-slate-200/70 dark:border-slate-800 grid grid-cols-2 gap-2 text-xs">
+              <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <span className="text-[10px] text-slate-400 dark:text-slate-400 block font-bold uppercase">Online / Active</span>
-                  <span className="font-extrabold text-emerald-700 dark:text-emerald-400 text-sm">{onlineStaffList.length} On Duty</span>
+                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Online / Active</span>
+                  <span className="font-extrabold text-emerald-600 dark:text-emerald-400 text-sm">{onlineStaffList.length} On Duty</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] text-slate-400 dark:text-slate-400 block font-bold uppercase">Offline / Logged Out</span>
+                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Offline / Logged Out</span>
                   <span className="font-extrabold text-slate-500 dark:text-slate-400 text-sm">{Math.max(0, staff.length - onlineStaffList.length)} Staff</span>
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-between text-xs font-bold text-sky-700 dark:text-sky-400 group-hover:translate-x-0.5 transition-transform">
-                <span>Click to inspect individual staff logins & work</span>
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-sky-600 dark:text-sky-400 group-hover:translate-x-0.5 transition-transform">
+                <span>Inspect staff logins & attendance</span>
                 <span className="text-sm">→</span>
               </div>
             </div>
@@ -2503,46 +2495,45 @@ export const AdminDashboard: React.FC = () => {
             {/* TILE 3: TOTAL ORDERS PLACED TILE (Clickable) */}
             <div
               onClick={() => setIsOrdersDrilldownOpen(true)}
-              className="relative overflow-hidden p-6 rounded-3xl border-2 border-indigo-300 dark:border-indigo-500/40 bg-gradient-to-br from-indigo-50 via-purple-50/40 to-white dark:from-indigo-950/50 dark:via-slate-900/90 dark:to-slate-950 shadow-xs cursor-pointer transition-all hover:scale-[1.01] hover:border-indigo-500 dark:hover:border-indigo-400 hover:shadow-xl active:scale-95 group dark:shadow-indigo-950/20"
+              className="relative overflow-hidden p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs cursor-pointer transition-all hover:scale-[1.01] hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 active:scale-95 group"
               title="Click to view all orders, who generated them, and invoice pricing"
             >
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-600 text-white dark:bg-indigo-500 dark:text-slate-950 shadow-2xs">
+                <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
                   Total Orders Placed
                 </span>
-                <div className="p-3 rounded-2xl bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-300 dark:border dark:border-indigo-500/30">
-                  <Receipt className="w-6 h-6" />
+                <div className="p-2.5 rounded-2xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                  <Receipt className="w-5 h-5" />
                 </div>
               </div>
 
-              <div className="mt-5">
-                <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+              <div className="mt-4">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
                   Orders Registered ({dashboardDateLabel})
                 </span>
-                <div className="text-3xl sm:text-4xl font-black text-indigo-950 dark:text-indigo-200 tracking-tight mt-1">
+                <div className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight mt-1">
                   {dashboardFilteredOrders.length}{' '}
-                  <span className="text-base font-bold text-slate-400 dark:text-slate-400">Total Bookings</span>
+                  <span className="text-base font-bold text-slate-400">Total Bookings</span>
                 </div>
               </div>
 
-              <div className="mt-5 pt-3.5 border-t border-slate-200/70 dark:border-slate-800 grid grid-cols-2 gap-2 text-xs">
+              <div className="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <span className="text-[10px] text-slate-400 dark:text-slate-400 block font-bold uppercase">Total Tariff MRP</span>
-                  <span className="font-extrabold text-slate-800 dark:text-slate-100 text-sm">₹{dashboardMetrics.totalMRP.toLocaleString()}</span>
+                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Total Tariff MRP</span>
+                  <span className="font-extrabold text-slate-800 dark:text-slate-200 text-sm">₹{dashboardMetrics.totalMRP.toLocaleString()}</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] text-slate-400 dark:text-slate-400 block font-bold uppercase">Total Collected</span>
-                  <span className="font-extrabold text-emerald-700 dark:text-emerald-400 text-sm">₹{dashboardMetrics.totalPaid.toLocaleString()}</span>
+                  <span className="text-[10px] text-slate-400 block font-bold uppercase">Total Collected</span>
+                  <span className="font-extrabold text-emerald-600 dark:text-emerald-400 text-sm">₹{dashboardMetrics.totalPaid.toLocaleString()}</span>
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-between text-xs font-bold text-indigo-700 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform">
-                <span>Click to inspect all invoices, creators & prices</span>
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-sky-600 dark:text-sky-400 group-hover:translate-x-0.5 transition-transform">
+                <span>Inspect invoices, creators & prices</span>
                 <span className="text-sm">→</span>
               </div>
             </div>
           </div>
-
           {/* Quick Operations Grid: Workstation Shortcuts & Collections Channel Balance */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             {/* Workstation Shortcuts - Spans 7 cols */}
@@ -2604,25 +2595,30 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Collections Cash vs Online Summary Widget - Spans 5 cols */}
-            <div className="lg:col-span-5 p-6 bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl shadow-xs space-y-4 flex flex-col justify-between">
+            <div className="lg:col-span-5 p-5 sm:p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-xs space-y-4 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-sky-400 block">
-                  Collections Channel Balance
-                </span>
+                <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+                  <span className="text-xs font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
+                    Collections Channel Balance
+                  </span>
+                  <span className="text-[10px] font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/60 px-2.5 py-0.5 rounded-full border border-sky-200 dark:border-sky-800">
+                    Live Balance
+                  </span>
+                </div>
                 <div className="grid grid-cols-2 gap-3 pt-3">
-                  <div className="p-3.5 bg-white/10 rounded-2xl border border-white/10">
-                    <span className="text-[10px] text-slate-300 block uppercase font-bold">Cash Counter</span>
-                    <span className="text-lg font-black text-white mt-0.5 block">₹{totalAdminOrdersCash.toLocaleString()}</span>
+                  <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 block uppercase font-bold">Cash Counter</span>
+                    <span className="text-lg font-black text-slate-900 dark:text-white mt-0.5 block">₹{totalAdminOrdersCash.toLocaleString()}</span>
                   </div>
-                  <div className="p-3.5 bg-white/10 rounded-2xl border border-white/10">
-                    <span className="text-[10px] text-slate-300 block uppercase font-bold">Online (UPI/POS)</span>
-                    <span className="text-lg font-black text-emerald-400 mt-0.5 block">₹{totalAdminOrdersOnline.toLocaleString()}</span>
+                  <div className="p-3.5 bg-emerald-50/60 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-800/50">
+                    <span className="text-[10px] text-emerald-700 dark:text-emerald-400 block uppercase font-bold">Online (UPI/POS)</span>
+                    <span className="text-lg font-black text-emerald-700 dark:text-emerald-400 mt-0.5 block">₹{totalAdminOrdersOnline.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
-              <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
-                <span className="text-slate-300">Pending Due Balance:</span>
-                <span className="font-bold text-rose-300 text-sm">₹{totalAdminOrdersDue.toLocaleString()}</span>
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                <span className="text-slate-500 dark:text-slate-400 font-semibold">Pending Due Balance:</span>
+                <span className="font-extrabold text-rose-600 dark:text-rose-400 text-sm">₹{totalAdminOrdersDue.toLocaleString()}</span>
               </div>
             </div>
           </div>
