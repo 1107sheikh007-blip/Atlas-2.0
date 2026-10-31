@@ -10,7 +10,8 @@ import {
   getLocalYYYYMMDD,
   normalizeToYYYYMMDD,
   parseDateToISO,
-  buildSafeISOFromLocalDateAndTime
+  buildSafeISOFromLocalDateAndTime,
+  getOrderPaymentSplit
 } from '../utils/dateUtils';
 import {
   UserRole,
@@ -4278,14 +4279,18 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const pendingDueAmount = activeOrders.reduce((sum, o) => sum + o.dueAmount, 0);
     const totalRefunds = activeOrders.reduce((sum, o) => sum + (o.refundAmount || 0), 0);
 
-    // Cash and Online breakdown
-    const cashIncome = activeOrders
-      .filter(o => o.paymentMode === 'Cash')
-      .reduce((sum, o) => sum + o.paidAmount - (o.refundMode === 'Cash' ? (o.refundAmount || 0) : 0), 0);
+    // Cash and Online breakdown with full split payment support
+    const cashIncome = activeOrders.reduce((sum, o) => {
+      const split = getOrderPaymentSplit(o);
+      const refund = o.refundMode === 'Cash' ? (o.refundAmount || 0) : 0;
+      return sum + Math.max(0, split.cash - refund);
+    }, 0);
 
-    const onlineIncome = activeOrders
-      .filter(o => o.paymentMode !== 'Cash')
-      .reduce((sum, o) => sum + o.paidAmount - (o.refundMode && o.refundMode !== 'Cash' ? (o.refundAmount || 0) : 0), 0);
+    const onlineIncome = activeOrders.reduce((sum, o) => {
+      const split = getOrderPaymentSplit(o);
+      const refund = o.refundMode && o.refundMode !== 'Cash' ? (o.refundAmount || 0) : 0;
+      return sum + Math.max(0, split.online - refund);
+    }, 0);
 
     const isCenterManager = currentRole === 'CENTER_MANAGER';
 

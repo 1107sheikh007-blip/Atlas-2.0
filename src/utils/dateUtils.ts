@@ -1,4 +1,4 @@
-import { DiagnosticOrder, Patient } from '../types';
+import { DiagnosticOrder, Patient, PaymentMode } from '../types';
 
 /**
  * Returns local YYYY-MM-DD string according to the client/system local time
@@ -676,7 +676,25 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     totalAmount: numTotal,
     paidAmount: numPaid,
     dueAmount: numDue,
-    paymentMode: ord.paymentMode || 'Cash',
+    paymentMode: (String(ord.paymentMode || '').toLowerCase().includes('split') ? 'Split Payment' : (ord.paymentMode || 'Cash')) as PaymentMode,
+    splitPaymentDetails: (() => {
+      if (ord.splitPaymentDetails && (ord.splitPaymentDetails.cashAmount !== undefined || ord.splitPaymentDetails.onlineAmount !== undefined)) {
+        return ord.splitPaymentDetails;
+      }
+      const rawM = String(ord.paymentMode || '');
+      if (rawM.toLowerCase().includes('split')) {
+        const cMatch = rawM.match(/cash\s*[:\s]*([0-9]+(?:\.[0-9]+)?)/i);
+        const uMatch = rawM.match(/(?:upi|online|qr|card|bank)\s*[:\s\/]*([0-9]+(?:\.[0-9]+)?)/i);
+        const cVal = cMatch ? parseFloat(cMatch[1]) : Math.round(numPaid / 2);
+        const uVal = uMatch ? parseFloat(uMatch[1]) : (numPaid - cVal);
+        return {
+          cashAmount: cVal,
+          onlineAmount: uVal,
+          onlineMode: rawM.toLowerCase().includes('card') ? 'Card' : 'UPI / QR'
+        };
+      }
+      return undefined;
+    })(),
     paymentStatus: numDue === 0 ? 'PAID' : numPaid > 0 ? 'PARTIAL' : 'DUE',
     status: cleanStatus,
     referringDoctorName: realDoctor,
@@ -692,6 +710,47 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
 /**
  * Normalizes an entire array of orders, eliminates duplicate entries, and re-sequences invoice numbers sequentially
  */
+
+/**
+ * Resolves cash and online amounts for an order, handling Split Payment strings and splitPaymentDetails
+ */
+export const getOrderPaymentSplit = (ord: {
+  paymentMode?: string;
+  paidAmount?: number;
+  splitPaymentDetails?: { cashAmount?: number; onlineAmount?: number; onlineMode?: string };
+}): { cash: number; online: number } => {
+  const mode = String(ord.paymentMode || 'Cash').trim();
+  const totalPaid = Number(ord.paidAmount) || 0;
+
+  // Case 1: Structured splitPaymentDetails already populated
+  if (ord.splitPaymentDetails && (ord.splitPaymentDetails.cashAmount !== undefined || ord.splitPaymentDetails.onlineAmount !== undefined)) {
+    const c = Number(ord.splitPaymentDetails.cashAmount) || 0;
+    const u = Number(ord.splitPaymentDetails.onlineAmount) || 0;
+    return { cash: c, online: u };
+  }
+
+  // Case 2: String describes split e.g. "Split: Cash 500 + UPI / QR 500" or "Split: Cash 50 + UPI 2200"
+  if (mode.toLowerCase().includes('split')) {
+    const cashMatch = mode.match(/cash\s*[:\s]*([0-9]+(?:\.[0-9]+)?)/i);
+    const upiMatch = mode.match(/(?:upi|online|qr|card|bank)\s*[:\s\/]*([0-9]+(?:\.[0-9]+)?)/i);
+    const c = cashMatch ? parseFloat(cashMatch[1]) : 0;
+    const u = upiMatch ? parseFloat(upiMatch[1]) : 0;
+    if (c > 0 || u > 0) {
+      return { cash: c, online: u };
+    }
+    // Fallback if numbers not parsed but marked split: 50/50
+    return { cash: Math.round(totalPaid / 2), online: totalPaid - Math.round(totalPaid / 2) };
+  }
+
+  // Case 3: Pure Cash
+  if (mode.toLowerCase() === 'cash') {
+    return { cash: totalPaid, online: 0 };
+  }
+
+  // Case 4: Pure Online (UPI, Card, QR, Bank Transfer)
+  return { cash: 0, online: totalPaid };
+};
+
 export const sanitizeOrdersCollection = (rawOrders: any[], existingPatients: Patient[] = []): DiagnosticOrder[] => {
   if (!Array.isArray(rawOrders) || rawOrders.length === 0) return [];
 

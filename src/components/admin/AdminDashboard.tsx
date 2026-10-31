@@ -9,7 +9,8 @@ import {
   getCurrent12HourTime,
   getCurrent24HourTime,
   convert24To12HourTime,
-  convert12To24HourTime
+  convert12To24HourTime,
+  getOrderPaymentSplit
 } from '../../utils/dateUtils';
 import {
   Crown,
@@ -857,12 +858,16 @@ export const AdminDashboard: React.FC = () => {
   const dashboardMetrics = useMemo(() => {
     const totalMRP = dashboardFilteredOrders.reduce((sum, o) => sum + (o.subtotal || o.totalAmount || 0), 0);
     const totalPaid = dashboardFilteredOrders.reduce((sum, o) => sum + (o.paidAmount || 0), 0);
-    const totalCash = dashboardFilteredOrders
-      .filter(o => o.paymentMode === 'Cash')
-      .reduce((sum, o) => sum + (o.paidAmount || 0) - (o.refundMode === 'Cash' ? (o.refundAmount || 0) : 0), 0);
-    const totalOnline = dashboardFilteredOrders
-      .filter(o => o.paymentMode !== 'Cash')
-      .reduce((sum, o) => sum + (o.paidAmount || 0) - (o.refundMode && o.refundMode !== 'Cash' ? (o.refundAmount || 0) : 0), 0);
+    const totalCash = dashboardFilteredOrders.reduce((sum, o) => {
+      const split = getOrderPaymentSplit(o);
+      const refund = o.refundMode === 'Cash' ? (o.refundAmount || 0) : 0;
+      return sum + Math.max(0, split.cash - refund);
+    }, 0);
+    const totalOnline = dashboardFilteredOrders.reduce((sum, o) => {
+      const split = getOrderPaymentSplit(o);
+      const refund = o.refundMode && o.refundMode !== 'Cash' ? (o.refundAmount || 0) : 0;
+      return sum + Math.max(0, split.online - refund);
+    }, 0);
     const totalDue = dashboardFilteredOrders.reduce((sum, o) => sum + (o.dueAmount || 0), 0);
     const totalExp = dashboardFilteredExpenses.reduce((sum, e) => sum + (e.amount || 0), 0);
     const netPnL = totalPaid - totalExp;
@@ -922,13 +927,17 @@ export const AdminDashboard: React.FC = () => {
     const collectedAmount = misFilteredOrders.reduce((sum, o) => sum + (o.paidAmount || 0), 0);
     const pendingDueAmount = misFilteredOrders.reduce((sum, o) => sum + (o.dueAmount || 0), 0);
 
-    const cashIncome = misFilteredOrders
-      .filter(o => o.paymentMode === 'Cash')
-      .reduce((sum, o) => sum + o.paidAmount - (o.refundMode === 'Cash' ? (o.refundAmount || 0) : 0), 0);
+    const cashIncome = misFilteredOrders.reduce((sum, o) => {
+      const split = getOrderPaymentSplit(o);
+      const refund = o.refundMode === 'Cash' ? (o.refundAmount || 0) : 0;
+      return sum + Math.max(0, split.cash - refund);
+    }, 0);
 
-    const onlineIncome = misFilteredOrders
-      .filter(o => o.paymentMode !== 'Cash')
-      .reduce((sum, o) => sum + o.paidAmount - (o.refundMode && o.refundMode !== 'Cash' ? (o.refundAmount || 0) : 0), 0);
+    const onlineIncome = misFilteredOrders.reduce((sum, o) => {
+      const split = getOrderPaymentSplit(o);
+      const refund = o.refundMode && o.refundMode !== 'Cash' ? (o.refundAmount || 0) : 0;
+      return sum + Math.max(0, split.online - refund);
+    }, 0);
 
     const totalOperatingExpenses = misFilteredExpenses.reduce((sum, e) => sum + e.amount, 0);
 
@@ -2131,14 +2140,18 @@ export const AdminDashboard: React.FC = () => {
   const totalAdminOrdersPaid = Math.round(filteredAdminOrders.reduce((sum, o) => sum + (o.paidAmount || 0), 0));
   const totalAdminOrdersDue = Math.round(filteredAdminOrders.reduce((sum, o) => sum + (o.dueAmount || 0), 0));
   const totalAdminOrdersCash = Math.round(
-    filteredAdminOrders
-      .filter(o => o.paymentMode === 'Cash')
-      .reduce((sum, o) => sum + (o.paidAmount - (o.refundAmount || 0)), 0)
+    filteredAdminOrders.reduce((sum, o) => {
+      const split = getOrderPaymentSplit(o);
+      const refund = o.refundMode === 'Cash' ? (o.refundAmount || 0) : 0;
+      return sum + Math.max(0, split.cash - refund);
+    }, 0)
   );
   const totalAdminOrdersOnline = Math.round(
-    filteredAdminOrders
-      .filter(o => o.paymentMode !== 'Cash')
-      .reduce((sum, o) => sum + (o.paidAmount - (o.refundAmount || 0)), 0)
+    filteredAdminOrders.reduce((sum, o) => {
+      const split = getOrderPaymentSplit(o);
+      const refund = o.refundMode && o.refundMode !== 'Cash' ? (o.refundAmount || 0) : 0;
+      return sum + Math.max(0, split.online - refund);
+    }, 0)
   );
   const totalAdminOrdersRefunds = Math.round(filteredAdminOrders.reduce((sum, o) => sum + (o.refundAmount || 0), 0));
 
