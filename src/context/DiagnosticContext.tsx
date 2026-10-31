@@ -192,6 +192,10 @@ interface DiagnosticContextType {
   approveDeleteExpense: (expenseId: string) => void;
   rejectDeleteExpense: (expenseId: string) => void;
 
+  requestDeleteAppointment: (appointmentId: string, reason?: string) => void;
+  approveDeleteAppointment: (appointmentId: string) => void;
+  rejectDeleteAppointment: (appointmentId: string) => void;
+
   // Appointments Hub
   appointments: PatientAppointment[];
   allAppointments: PatientAppointment[];
@@ -1803,16 +1807,19 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     });
 
     if (matchingStaff) {
-      const expectedPassword = matchingStaff.password || "Atlas@123";
-      // Make password check extremely resilient to auto-capitalization and whitespace
+      const expectedPassword = (matchingStaff.password && matchingStaff.password.trim() !== '') ? matchingStaff.password.trim() : "Atlas@123";
+      const pTrimmed = p.trim();
       const pClean = p.toLowerCase().replace(/\s/g, "");
       const expectedClean = expectedPassword.toLowerCase().replace(/\s/g, "");
-      const isExactMatch = p.trim() === expectedPassword.trim();
-      const isCleanMatch = pClean === expectedClean;
-      const isDefaultFallback = (!matchingStaff.password || matchingStaff.password === "Atlas@123") && (pClean === "atlas@123" || pClean === "atlas123");
-      const isAdminFallback = uLower === "admin" && (pClean === "admin@123" || pClean === "atlas@123");
 
-      if (isExactMatch || isCleanMatch || isDefaultFallback || isAdminFallback) {
+      const isExactMatch = pTrimmed === expectedPassword;
+      const isCleanMatch = pClean === expectedClean;
+      // If a custom password has been set and is NOT Atlas@123/admin@123, STRICTLY require that custom password!
+      const hasCustomPassword = expectedPassword !== "Atlas@123" && expectedPassword !== "admin@123";
+      const isDefaultFallback = !hasCustomPassword && (pClean === "atlas@123" || pClean === "atlas123");
+      const isAdminFallback = !hasCustomPassword && uLower === "admin" && pClean === "admin@123";
+
+      if (isExactMatch || isCleanMatch || (!hasCustomPassword && (isDefaultFallback || isAdminFallback))) {
         let mappedRole: UserRole = "RECEPTIONIST";
         if (matchingStaff.role === "Super Admin" || matchingStaff.role === "Center Director") mappedRole = "SUPER_ADMIN";
         else if (matchingStaff.role === "Center Manager") mappedRole = "CENTER_MANAGER";
@@ -1851,14 +1858,21 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
 
     if (uLower === "admin") {
+      const adminStaff = staff.find(s => (s.username || '').toLowerCase() === 'admin' || (s.role === 'Super Admin' || s.role === 'Center Director'));
+      const activeAdminPass = adminStaff?.password?.trim() || 'admin@123';
+      const pTrimmed = p.trim();
       const pClean = p.toLowerCase().replace(/\s/g, "");
-      if (pClean === "admin@123") {
+      const activeClean = activeAdminPass.toLowerCase().replace(/\s/g, "");
+
+      if (pTrimmed === activeAdminPass || pClean === activeClean) {
         recordLoginSuccess({
-          username: "admin",
-          name: "Mohsina Akhtar",
+          username: adminStaff?.username || "admin",
+          name: adminStaff?.name || "Mohsina Akhtar",
           role: "SUPER_ADMIN",
-          designation: "Center Director & Super Admin"
-        });
+          designation: adminStaff?.role || "Center Director & Super Admin",
+          staffId: adminStaff?.id || "emp-superadmin",
+          assignedCenterId: adminStaff?.assignedCenterId || "ALL"
+        }, adminStaff);
         return { success: true };
       }
       return { success: false, error: "Invalid credentials. Please verify your password." };
@@ -1994,10 +2008,11 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, [allExpenses, currentRole, selectedCenter]);
 
   const appointments = useMemo(() => {
+    const active = allAppointments.filter(a => !a.isDeleted && !a.deletionPendingApproval);
     if (currentRole === 'SUPER_ADMIN') {
-      return allAppointments;
+      return active;
     }
-    return allAppointments.filter(a => a.centerId === selectedCenter.id);
+    return active.filter(a => a.centerId === selectedCenter.id);
   }, [allAppointments, currentRole, selectedCenter]);
 
   // Pending Deletions List for Super Admin Approval Gate
@@ -2057,8 +2072,25 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       }
     });
 
+    // Appointments pending deletion
+    allAppointments.forEach(a => {
+      if (a.deletionPendingApproval) {
+        list.push({
+          id: a.id,
+          entityType: 'APPOINTMENT',
+          title: `Appointment #${a.id} - ${a.patientName}`,
+          subtitle: `Date: ${a.appointmentDate} ${a.appointmentTime} • Tests: ${(a.testsRequested || []).join(', ')}`,
+          centerId: a.centerId,
+          requestedBy: a.deletedByStaffName || 'Staff Member',
+          requestedAt: a.deletionRequestedAt || a.createdAt,
+          reason: a.deletionReason || 'Staff deletion request',
+          rawItem: a
+        });
+      }
+    });
+
     return list;
-  }, [allOrders, patients, allExpenses]);
+  }, [allOrders, patients, allExpenses, allAppointments]);
 
   // Request & Approval Methods
   const requestDeleteOrder = (orderId: string, reason?: string) => {
@@ -2992,16 +3024,48 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     logActivity('APPOINTMENT_UPDATED', `Updated appointment #${id} status to ${status}`);
   };
 
-  const deleteAppointment = (id: string) => {
-    const targetApt = allAppointments.find(a => a.id === id);
-    const newDeleted = Array.from(new Set([...deletedAppointmentIds, id]));
+  const requestDeleteAppointment = (appointmentId: string, reason?: string) => {
+    if (currentRole === 'SUPER_ADMIN' || currentRole === 'CENTER_MANAGER') {
+      approveDeleteAppointment(appointmentId);
+      return;
+    }
+    setAllAppointments(prev => {
+      const updated = prev.map(a => {
+        if (a.id === appointmentId) {
+          return {
+            ...a,
+            isDeleted: true,
+            deletionPendingApproval: true,
+            deletedByStaffName: currentUser?.name || 'Reception Staff',
+            deletionReason: reason || 'Staff deletion request from reception',
+            deletionRequestedAt: new Date().toLocaleString()
+          };
+        }
+        return a;
+      });
+      try {
+        localStorage.setItem(`${STORAGE_PREFIX}APPOINTMENTS`, JSON.stringify(updated));
+      } catch (e) {}
+      pushCurrentStateToCloud({ appointments: updated });
+      return updated;
+    });
+    logActivity('DELETION_REQUESTED', `Staff requested deletion of Appointment #${appointmentId}: ${reason || 'Staff removal from reception'}`, {
+      appointmentId,
+      requestedBy: currentUser?.name || 'Reception Staff',
+      requestedRole: currentUser?.role || 'RECEPTIONIST'
+    });
+  };
+
+  const approveDeleteAppointment = (appointmentId: string) => {
+    const targetApt = allAppointments.find(a => a.id === appointmentId);
+    const newDeleted = Array.from(new Set([...deletedAppointmentIds, appointmentId]));
     setDeletedAppointmentIds(newDeleted);
     try {
       localStorage.setItem(`${STORAGE_PREFIX}DELETED_APPOINTMENT_IDS`, JSON.stringify(newDeleted));
     } catch (e) {}
 
     setAllAppointments(prev => {
-      const next = prev.filter(a => a.id !== id);
+      const next = prev.filter(a => a.id !== appointmentId);
       try {
         localStorage.setItem(`${STORAGE_PREFIX}APPOINTMENTS`, JSON.stringify(next));
       } catch (e) {}
@@ -3009,9 +3073,34 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       return next;
     });
 
-    deleteAppointmentFromGoogleSheets(id, targetApt?.patientPhone, targetApt?.patientName).catch(() => {});
+    deleteAppointmentFromGoogleSheets(appointmentId, targetApt?.patientPhone, targetApt?.patientName).catch(() => {});
     triggerDebouncedFullBackupToSheets(500);
-    logActivity('APPOINTMENT_CANCELLED', `Deleted appointment #${id}`);
+    logActivity('DELETION_APPROVED', `Admin approved permanent deletion of Appointment #${appointmentId} (${targetApt?.patientName || 'Patient'})`);
+  };
+
+  const rejectDeleteAppointment = (appointmentId: string) => {
+    setAllAppointments(prev => prev.map(a => {
+      if (a.id === appointmentId) {
+        return {
+          ...a,
+          isDeleted: false,
+          deletionPendingApproval: false,
+          deletedByStaffName: undefined,
+          deletionReason: undefined,
+          deletionRequestedAt: undefined
+        };
+      }
+      return a;
+    }));
+    logActivity('DELETION_REJECTED', `Admin restored Appointment #${appointmentId}`);
+  };
+
+  const deleteAppointment = (id: string) => {
+    if (currentRole === 'RECEPTIONIST') {
+      requestDeleteAppointment(id, 'Receptionist removed appointment');
+    } else {
+      approveDeleteAppointment(id);
+    }
   };
 
   const createOrder = ({
@@ -4214,6 +4303,9 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         requestDeleteExpense,
         approveDeleteExpense,
         rejectDeleteExpense,
+        requestDeleteAppointment,
+        approveDeleteAppointment,
+        rejectDeleteAppointment,
         appointments,
         allAppointments,
         addAppointment,

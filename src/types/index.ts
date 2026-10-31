@@ -353,9 +353,14 @@ export interface PatientAppointment {
   createdAt: string;
   convertedOrderId?: string;
   syncedToGoogleSheets?: boolean;
+  isDeleted?: boolean;
+  deletionPendingApproval?: boolean;
+  deletedByStaffName?: string;
+  deletionReason?: string;
+  deletionRequestedAt?: string;
 }
 
-export type DeletableEntityType = 'ORDER' | 'PATIENT' | 'EXPENSE' | 'REPORT';
+export type DeletableEntityType = 'ORDER' | 'PATIENT' | 'EXPENSE' | 'REPORT' | 'APPOINTMENT';
 
 export interface PendingDeletionItem {
   id: string;

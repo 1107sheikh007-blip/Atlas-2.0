@@ -3794,9 +3794,9 @@ export const ReceptionPortal: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => {
-                                if (window.confirm(`Delete appointment for ${apt.patientName}?`)) {
+                                if (window.confirm(`Delete appointment for ${apt.patientName}? (Will be sent to Super Admin Delete Gate)`)) {
                                   deleteAppointment(apt.id);
-                                  showToast(`Appointment for ${apt.patientName} deleted`);
+                                  showToast(`Appointment removal submitted to Admin Delete Gate.`);
                                 }
                               }}
                               title="Delete Appointment"

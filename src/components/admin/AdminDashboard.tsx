@@ -93,6 +93,7 @@ import {
 import { GoogleSheetsModal } from '../common/GoogleSheetsModal';
 import { InvoiceReceiptModal } from '../common/InvoiceReceiptModal';
 import { ReportPrintView } from '../common/ReportPrintView';
+import { SearchableSelect } from '../common/SearchableSelect';
 import { DateRangeFilter, DatePresetType, isDateInSelectedRange, computePresetDates } from '../common/DateRangeFilter';
 import { ReceptionPortal } from '../reception/ReceptionPortal';
 import { EditPatientModal } from '../patient/EditPatientModal';
@@ -214,6 +215,8 @@ export const AdminDashboard: React.FC = () => {
     rejectDeletePatient,
     approveDeleteExpense,
     rejectDeleteExpense,
+    approveDeleteAppointment,
+    rejectDeleteAppointment,
     getReportByOrderId,
     dispatchReportViaWhatsApp,
     requestDeleteOrder,
@@ -3200,18 +3203,21 @@ export const AdminDashboard: React.FC = () => {
                 <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">
                   Specific Staff Member
                 </label>
-                <select
+                <SearchableSelect
                   value={activityStaffFilter}
-                  onChange={e => setActivityStaffFilter(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-2xs"
-                >
-                  <option value="ALL">All Staff Members</option>
-                  {visibleStaff.map(emp => (
-                    <option key={emp.id} value={emp.id}>
-                      {emp.name} ({emp.role})
-                    </option>
-                  ))}
-                </select>
+                  onChange={setActivityStaffFilter}
+                  placeholder="All Staff Members"
+                  searchPlaceholder="Search staff member..."
+                  className="w-full"
+                  options={[
+                    { value: 'ALL', label: 'All Staff Members' },
+                    ...visibleStaff.map(emp => ({
+                      value: emp.id,
+                      label: `${emp.name} (${emp.role})`,
+                      subLabel: emp.role
+                    }))
+                  ]}
+                />
               </div>
 
               {/* Action Type Filter */}
@@ -4699,6 +4705,8 @@ export const AdminDashboard: React.FC = () => {
                                 ? 'bg-sky-100 text-sky-800'
                                 : item.entityType === 'PATIENT'
                                 ? 'bg-indigo-100 text-indigo-800'
+                                : item.entityType === 'APPOINTMENT'
+                                ? 'bg-purple-100 text-purple-800'
                                 : 'bg-amber-100 text-amber-800'
                             }`}
                           >
@@ -4747,6 +4755,7 @@ export const AdminDashboard: React.FC = () => {
                               if (item.entityType === 'ORDER') rejectDeleteOrder(item.id);
                               else if (item.entityType === 'PATIENT') rejectDeletePatient(item.id);
                               else if (item.entityType === 'EXPENSE') rejectDeleteExpense(item.id);
+                              else if (item.entityType === 'APPOINTMENT') rejectDeleteAppointment(item.id);
                               showToast(`Restored ${item.title} back to active workstation!`);
                             }}
                             className="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold rounded-xl text-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
@@ -4762,6 +4771,7 @@ export const AdminDashboard: React.FC = () => {
                                 if (item.entityType === 'ORDER') approveDeleteOrder(item.id);
                                 else if (item.entityType === 'PATIENT') approveDeletePatient(item.id);
                                 else if (item.entityType === 'EXPENSE') approveDeleteExpense(item.id);
+                                else if (item.entityType === 'APPOINTMENT') approveDeleteAppointment(item.id);
                                 showToast(`Permanently deleted ${item.title}`);
                               }
                             }}
@@ -5153,42 +5163,48 @@ export const AdminDashboard: React.FC = () => {
 
             {/* Bottom Row: Prescribing Doctor Selector, Commission Beneficiary Selector, Affiliation Type Selector, and Clear */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-center pt-2 border-t border-slate-200/60">
-              {/* 1. Prescribing Doctor Filter Dropdown */}
+              {/* 1. Prescribing Doctor Filter Dropdown with Search */}
               <div>
                 <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">
                   Prescribing Doctor:
                 </label>
-                <select
+                <SearchableSelect
                   value={referralDoctorFilter}
-                  onChange={e => setReferralDoctorFilter(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-2xs cursor-pointer"
-                >
-                  <option value="ALL">All Prescribing Doctors ({availablePrescribingDoctors.length})</option>
-                  {availablePrescribingDoctors.map(doc => (
-                    <option key={doc.name} value={doc.name}>
-                      {doc.name} ({doc.count} orders)
-                    </option>
-                  ))}
-                </select>
+                  onChange={setReferralDoctorFilter}
+                  placeholder={`All Prescribing Doctors (${availablePrescribingDoctors.length})`}
+                  searchPlaceholder="Search doctor by name..."
+                  className="w-full"
+                  options={[
+                    { value: 'ALL', label: `All Prescribing Doctors (${availablePrescribingDoctors.length})` },
+                    ...availablePrescribingDoctors.map(doc => ({
+                      value: doc.name,
+                      label: `${doc.name} (${doc.count} orders)`,
+                      subLabel: `${doc.count} referred orders`
+                    }))
+                  ]}
+                />
               </div>
 
-              {/* 2. Beneficiary Filter Dropdown */}
+              {/* 2. Beneficiary Filter Dropdown with Search */}
               <div>
                 <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">
                   Beneficiary:
                 </label>
-                <select
+                <SearchableSelect
                   value={referralBeneficiaryFilter}
-                  onChange={e => setReferralBeneficiaryFilter(e.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-2xs cursor-pointer"
-                >
-                  <option value="ALL">All Beneficiaries ({availableCommissionBeneficiaries.length})</option>
-                  {availableCommissionBeneficiaries.map(ben => (
-                    <option key={ben.name} value={ben.name}>
-                      {ben.name} ({ben.count} orders)
-                    </option>
-                  ))}
-                </select>
+                  onChange={setReferralBeneficiaryFilter}
+                  placeholder={`All Beneficiaries (${availableCommissionBeneficiaries.length})`}
+                  searchPlaceholder="Search beneficiary / clinic..."
+                  className="w-full"
+                  options={[
+                    { value: 'ALL', label: `All Beneficiaries (${availableCommissionBeneficiaries.length})` },
+                    ...availableCommissionBeneficiaries.map(ben => ({
+                      value: ben.name,
+                      label: `${ben.name} (${ben.count} orders)`,
+                      subLabel: `${ben.count} affiliated orders`
+                    }))
+                  ]}
+                />
               </div>
 
               {/* 3. Affiliation Type Filter */}
