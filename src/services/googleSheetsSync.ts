@@ -10,7 +10,7 @@ import {
 } from '../types';
 
 export const EMBEDDED_GOOGLE_SHEETS_URL =
-  'https://script.google.com/macros/s/AKfycbwQ7i77xgy85wOZpyuoO802v9lWqfi5kGzfPgrvr2pf7UZH8GWdAktpjJ0BV5DRY8g/exec';
+  'https://script.google.com/macros/s/AKfycbx7lf5tjL1_kmqGMmw2tpwaR33geHoCQECxG6tkwEAXcyBnaiu73wvOpQawusAZ8HE/exec';
 
 export const setGoogleSheetsUrl = (url: string) => {
   try {
