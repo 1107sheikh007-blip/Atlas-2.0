@@ -276,11 +276,7 @@ export const syncOrderToGoogleSheets = async (
     if (orderToSync.patient) {
       orderToSync.patient = ensureCombinedPatientName(orderToSync.patient)!;
     }
-    const docName = String(orderToSync.referringDoctorName || '').trim();
-    const benName = String(orderToSync.commissionBeneficiaryName || '').trim();
-    if (benName && docName && benName.toLowerCase() !== docName.toLowerCase() && !docName.includes(' | Ben: ')) {
-      orderToSync.referringDoctorName = `${docName} | Ben: ${benName}`;
-    }
+    // Keep doctor and beneficiary clean and separated - do not append "| Ben: ..." into doctor name
     const res = await postToGoogleAppsScript({
       action: 'CREATE_ORDER',
       centerCode,
