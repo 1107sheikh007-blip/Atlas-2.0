@@ -102,6 +102,8 @@ export const ReceptionPortal: React.FC = () => {
   } = useDiagnostic();
 
   const isSuperAdmin = currentRole === 'SUPER_ADMIN' || currentUser?.role === 'SUPER_ADMIN';
+  const isManager = currentRole === 'CENTER_MANAGER' || currentUser?.role === 'CENTER_MANAGER';
+  const canViewFinancialMetrics = isSuperAdmin || isManager;
 
   // Tab State
   const [activeTab, setActiveTab] = useState<'REGISTRATION' | 'ORDERS_QUEUE' | 'APPOINTMENTS'>('REGISTRATION');
@@ -3004,41 +3006,43 @@ export const ReceptionPortal: React.FC = () => {
       {/* TAB 2: LIVE CENTER ORDERS QUEUE & SAMPLE COLLECTION */}
       {activeTab === 'ORDERS_QUEUE' && (
         <div className="space-y-4">
-          {/* Real-Time Queue Financial Metrics Row (Cash vs Online Breakdown) */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-            <div className="p-4 bg-white border border-sky-100 rounded-2xl shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Queue Orders</span>
-              <span className="text-xl font-black text-slate-900 mt-1 block">{filteredOrders.length}</span>
-              <span className="text-[10px] text-slate-400">Total Billed: ₹{filteredOrders.reduce((s, o) => s + (o.totalAmount || 0), 0).toLocaleString()}</span>
-            </div>
-
-            <div className="p-4 bg-white border border-emerald-100 rounded-2xl shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
-                <Banknote className="w-3 h-3 text-emerald-600" /> Cash Income
-              </span>
-              <span className="text-xl font-black text-emerald-700 mt-1 block">₹{queueCashIncome.toLocaleString()}</span>
-              <span className="text-[10px] text-emerald-600">Physical cash collected</span>
-            </div>
-
-            <div className="p-4 bg-white border border-sky-100 rounded-2xl shadow-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-sky-800 flex items-center gap-1">
-                <QrCode className="w-3 h-3 text-sky-600" /> Online Income
-              </span>
-              <span className="text-xl font-black text-sky-700 mt-1 block">₹{queueOnlineIncome.toLocaleString()}</span>
-              <span className="text-[10px] text-sky-600">UPI, QR & Card transactions</span>
-            </div>
-
-            <div className="p-4 bg-white border border-amber-100 rounded-2xl shadow-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">Pending Dues</span>
-                {queueTotalRefunds > 0 && (
-                  <span className="text-[10px] font-bold text-rose-600">₹{queueTotalRefunds.toLocaleString()} Ref</span>
-                )}
+          {/* Real-Time Queue Financial Metrics Row (Restricted strictly to Super Admin & Center Manager) */}
+          {canViewFinancialMetrics && (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+              <div className="p-4 bg-white border border-sky-100 rounded-2xl shadow-xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Queue Orders</span>
+                <span className="text-xl font-black text-slate-900 mt-1 block">{filteredOrders.length}</span>
+                <span className="text-[10px] text-slate-400">Total Billed: ₹{filteredOrders.reduce((s, o) => s + (o.totalAmount || 0), 0).toLocaleString()}</span>
               </div>
-              <span className="text-xl font-black text-amber-700 mt-1 block">₹{queueTotalDue.toLocaleString()}</span>
-              <span className="text-[10px] text-amber-600">Balance to collect at desk</span>
+
+              <div className="p-4 bg-white border border-emerald-100 rounded-2xl shadow-xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
+                  <Banknote className="w-3 h-3 text-emerald-600" /> Cash Income
+                </span>
+                <span className="text-xl font-black text-emerald-700 mt-1 block">₹{queueCashIncome.toLocaleString()}</span>
+                <span className="text-[10px] text-emerald-600">Physical cash collected</span>
+              </div>
+
+              <div className="p-4 bg-white border border-sky-100 rounded-2xl shadow-xs">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-sky-800 flex items-center gap-1">
+                  <QrCode className="w-3 h-3 text-sky-600" /> Online Income
+                </span>
+                <span className="text-xl font-black text-sky-700 mt-1 block">₹{queueOnlineIncome.toLocaleString()}</span>
+                <span className="text-[10px] text-sky-600">UPI, QR & Card transactions</span>
+              </div>
+
+              <div className="p-4 bg-white border border-amber-100 rounded-2xl shadow-xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">Pending Dues</span>
+                  {queueTotalRefunds > 0 && (
+                    <span className="text-[10px] font-bold text-rose-600">₹{queueTotalRefunds.toLocaleString()} Ref</span>
+                  )}
+                </div>
+                <span className="text-xl font-black text-amber-700 mt-1 block">₹{queueTotalDue.toLocaleString()}</span>
+                <span className="text-[10px] text-amber-600">Balance to collect at desk</span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Filter Bar */}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-3 p-4 bg-white border border-sky-100 rounded-3xl shadow-xs">
