@@ -2116,15 +2116,27 @@ export const ReceptionPortal: React.FC = () => {
                             </div>
                           )}
 
-                          {/* No results */}
+                          {/* No results: option to register new doctor requiring Super Admin approval */}
                           {filteredDoctors.approved.length === 0 && filteredDoctors.pending.length === 0 && (
-                            <div className="p-4 text-center">
-                              <p className="text-xs text-slate-500">
+                            <div className="p-4 text-center space-y-2.5">
+                              <p className="text-xs text-slate-600 font-semibold">
                                 No doctors found matching "{doctorSearchQuery}"
                               </p>
-                              <p className="mt-2 text-[11px] text-slate-400">
-                                Contact Super Admin / Manager to add doctors to the roster.
+                              <p className="text-[11px] text-slate-400">
+                                Doctor not in roster? You can request to add them (requires Super Admin approval).
                               </p>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setNewDoctorName(doctorSearchQuery.trim());
+                                  setIsStandaloneDoctorModalOpen(true);
+                                  setIsDoctorDropdownOpen(false);
+                                }}
+                                className="px-3.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 shadow-sm active:scale-95"
+                              >
+                                <Plus className="w-3.5 h-3.5" />
+                                Add Doctor "{doctorSearchQuery.trim() || 'New Doctor'}"
+                              </button>
                             </div>
                           )}
                         </div>
