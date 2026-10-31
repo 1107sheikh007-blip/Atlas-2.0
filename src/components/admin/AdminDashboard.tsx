@@ -1635,16 +1635,29 @@ export const AdminDashboard: React.FC = () => {
   // Dynamically compile all unique Prescribing Doctors and Organizations from both registered roster and actual patient orders
   const availablePrescribingDoctors = useMemo(() => {
     const map = new Map<string, { name: string; count: number }>();
+    const getCanonicalName = (rawName: string) => {
+      const lower = rawName.trim().toLowerCase();
+      if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
+      return rawName.trim();
+    };
+
     referrers.forEach(r => {
-      const name = (r.name || '').trim();
-      if (name) map.set(name.toLowerCase(), { name, count: 0 });
-      const org = (r.organizationName || '').trim();
-      if (org) map.set(org.toLowerCase(), { name: org, count: 0 });
+      const name = getCanonicalName(r.name || '');
+      if (name) {
+        const key = name.toLowerCase();
+        if (!map.has(key)) map.set(key, { name, count: 0 });
+      }
+      const org = getCanonicalName(r.organizationName || '');
+      if (org) {
+        const key = org.toLowerCase();
+        if (!map.has(key)) map.set(key, { name: org, count: 0 });
+      }
     });
     allOrders.forEach(ord => {
       if (ord.isDeleted || ord.deletionPendingApproval) return;
-      const name = (ord.referringDoctorName || '').trim();
-      if (name) {
+      const rawName = (ord.referringDoctorName || '').trim();
+      if (rawName) {
+        const name = getCanonicalName(rawName);
         const key = name.toLowerCase();
         const existing = map.get(key);
         if (existing) {
@@ -1653,8 +1666,9 @@ export const AdminDashboard: React.FC = () => {
           map.set(key, { name, count: 1 });
         }
       }
-      const aff = ((ord as any).doctorAffiliation || '').trim();
-      if (aff) {
+      const rawAff = ((ord as any).doctorAffiliation || '').trim();
+      if (rawAff) {
+        const aff = getCanonicalName(rawAff);
         const key = aff.toLowerCase();
         const existing = map.get(key);
         if (existing) {
@@ -1670,16 +1684,29 @@ export const AdminDashboard: React.FC = () => {
   // Dynamically compile all unique Commission Beneficiaries from both registered roster and actual patient orders
   const availableCommissionBeneficiaries = useMemo(() => {
     const map = new Map<string, { name: string; count: number }>();
+    const getCanonicalName = (rawName: string) => {
+      const lower = rawName.trim().toLowerCase();
+      if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
+      return rawName.trim();
+    };
+
     referrers.forEach(r => {
-      const name = (r.name || '').trim();
-      if (name) map.set(name.toLowerCase(), { name, count: 0 });
-      const org = (r.organizationName || '').trim();
-      if (org) map.set(org.toLowerCase(), { name: org, count: 0 });
+      const name = getCanonicalName(r.name || '');
+      if (name) {
+        const key = name.toLowerCase();
+        if (!map.has(key)) map.set(key, { name, count: 0 });
+      }
+      const org = getCanonicalName(r.organizationName || '');
+      if (org) {
+        const key = org.toLowerCase();
+        if (!map.has(key)) map.set(key, { name: org, count: 0 });
+      }
     });
     allOrders.forEach(ord => {
       if (ord.isDeleted || ord.deletionPendingApproval) return;
-      const name = (ord.commissionBeneficiaryName || ord.referringDoctorName || '').trim();
-      if (name) {
+      const rawName = (ord.commissionBeneficiaryName || ord.referringDoctorName || '').trim();
+      if (rawName) {
+        const name = getCanonicalName(rawName);
         const key = name.toLowerCase();
         const existing = map.get(key);
         if (existing) {
@@ -1688,8 +1715,9 @@ export const AdminDashboard: React.FC = () => {
           map.set(key, { name, count: 1 });
         }
       }
-      const aff = ((ord as any).doctorAffiliation || '').trim();
-      if (aff) {
+      const rawAff = ((ord as any).doctorAffiliation || '').trim();
+      if (rawAff) {
+        const aff = getCanonicalName(rawAff);
         const key = aff.toLowerCase();
         const existing = map.get(key);
         if (existing) {
@@ -1707,11 +1735,19 @@ export const AdminDashboard: React.FC = () => {
     // Check if DR. UMAIMA JAMALI exists in referrers to avoid duplicate SWATI row
     const hasUmaima = referrers.some(r => normalizeRefName(r.name) === 'umaimajamali');
 
+    const seenRankKeys = new Set<string>();
+
     return referrers
       .filter(r => {
         // Deduplicate: If Umaima Jamali is present as an approved/registered doctor with SWATI AL-HAYAT, omit standalone SWATI partner row
         if (hasUmaima && normalizeRefName(r.name) === 'swati') {
           return false;
+        }
+        // Deduplicate repeated doctor records by normalized name
+        const normKey = normalizeRefName(r.name);
+        if (normKey) {
+          if (seenRankKeys.has(normKey)) return false;
+          seenRankKeys.add(normKey);
         }
         return true;
       })
