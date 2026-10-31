@@ -879,6 +879,50 @@ function doPost(e) {
       });
     }
 
+    // 23. SEPARATE DOCTOR AND BENEFICIARY ENTITIES IN ORDERS SHEETS
+    if (action === "SEPARATE_DOCTOR_AND_BENEFICIARY" || action === "CLEAN_BENEFICIARY_FROM_DOCTOR") {
+      var sheetsList = ss.getSheets();
+      var totalCleaned = 0;
+      for (var sIdx = 0; sIdx < sheetsList.length; sIdx++) {
+        var curSh = sheetsList[sIdx];
+        var shName = curSh.getName();
+        if (shName.indexOf("Orders_") === 0) {
+          var sheetData = curSh.getDataRange().getValues();
+          if (sheetData.length <= 1) continue;
+          var headerList = sheetData[0].map(function(h) { return String(h || "").toLowerCase().trim(); });
+          var docCol = -1;
+          var benCol = -1;
+          for (var cIdx = 0; cIdx < headerList.length; cIdx++) {
+            var head = headerList[cIdx];
+            if (head.indexOf("doctor") >= 0 || head.indexOf("referr") >= 0) docCol = cIdx;
+            else if (head.indexOf("beneficiary") >= 0) benCol = cIdx;
+          }
+
+          if (docCol >= 0) {
+            for (var rowIdx = 1; rowIdx < sheetData.length; rowIdx++) {
+              var rawDocVal = String(sheetData[rowIdx][docCol] || "").trim();
+              if (rawDocVal.indexOf(" | Ben: ") >= 0) {
+                var splitParts = rawDocVal.split(" | Ben: ");
+                var cleanDocName = splitParts[0].trim();
+                var extractedBen = (splitParts[1] || "").trim();
+
+                curSh.getRange(rowIdx + 1, docCol + 1).setValue(cleanDocName);
+                if (benCol >= 0 && extractedBen && extractedBen !== "0") {
+                  curSh.getRange(rowIdx + 1, benCol + 1).setValue(extractedBen);
+                }
+                totalCleaned++;
+              }
+            }
+          }
+        }
+      }
+      return createJsonResponse({
+        status: "SUCCESS",
+        cleanedCount: totalCleaned,
+        message: "Successfully separated doctor and beneficiary across " + totalCleaned + " order entries in Google Sheets."
+      });
+    }
+
     return createJsonResponse({
       status: "SUCCESS",
       message: "Action [" + action + "] acknowledged."
