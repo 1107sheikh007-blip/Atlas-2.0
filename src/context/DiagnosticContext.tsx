@@ -2450,11 +2450,20 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           cleanOrg = r.name;
         }
 
+        // Clean specialty if corrupted by Google Sheet cell shift with PENDING_APPROVAL
+        let cleanSpec = r.specialty;
+        if (!cleanSpec || cleanSpec === 'PENDING_APPROVAL' || cleanSpec === 'APPROVED' || cleanSpec === '0') {
+          cleanSpec = (r.affiliationType === 'ORGANIZATION' || r.hospital?.toLowerCase().includes('hospital'))
+            ? 'Multi-Specialty Center'
+            : 'Consultant Physician';
+        }
+
         const calculatedCount = liveStats ? liveStats.count : r.totalReferralsCount;
         const calculatedRev = liveStats ? liveStats.revenue : r.totalRevenueGenerated;
 
         return {
           ...r,
+          specialty: cleanSpec,
           organizationName: cleanOrg,
           totalReferralsCount: calculatedCount,
           totalRevenueGenerated: calculatedRev
