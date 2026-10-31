@@ -493,6 +493,7 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const [isPullingOrders, setIsPullingOrders] = useState(false);
+  const [referredOrdersModalDoc, setReferredOrdersModalDoc] = useState<ReferringDoctor | null>(null);
 
   const handlePullOrders = async () => {
     setIsPullingOrders(true);
@@ -1684,7 +1685,18 @@ export const AdminDashboard: React.FC = () => {
 
   // Filtered Referrers with Date Range & Affiliation Filter
   const filteredReferrers = useMemo(() => {
-    return referrers.map(r => {
+    // Check if DR. UMAIMA JAMALI exists in referrers to avoid duplicate SWATI row
+    const hasUmaima = referrers.some(r => normalizeRefName(r.name) === 'umaimajamali');
+
+    return referrers
+      .filter(r => {
+        // Deduplicate: If Umaima Jamali is present as an approved/registered doctor with SWATI AL-HAYAT, omit standalone SWATI partner row
+        if (hasUmaima && normalizeRefName(r.name) === 'swati') {
+          return false;
+        }
+        return true;
+      })
+      .map(r => {
       // Filter orders by this doctor/organization and date range
       const docOrders = allOrders.filter(o => 
         !o.isDeleted && !o.deletionPendingApproval &&
@@ -5083,7 +5095,17 @@ export const AdminDashboard: React.FC = () => {
                               <span className="text-[10px] text-slate-400 block">Verified Practitioner</span>
                             )}
                           </td>
-                          <td className="p-3.5 font-bold text-slate-900">{doc.totalReferralsCount}</td>
+                          <td className="p-3.5 font-bold text-slate-900">
+                            <button
+                              type="button"
+                              onClick={() => setReferredOrdersModalDoc(doc)}
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold border border-sky-200 transition-all cursor-pointer shadow-2xs hover:scale-105"
+                              title="Click to view all referred patients"
+                            >
+                              <span>{doc.totalReferralsCount}</span>
+                              <span className="text-[10px] font-semibold text-sky-600 underline">view</span>
+                            </button>
+                          </td>
                           <td className="p-3.5 font-black text-sky-700">₹{doc.totalRevenueGenerated.toLocaleString()}</td>
                           <td className="p-3.5 text-right space-x-1.5">
                             <button
@@ -5733,7 +5755,7 @@ export const AdminDashboard: React.FC = () => {
             </div>
           )}
 
-          {/* VIEW 2: PARTNER PAYOUT SUMMARY LEADERBOARD */}
+          {/* VIEW 2: PARTNER SUMMARY LEADERBOARD */}
           {referralViewMode === 'PARTNER_SUMMARY' && (
             <div className="overflow-x-auto border border-slate-200 rounded-2xl">
               <table className="w-full text-left text-xs">
@@ -5745,21 +5767,18 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Affiliation</th>
                     <th className="p-3.5">Referred Patients</th>
                     <th className="p-3.5">Gross Revenue</th>
-                    <th className="p-3.5">Total Commission</th>
-                    <th className="p-3.5">Payout Balance</th>
                     <th className="p-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {sortedReferrers.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="p-8 text-center text-slate-400">
+                      <td colSpan={7} className="p-8 text-center text-slate-400">
                         No referral partner records found matching your filters.
                       </td>
                     </tr>
                   ) : (
                     sortedReferrers.map((doc, idx) => {
-                      const pendingBalance = Math.max(0, doc.totalCommissionEarned - (doc.payoutPaid || 0));
                       const bdown = doctorDiagnosticsBreakdown.get(doc.name.toLowerCase()) || { MRI: 0, CT: 0, USG: 0, XRay: 0, Pathology: 0, Cardiology: 0, Other: 0 };
 
                       return (
@@ -5801,22 +5820,19 @@ export const AdminDashboard: React.FC = () => {
                               {doc.affiliationType === 'ORGANIZATION' ? 'Organization' : 'Self / Independent'}
                             </span>
                           </td>
-                          <td className="p-3.5 font-bold text-slate-900">{doc.totalReferralsCount}</td>
+                          <td className="p-3.5 font-bold text-slate-900">
+                            <button
+                              type="button"
+                              onClick={() => setReferredOrdersModalDoc(doc)}
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold border border-sky-200 transition-all cursor-pointer shadow-2xs hover:scale-105"
+                              title="Click to view all referred patients"
+                            >
+                              <span>{doc.totalReferralsCount}</span>
+                              <span className="text-[10px] font-semibold text-sky-600 underline">view</span>
+                            </button>
+                          </td>
                           <td className="p-3.5 font-black text-sky-700 text-sm">
                             ₹{doc.totalRevenueGenerated.toLocaleString()}
-                          </td>
-                          <td className="p-3.5 font-bold text-emerald-700">
-                            ₹{doc.totalCommissionEarned.toLocaleString()}
-                          </td>
-                          <td className="p-3.5">
-                            <div className="text-[11px] space-y-0.5">
-                              <span className="text-slate-500 block">Paid: ₹{(doc.payoutPaid || 0).toLocaleString()}</span>
-                              {pendingBalance > 0 ? (
-                                <span className="text-amber-700 font-bold block">Due: ₹{pendingBalance.toLocaleString()}</span>
-                              ) : (
-                                <span className="text-emerald-700 font-bold block">Settled</span>
-                              )}
-                            </div>
                           </td>
                           <td className="p-3.5 text-right">
                             <div className="flex items-center justify-end gap-1.5">
@@ -5835,17 +5851,6 @@ export const AdminDashboard: React.FC = () => {
                                   <span className="hidden sm:inline">WhatsApp</span>
                                 </button>
                               )}
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setPayoutDoctor(doc);
-                                  setPayoutAmount(pendingBalance);
-                                }}
-                                className="px-2.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs transition-all shadow-xs cursor-pointer inline-flex items-center gap-1"
-                              >
-                                <Wallet className="w-3.5 h-3.5" />
-                                <span>Disburse</span>
-                              </button>
                             </div>
                           </td>
                         </tr>
@@ -9657,6 +9662,165 @@ export const AdminDashboard: React.FC = () => {
       {isGSheetsModalOpen && (
         <GoogleSheetsModal onClose={() => setIsGSheetsModalOpen(false)} />
       )}
+
+      {/* Referred Patients Drill-Down Modal */}
+      {referredOrdersModalDoc && (() => {
+        const matchingOrders = allOrders.filter(
+          o => !o.isDeleted && !o.deletionPendingApproval && isOrderMatchingReferrer(o, referredOrdersModalDoc)
+        );
+        const totalPaid = matchingOrders.reduce((sum, o) => sum + (o.paidAmount || 0), 0);
+        const totalBilled = matchingOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200"
+            onClick={() => setReferredOrdersModalDoc(null)}
+          >
+            <div
+              className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-200 animate-in zoom-in-95 duration-200"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="p-6 bg-gradient-to-r from-sky-900 via-sky-800 to-indigo-900 text-white flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] uppercase font-black tracking-widest text-sky-200 block">
+                    REFERRED PATIENT LOGS
+                  </span>
+                  <h3 className="text-lg font-black text-white mt-0.5 flex items-center gap-2">
+                    {referredOrdersModalDoc.name}
+                    {referredOrdersModalDoc.organizationName && (
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30">
+                        {referredOrdersModalDoc.organizationName}
+                      </span>
+                    )}
+                  </h3>
+                  <p className="text-xs text-sky-100 mt-1">
+                    Showing all {matchingOrders.length} patient orders referred by {referredOrdersModalDoc.name}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="hidden sm:block text-right bg-white/10 px-3 py-1.5 rounded-xl border border-white/20">
+                    <span className="text-[10px] text-sky-200 block">Total Billed</span>
+                    <span className="text-sm font-bold text-white">₹{totalBilled.toLocaleString()}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setReferredOrdersModalDoc(null)}
+                    className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors cursor-pointer"
+                    title="Close (Esc)"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Table Body */}
+              <div className="p-6 overflow-y-auto flex-1">
+                {matchingOrders.length === 0 ? (
+                  <div className="text-center py-12 text-slate-400">
+                    <p className="font-semibold text-sm">No referred orders found for this doctor.</p>
+                    <p className="text-xs text-slate-500 mt-1">Orders booked under this doctor or affiliated clinic will appear here.</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto border border-slate-200 rounded-2xl">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-sky-50 text-sky-900 uppercase text-[10px] tracking-wider border-b border-sky-100 font-bold">
+                        <tr>
+                          <th className="p-3.5">#</th>
+                          <th className="p-3.5">Patient Details</th>
+                          <th className="p-3.5">Investigation(s)</th>
+                          <th className="p-3.5">Doctor Name</th>
+                          <th className="p-3.5 text-right">Paid Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {matchingOrders.map((ord, idx) => {
+                          const patientName = ord.patient?.name || (ord as any).patientName || 'Unknown Patient';
+                          const tests = ord.tests || [];
+                          const docName = ord.referringDoctorName || referredOrdersModalDoc.name;
+
+                          return (
+                            <tr key={ord.id} className="hover:bg-slate-50 transition-colors">
+                              <td className="p-3.5 font-bold text-slate-400">
+                                {idx + 1}
+                              </td>
+                              <td className="p-3.5">
+                                <span className="font-bold text-slate-900 block text-xs">
+                                  {patientName}
+                                </span>
+                                <span className="text-[11px] text-slate-500 block">
+                                  {ord.patient?.gender ? `${ord.patient.gender}, ` : ''}{ord.patient?.age ? `${ord.patient.age}Y • ` : ''}
+                                  UHID: {ord.patient?.id || (ord as any).uhid || 'N/A'}
+                                </span>
+                                {ord.invoiceNumber && (
+                                  <span className="text-[10px] font-mono font-semibold text-sky-700 block mt-0.5">
+                                    Inv: {ord.invoiceNumber}
+                                  </span>
+                                )}
+                              </td>
+                              <td className="p-3.5 max-w-xs">
+                                <div className="flex flex-wrap gap-1">
+                                  {tests.map((t, tidx) => (
+                                    <span
+                                      key={`${t.id || tidx}`}
+                                      className="inline-flex items-center px-2 py-0.5 rounded bg-sky-50 text-sky-800 border border-sky-100 text-[10px] font-semibold"
+                                    >
+                                      {t.name}
+                                    </span>
+                                  ))}
+                                  {tests.length === 0 && (
+                                    <span className="text-[11px] text-slate-400 italic">Standard Diagnostic</span>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="p-3.5">
+                                <span className="font-bold text-slate-900 block">{docName}</span>
+                                {ord.commissionBeneficiaryName && ord.commissionBeneficiaryName !== docName && (
+                                  <span className="text-[10px] text-emerald-700 font-semibold block mt-0.5">
+                                    Ben: {ord.commissionBeneficiaryName}
+                                  </span>
+                                )}
+                              </td>
+                              <td className="p-3.5 text-right font-black text-slate-900 whitespace-nowrap">
+                                ₹{(ord.paidAmount || ord.totalAmount || 0).toLocaleString()}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot className="bg-slate-50 border-t border-slate-200 font-bold text-slate-800 text-xs">
+                        <tr>
+                          <td colSpan={4} className="p-3.5 text-right uppercase tracking-wider text-[11px] text-slate-500">
+                            Total Collected ({matchingOrders.length} Patients):
+                          </td>
+                          <td className="p-3.5 text-right font-black text-sky-800 text-sm">
+                            ₹{totalPaid.toLocaleString()}
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                <span className="text-xs text-slate-500">
+                  Press <kbd className="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] font-mono">Esc</kbd> to close
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setReferredOrdersModalDoc(null)}
+                  className="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl text-xs transition-colors cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };
