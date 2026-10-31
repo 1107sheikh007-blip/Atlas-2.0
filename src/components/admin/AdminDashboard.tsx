@@ -559,7 +559,15 @@ export const AdminDashboard: React.FC = () => {
     setEditSelectedTests(ord.tests || []);
     setEditTestSearch('');
     setEditDiscountPct(ord.discountPct || 0);
-    setEditDiscountReason(ord.discountReason || '');
+    const admDiscVal = Number(ord.discountAmount) || 0;
+    const fallbackAdmReason = admDiscVal > 0
+      ? (ord.patientStatusRemark && ord.patientStatusRemark.trim()
+          ? (ord.patientStatusRemark.toLowerCase().includes('concession') || ord.patientStatusRemark.toLowerCase().includes('discount')
+              ? ord.patientStatusRemark.trim()
+              : ord.patientStatusRemark.trim() + ' concession')
+          : (ord.referringDoctorName ? ord.referringDoctorName + ' concession' : 'Doctor reference concession'))
+      : '';
+    setEditDiscountReason(ord.discountReason?.trim() || ord.notes?.trim() || fallbackAdmReason);
     setEditPaidAmount(ord.paidAmount || 0);
     setEditPaymentMode(ord.paymentMode || 'Cash');
     setEditOrderStatus(ord.status || 'ORDER_PLACED');

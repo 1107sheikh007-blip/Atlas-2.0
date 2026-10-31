@@ -656,8 +656,17 @@ export const ReceptionPortal: React.FC = () => {
         (r.name.toLowerCase() === orderBeingEdited.commissionBeneficiaryName?.toLowerCase())
       ) : null;
       setSelectedBeneficiaryId(matchedBen ? matchedBen.id : (orderBeingEdited.commissionBeneficiaryId || ''));
-      setDiscountPct(orderBeingEdited.discountPct || 0);
-      setDiscountReason(orderBeingEdited.discountReason || '');
+      const discVal = Number(orderBeingEdited.discountAmount) || 0;
+      const discPct = Number(orderBeingEdited.discountPct) || (orderBeingEdited.subtotal && discVal > 0 ? Math.round((discVal / orderBeingEdited.subtotal) * 100) : 0);
+      setDiscountPct(discPct);
+      const fallbackReason = (discVal > 0 || discPct > 0)
+        ? (orderBeingEdited.patientStatusRemark && orderBeingEdited.patientStatusRemark.trim()
+            ? (orderBeingEdited.patientStatusRemark.toLowerCase().includes('concession') || orderBeingEdited.patientStatusRemark.toLowerCase().includes('discount')
+                ? orderBeingEdited.patientStatusRemark.trim()
+                : orderBeingEdited.patientStatusRemark.trim() + ' concession')
+            : (orderBeingEdited.referringDoctorName ? orderBeingEdited.referringDoctorName + ' concession' : 'Doctor reference concession'))
+        : '';
+      setDiscountReason(orderBeingEdited.discountReason?.trim() || orderBeingEdited.notes?.trim() || fallbackReason);
       setPaymentMode(orderBeingEdited.paymentMode || 'UPI / QR');
       setPaidAmount(orderBeingEdited.paidAmount !== undefined ? orderBeingEdited.paidAmount : '');
       if (orderBeingEdited.paymentMode === 'Split Payment' && orderBeingEdited.splitPaymentDetails) {

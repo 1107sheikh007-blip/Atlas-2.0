@@ -1218,6 +1218,8 @@ function buildOrderRowFromHeaders(headers, ord) {
       row.push(ord.commissionBeneficiaryName || "");
     } else if (h.indexOf("subtotal") >= 0 || h.indexOf("mrp") >= 0 || h.indexOf("gross") >= 0) {
       row.push(Number(ord.subtotal) || 0);
+    } else if (h.indexOf("discount reason") >= 0 || h.indexOf("discount note") >= 0 || h.indexOf("concession note") >= 0 || h.indexOf("concession reason") >= 0) {
+      row.push(ord.discountReason || (Number(ord.discountAmount) > 0 ? (ord.patientStatusRemark ? ord.patientStatusRemark + " concession" : "Doctor reference concession") : ""));
     } else if (h.indexOf("discount") >= 0) {
       row.push(Number(ord.discountAmount) || 0);
     } else if (h.indexOf("net") >= 0 || h.indexOf("total") >= 0) {
@@ -2100,7 +2102,7 @@ function fetchAllOrdersFromSheets(ss) {
 
       var colId = -1, colInv = -1, colDate = -1, colUhid = -1, colName = -1, colAge = -1, colGender = -1, colPhone = -1;
       var colTests = -1, colSubtotal = -1, colDiscount = -1, colTotal = -1, colPaid = -1, colDue = -1, colPayMode = -1;
-      var colStatus = -1, colDoc = -1, colBeneficiary = -1, colStaff = -1, colBarcode = -1, colRemark = -1;
+      var colStatus = -1, colDoc = -1, colBeneficiary = -1, colStaff = -1, colBarcode = -1, colRemark = -1, colDiscountReason = -1;
 
       for (var c = 0; c < headerRow.length; c++) {
         var h = headerRow[c];
@@ -2115,6 +2117,7 @@ function fetchAllOrdersFromSheets(ss) {
         else if (h.indexOf("phone") >= 0 || h.indexOf("mobile") >= 0 || h.indexOf("contact") >= 0 || h.indexOf("whatsapp") >= 0) colPhone = c;
         else if (h.indexOf("test") >= 0 || h.indexOf("investigation") >= 0) colTests = c;
         else if (h.indexOf("subtotal") >= 0 || h.indexOf("mrp") >= 0 || h.indexOf("gross") >= 0) colSubtotal = c;
+        else if (h.indexOf("discount reason") >= 0 || h.indexOf("discount note") >= 0 || h.indexOf("concession reason") >= 0 || h.indexOf("concession note") >= 0) colDiscountReason = c;
         else if (h.indexOf("discount") >= 0) colDiscount = c;
         else if (h.indexOf("net") >= 0 || h.indexOf("total") >= 0) colTotal = c;
         else if (h.indexOf("paid") >= 0) colPaid = c;
@@ -2354,6 +2357,7 @@ function fetchAllOrdersFromSheets(ss) {
           createdByStaffName: cleanStaff,
           barcode: barcode || ("ATL-BAR-" + cleanInv),
           patientStatusRemark: remark,
+          discountReason: colDiscountReason >= 0 ? String(row[colDiscountReason] || "") : (discount > 0 ? (remark ? remark + " concession" : "Doctor reference concession") : ""),
           refundAmount: 0,
           refundReason: "",
           centerCode: (name.replace("Orders_", "").replace(/_/g, "-") || "ATL-MAIN"),
