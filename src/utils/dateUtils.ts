@@ -484,7 +484,7 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     return false;
   };
 
-  let realDoctor = 'Direct / Walk-in';
+  let realDoctor = 'Direct Walk-in';
   let realBeneficiary = rawBeneficiary || ord.commissionBeneficiaryName || '';
   if (rawDoc && !isInvalidDoctorName(rawDoc) && !/^\d{8,14}$/.test(rawDoc)) {
     if (rawDoc.includes(' | Ben: ')) {
@@ -507,6 +507,9 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     const lower = str.trim().toLowerCase();
     if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') {
       return 'Galaxy hospital khajrana';
+    }
+    if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') {
+      return 'Direct Walk-in';
     }
     return str.trim();
   };

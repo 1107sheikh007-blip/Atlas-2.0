@@ -263,7 +263,7 @@ interface DiagnosticContextType {
 
 const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undefined);
 
-const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V18_';
+const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V19_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
 export const normalizeDocNameKey = (name?: string) => {

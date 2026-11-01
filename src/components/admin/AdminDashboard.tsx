@@ -1584,6 +1584,8 @@ export const AdminDashboard: React.FC = () => {
       .replace(/sh/g, 's')
       .trim();
     if (raw === 'galaxyhospital' || raw === 'galaxyhospitalkhajrana') return 'galaxyhospitalkhajrana';
+    if (raw.includes('direct') && raw.includes('walkin')) return 'directwalkin';
+    if (raw === 'walkin' || raw === 'direct') return 'directwalkin';
     return raw;
   }, []);
 
@@ -1591,6 +1593,11 @@ export const AdminDashboard: React.FC = () => {
     const isOrderMatchingReferrer = useCallback((ord: DiagnosticOrder, r: ReferringDoctor) => {
     const rawDocName = (ord.referringDoctorName || '').trim();
     const rawBenName = (ord.commissionBeneficiaryName || '').trim();
+    if (r.id === 'partner-direct-walkin' || normalizeRefName(r.name) === 'directwalkin') {
+      const isDocWalkIn = !ord.referringDoctorId && (!rawDocName || /walk[\s-]*in|direct|^self$/i.test(rawDocName));
+      const isBenWalkIn = !ord.commissionBeneficiaryId && (!rawBenName || /walk[\s-]*in|direct|^self$/i.test(rawBenName));
+      return isDocWalkIn || isBenWalkIn;
+    }
     // Only exclude as walk-in if NEITHER referring doctor NOR beneficiary is assigned to a real partner
     const isWalkInOrder = !ord.referringDoctorId && !ord.commissionBeneficiaryId && 
       (!rawDocName || /walk[\s-]*in|direct|^self$/i.test(rawDocName)) &&
@@ -1647,6 +1654,11 @@ export const AdminDashboard: React.FC = () => {
     const rawBenName = (ord.commissionBeneficiaryName || '').trim();
     const rawDocName = (ord.referringDoctorName || '').trim();
 
+    if (r.id === 'partner-direct-walkin' || normalizeRefName(r.name) === 'directwalkin') {
+      const isBenWalkIn = !ord.commissionBeneficiaryId && (!rawBenName || /walk[\s-]*in|direct|^self$/i.test(rawBenName));
+      return isBenWalkIn;
+    }
+
     // Direct check if order beneficiary matches r
     if (ord.commissionBeneficiaryId && ord.commissionBeneficiaryId === r.id) return true;
 
@@ -1682,6 +1694,7 @@ export const AdminDashboard: React.FC = () => {
       const lower = rawName.trim().toLowerCase();
       if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
       if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') return 'Galaxy hospital khajrana';
+      if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') return 'Direct Walk-in';
       return rawName.trim();
     };
 
@@ -1732,6 +1745,7 @@ export const AdminDashboard: React.FC = () => {
       const lower = rawName.trim().toLowerCase();
       if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
       if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') return 'Galaxy hospital khajrana';
+      if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') return 'Direct Walk-in';
       return rawName.trim();
     };
 
@@ -1777,12 +1791,39 @@ export const AdminDashboard: React.FC = () => {
 
   // Filtered Referrers with Date Range & Affiliation Filter
   const filteredReferrers = useMemo(() => {
+    // Virtual Partner for Direct Walk-in patients
+    const DIRECT_WALKIN_PARTNER: ReferringDoctor = {
+      id: 'partner-direct-walkin',
+      name: 'Direct Walk-in',
+      specialty: 'Center Walk-in Patients',
+      hospital: 'Atlas Diagnostics',
+      phone: '',
+      email: '',
+      commissionPct: 0,
+      affiliationType: 'SELF',
+      organizationName: 'Direct Walk-in',
+      status: 'APPROVED',
+      totalReferralsCount: 0,
+      totalRevenueGenerated: 0,
+      totalCommissionEarned: 0,
+      payoutPaid: 0,
+      qualification: 'Walk-in Billing',
+      addedByRole: 'SUPER_ADMIN',
+      addedAt: '2026-01-01T00:00:00.000Z'
+    };
+
+    const isWalkInFiltered = 
+      normalizeRefName(referralBeneficiaryFilter) === 'directwalkin' ||
+      normalizeRefName(referralDoctorFilter) === 'directwalkin' ||
+      (referralSearch && 'direct walk-in'.includes(referralSearch.toLowerCase().trim()));
+
+    const baseList = isWalkInFiltered ? [...referrers, DIRECT_WALKIN_PARTNER] : referrers;
     // Check if DR. UMAIMA JAMALI exists in referrers to avoid duplicate SWATI row
     const hasUmaima = referrers.some(r => normalizeRefName(r.name) === 'umaimajamali');
 
     const seenRankKeys = new Set<string>();
 
-    return referrers
+    return baseList
       .filter(r => {
         // Deduplicate: If Umaima Jamali is present as an approved/registered doctor with SWATI AL-HAYAT, omit standalone SWATI partner row
         if (hasUmaima && normalizeRefName(r.name) === 'swati') {
