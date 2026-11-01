@@ -1577,12 +1577,14 @@ export const AdminDashboard: React.FC = () => {
   // Helper to normalize doctor / partner names for fuzzy matching (removes Dr, Mr, punctuation)
   const normalizeRefName = useCallback((str?: string) => {
     if (!str) return '';
-    return str
+    const raw = str
       .toLowerCase()
       .replace(/^(dr\.?|doctor|mr\.?|mrs\.?|ms\.?|prof\.?|pt\.?)\s*/i, '')
       .replace(/[^a-z0-9]/g, '')
       .replace(/sh/g, 's')
       .trim();
+    if (raw === 'galaxyhospital' || raw === 'galaxyhospitalkhajrana') return 'galaxyhospitalkhajrana';
+    return raw;
   }, []);
 
   // Matching helper to relate patient order with a doctor or organization partner
@@ -1679,6 +1681,7 @@ export const AdminDashboard: React.FC = () => {
     const getCanonicalName = (rawName: string) => {
       const lower = rawName.trim().toLowerCase();
       if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
+      if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') return 'Galaxy hospital khajrana';
       return rawName.trim();
     };
 
@@ -1728,6 +1731,7 @@ export const AdminDashboard: React.FC = () => {
     const getCanonicalName = (rawName: string) => {
       const lower = rawName.trim().toLowerCase();
       if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
+      if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') return 'Galaxy hospital khajrana';
       return rawName.trim();
     };
 
@@ -1811,7 +1815,7 @@ export const AdminDashboard: React.FC = () => {
       return {
         ...r,
         totalRevenueGenerated: referralDateRange === 'ALL' ? Math.max(r.totalRevenueGenerated || 0, periodRevenue) : periodRevenue,
-        totalReferralsCount: referralDateRange === 'ALL' ? Math.max(r.totalReferralsCount || 0, periodCount) : periodCount,
+        totalReferralsCount: periodCount > 0 ? periodCount : (r.totalReferralsCount || 0),
         totalCommissionEarned: referralDateRange === 'ALL' ? periodCommission : periodCommission
       };
     }).filter(r => {

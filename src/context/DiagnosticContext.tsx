@@ -263,16 +263,19 @@ interface DiagnosticContextType {
 
 const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undefined);
 
-const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V16_';
+const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V17_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
-export const normalizeDocNameKey = (name?: string) =>
-  String(name || '')
+export const normalizeDocNameKey = (name?: string) => {
+  const raw = String(name || '')
     .toLowerCase()
     .replace(/^(dr\.?|doctor|mr\.?|mrs\.?|ms\.?)\s*/i, '')
     .replace(/[^a-z0-9]/g, '')
     .replace(/sh/g, 's')
     .trim();
+  if (raw === 'galaxyhospital' || raw === 'galaxyhospitalkhajrana') return 'galaxyhospitalkhajrana';
+  return raw;
+};
 
 export const deduplicateAndCleanReferrers = (list: ReferringDoctor[]): ReferringDoctor[] => {
   const result: ReferringDoctor[] = [];
@@ -2494,13 +2497,16 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   }, [allAppointments]);
 
-  const normalizeDocNameKey = (name?: string) =>
-    String(name || '')
+  const normalizeDocNameKey = (name?: string) => {
+    const raw = String(name || '')
       .toLowerCase()
       .replace(/^(dr\.?|doctor|mr\.?|mrs\.?|ms\.?)\s*/i, '')
       .replace(/[^a-z0-9]/g, '')
       .replace(/sh/g, 's')
       .trim();
+    if (raw === 'galaxyhospital' || raw === 'galaxyhospitalkhajrana') return 'galaxyhospitalkhajrana';
+    return raw;
+  };
 
   const approvedReferrers = useMemo(() => {
     // Matching helper to relate patient order with a doctor or organization partner

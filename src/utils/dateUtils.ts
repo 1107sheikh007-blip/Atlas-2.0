@@ -502,6 +502,17 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
   if (!realBeneficiary) {
     realBeneficiary = realDoctor;
   }
+  const normalizeCanonicalPartner = (str: string) => {
+    if (!str) return str;
+    const lower = str.trim().toLowerCase();
+    if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') {
+      return 'Galaxy hospital khajrana';
+    }
+    return str.trim();
+  };
+
+  realDoctor = normalizeCanonicalPartner(realDoctor);
+  realBeneficiary = normalizeCanonicalPartner(realBeneficiary);
 
   // 4. Recover and Clean Diagnostic Tests
   let cleanTests: any[] = [];
