@@ -2516,19 +2516,23 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         return true;
       }
 
-      // Organization / Affiliation match (only if partner has an actual distinct organization name)
-      if (isValidToken(normROrg) && normROrg !== 'self' && normROrg !== 'atlasself') {
-        if ((isValidToken(normDoc) && normDoc === normROrg) ||
-            (isValidToken(normBen) && normBen === normROrg) ||
-            (isValidToken(normAff) && normAff === normROrg)) {
-          return true;
+      // Organization / Beneficiary match: ONLY apply if this doctor record 'r' is actually an organization/hospital partner entity itself!
+      // Individual doctors linked to an organization should NOT match orders referred by OTHER doctors in the same organization.
+      const isOrgPartnerEntity = r.affiliationType === 'ORGANIZATION' && ((r as any).role === 'Referral Partner' || r.specialty?.toLowerCase().includes('hospital') || r.specialty?.toLowerCase().includes('clinic') || r.specialty?.toLowerCase().includes('partner') || !r.name.toLowerCase().startsWith('dr.'));
+      if (isOrgPartnerEntity) {
+        if (isValidToken(normROrg) && normROrg !== 'self' && normROrg !== 'atlasself') {
+          if ((isValidToken(normDoc) && normDoc === normROrg) ||
+              (isValidToken(normBen) && normBen === normROrg) ||
+              (isValidToken(normAff) && normAff === normROrg)) {
+            return true;
+          }
         }
-      }
-      if (isValidToken(normRHosp) && normRHosp !== 'self' && normRHosp !== 'atlasself') {
-        if ((isValidToken(normDoc) && normDoc === normRHosp) ||
-            (isValidToken(normBen) && normBen === normRHosp) ||
-            (isValidToken(normAff) && normAff === normRHosp)) {
-          return true;
+        if (isValidToken(normRHosp) && normRHosp !== 'self' && normRHosp !== 'atlasself') {
+          if ((isValidToken(normDoc) && normDoc === normRHosp) ||
+              (isValidToken(normBen) && normBen === normRHosp) ||
+              (isValidToken(normAff) && normAff === normRHosp)) {
+            return true;
+          }
         }
       }
 

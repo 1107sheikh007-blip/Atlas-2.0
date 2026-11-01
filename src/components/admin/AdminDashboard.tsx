@@ -1614,19 +1614,22 @@ export const AdminDashboard: React.FC = () => {
       return true;
     }
 
-    // Organization / Affiliation match (only when both tokens are non-empty and valid)
-    if (isValidToken(normROrg)) {
-      if ((isValidToken(normDoc) && normDoc === normROrg) ||
-          (isValidToken(normBen) && normBen === normROrg) ||
-          (isValidToken(normAff) && normAff === normROrg)) {
-        return true;
+    // Organization / Beneficiary match: ONLY apply if this doctor record 'r' is actually an organization/hospital partner entity itself!
+    const isOrgPartnerEntity = r.affiliationType === 'ORGANIZATION' && ((r as any).role === 'Referral Partner' || r.specialty?.toLowerCase().includes('hospital') || r.specialty?.toLowerCase().includes('clinic') || r.specialty?.toLowerCase().includes('partner') || !r.name.toLowerCase().startsWith('dr.'));
+    if (isOrgPartnerEntity) {
+      if (isValidToken(normROrg)) {
+        if ((isValidToken(normDoc) && normDoc === normROrg) ||
+            (isValidToken(normBen) && normBen === normROrg) ||
+            (isValidToken(normAff) && normAff === normROrg)) {
+          return true;
+        }
       }
-    }
-    if (isValidToken(normRHosp)) {
-      if ((isValidToken(normDoc) && normDoc === normRHosp) ||
-          (isValidToken(normBen) && normBen === normRHosp) ||
-          (isValidToken(normAff) && normAff === normRHosp)) {
-        return true;
+      if (isValidToken(normRHosp)) {
+        if ((isValidToken(normDoc) && normDoc === normRHosp) ||
+            (isValidToken(normBen) && normBen === normRHosp) ||
+            (isValidToken(normAff) && normAff === normRHosp)) {
+          return true;
+        }
       }
     }
 
