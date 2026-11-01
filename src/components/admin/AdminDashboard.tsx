@@ -2935,7 +2935,7 @@ export const AdminDashboard: React.FC = () => {
 
             {/* Orders Table */}
             <div className="overflow-x-auto border border-slate-200 rounded-2xl">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[1300px]">
                 <thead className="bg-sky-50/80 text-sky-900 uppercase text-[10px] tracking-wider border-b border-sky-100 font-extrabold">
                   <tr>
                     <th className="p-3.5">Date</th>
@@ -2948,7 +2948,7 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Paid Amount</th>
                     <th className="p-3.5">Due by Patient</th>
                     <th className="p-3.5">Billed By</th>
-                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
+                    <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -3146,7 +3146,7 @@ export const AdminDashboard: React.FC = () => {
                           </td>
 
                           {/* 10. Actions */}
-                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky right-0 bg-white group-hover:bg-sky-50/50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)]">
+                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky-action-col">
                             {/* Edit Invoice Button */}
                             <button
                               type="button"
@@ -4017,7 +4017,7 @@ export const AdminDashboard: React.FC = () => {
                       <th className="p-3.5">Punch-Out (Logout Time)</th>
                       <th className="p-3.5">Duration Logged</th>
                       <th className="p-3.5">Shift Compliance</th>
-                      <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
+                      <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -4096,7 +4096,7 @@ export const AdminDashboard: React.FC = () => {
                             )}
                           </td>
 
-                          <td className="p-3.5 text-right whitespace-nowrap">
+                          <td className="p-3.5 text-right whitespace-nowrap sticky-action-col">
                             <div className="flex items-center justify-end gap-1.5">
                               {isOnline && (
                                 <button
@@ -5256,7 +5256,7 @@ export const AdminDashboard: React.FC = () => {
                         <th className="p-3.5">Contact & Registration</th>
                         <th className="p-3.5">Patients Referred</th>
                         <th className="p-3.5">Gross Revenue</th>
-                        <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
+                        <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -5306,7 +5306,7 @@ export const AdminDashboard: React.FC = () => {
                             </button>
                           </td>
                           <td className="p-3.5 font-black text-sky-700">₹{doc.totalRevenueGenerated.toLocaleString()}</td>
-                          <td className="p-3.5 text-right space-x-1.5">
+                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky-action-col">
                             <button
                               onClick={() => {
                                 const waUrl = sendWelcomeDoctorWhatsApp(doc);
@@ -5600,7 +5600,7 @@ export const AdminDashboard: React.FC = () => {
                       <th className="p-3.5 text-right">Paid</th>
                       <th className="p-3.5 text-right">Due</th>
                       <th className="p-3.5">Billed By</th>
-                      <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
+                      <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -5720,7 +5720,7 @@ export const AdminDashboard: React.FC = () => {
                               </td>
 
                               {/* 10. Actions */}
-                              <td className="p-3.5 text-right space-x-1 whitespace-nowrap">
+                              <td className="p-3.5 text-right space-x-1 whitespace-nowrap sticky-action-col">
                                 <button
                                   type="button"
                                   onClick={() => setInvoiceModalOrder(ord)}
@@ -5883,7 +5883,7 @@ export const AdminDashboard: React.FC = () => {
                               </td>
 
                               {/* 10. Actions */}
-                              <td className="p-3.5 text-right space-x-1 whitespace-nowrap">
+                              <td className="p-3.5 text-right space-x-1 whitespace-nowrap sticky-action-col">
                                 <button
                                   type="button"
                                   onClick={() => setInvoiceModalOrder(ord)}
@@ -5966,7 +5966,7 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Affiliation</th>
                     <th className="p-3.5">Referred Patients</th>
                     <th className="p-3.5">Gross Revenue</th>
-                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
+                    <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -6033,7 +6033,7 @@ export const AdminDashboard: React.FC = () => {
                           <td className="p-3.5 font-black text-sky-700 text-sm">
                             ₹{doc.totalRevenueGenerated.toLocaleString()}
                           </td>
-                          <td className="p-3.5 text-right">
+                          <td className="p-3.5 text-right whitespace-nowrap sticky-action-col">
                             <div className="flex items-center justify-end gap-1.5">
                               {doc.phone && (
                                 <button
@@ -6158,7 +6158,7 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Date</th>
                     <th className="p-3.5">Payment Mode</th>
                     <th className="p-3.5">Amount (₹)</th>
-                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
+                    <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -6203,7 +6203,7 @@ export const AdminDashboard: React.FC = () => {
                         <td className="p-3.5 font-black text-rose-600 text-sm">
                           ₹{exp.amount.toLocaleString()}
                         </td>
-                        <td className="p-3.5 text-right">
+                        <td className="p-3.5 text-right whitespace-nowrap sticky-action-col">
                           <button
                             type="button"
                             onClick={() => {
@@ -6264,7 +6264,7 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Digital Sign / Seal</th>
                     {isSuperAdmin && <th className="p-3.5">Monthly Salary</th>}
                     <th className="p-3.5 text-center">Working Hours</th>
-                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
+                    <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -6318,7 +6318,7 @@ export const AdminDashboard: React.FC = () => {
                             {calculateWorkingHours(emp.shift, emp.shiftStartTime, emp.shiftEndTime)}
                           </span>
                         </td>
-                        <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
+                        <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky-action-col">
                           {/* Send WhatsApp Credentials */}
                           <button
                             type="button"

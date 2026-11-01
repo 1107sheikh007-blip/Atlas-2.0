@@ -89,7 +89,7 @@ export const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-xs">
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6">
+      <div className="w-full max-w-[99vw] 2xl:max-w-full mx-auto px-2 sm:px-4 lg:px-6">
         <div className="flex items-center justify-between h-16 gap-3">
           {/* Brand Logo */}
           <div className="flex items-center gap-2.5 shrink-0">

@@ -3206,7 +3206,7 @@ export const ReceptionPortal: React.FC = () => {
           {/* Orders Table */}
           <div className="bg-white border border-sky-100 rounded-3xl overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[1300px]">
                 <thead className="bg-sky-50/70 text-sky-900 uppercase text-[10px] tracking-wider border-b border-sky-100 font-black">
                   <tr>
                     <th className="p-3.5">Date</th>
@@ -3219,7 +3219,7 @@ export const ReceptionPortal: React.FC = () => {
                     <th className="p-3.5">Paid Amount</th>
                     <th className="p-3.5">Due by Patient</th>
                     <th className="p-3.5">Workflow Status</th>
-                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Instant Actions</th>
+                    <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Instant Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -3428,7 +3428,7 @@ export const ReceptionPortal: React.FC = () => {
                           </td>
 
                           {/* 10. Instant Actions */}
-                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky right-0 bg-white group-hover:bg-sky-50/50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)]">
+                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky-action-col">
                             {/* Edit Invoice Button */}
                             <button
                               type="button"

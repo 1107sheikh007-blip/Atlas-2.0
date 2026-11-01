@@ -64,7 +64,7 @@ const MainContent: React.FC = () => {
       <Header />
 
       {/* Main Role Workstation Area */}
-      <main className="flex-1 max-w-[1920px] w-full mx-auto px-4 sm:px-6 py-4 sm:py-5">
+      <main className="flex-1 w-full max-w-[99vw] 2xl:max-w-full mx-auto px-2 sm:px-4 lg:px-6 py-4 sm:py-5">
         {(currentRole === 'SUPER_ADMIN' || currentRole === 'CENTER_MANAGER') && <AdminDashboard />}
         {currentRole === 'RECEPTIONIST' && <ReceptionPortal />}
         {(currentRole === 'DIAGNOSTIC_DOCTOR' || currentRole === 'LAB_TECHNICIAN') && <DoctorWorkstation />}
@@ -74,7 +74,7 @@ const MainContent: React.FC = () => {
 
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 py-3.5 mt-8 text-xs text-slate-500 shadow-xs">
-        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="w-full max-w-[99vw] 2xl:max-w-full mx-auto px-2 sm:px-4 lg:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
             <span className="font-bold text-slate-700">Atlas Diagnostics Center</span>
