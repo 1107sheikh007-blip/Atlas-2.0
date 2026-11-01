@@ -1206,10 +1206,14 @@ export const ReceptionPortal: React.FC = () => {
           paymentStatus: balanceDue === 0 ? 'PAID' : (numericPaid > 0 ? 'PARTIAL' : 'DUE'),
           referringDoctorId: selectedDoctorId || orderBeingEdited.referringDoctorId || undefined,
           referringDoctorName: docObj ? docObj.name : (selectedDoctorId ? selectedDoctorId : (orderBeingEdited.referringDoctorName || 'Direct Walk-in')),
-          commissionBeneficiaryId: isBeneficiaryDifferent && selectedBeneficiaryId ? (selectedBeneficiaryId === ATLAS_SELF_BENEFICIARY.id ? 'Atlas Self' : selectedBeneficiaryId) : (docObj ? docObj.id : (orderBeingEdited.commissionBeneficiaryId || undefined)),
-          commissionBeneficiaryName: isBeneficiaryDifferent && selectedBeneficiaryId 
-            ? (selectedBeneficiaryId === ATLAS_SELF_BENEFICIARY.id ? 'Atlas Self' : (beneficiaryObj ? (beneficiaryObj.organizationName || beneficiaryObj.name) : (orderBeingEdited.commissionBeneficiaryName || undefined))) 
-            : (docObj ? (docObj.organizationName || docObj.name) : (orderBeingEdited.commissionBeneficiaryName || undefined)),
+          commissionBeneficiaryId: isSuperAdmin 
+            ? (isBeneficiaryDifferent && selectedBeneficiaryId ? (selectedBeneficiaryId === ATLAS_SELF_BENEFICIARY.id ? 'Atlas Self' : selectedBeneficiaryId) : (docObj ? docObj.id : (orderBeingEdited.commissionBeneficiaryId || undefined)))
+            : (orderBeingEdited.commissionBeneficiaryId || (docObj ? docObj.id : undefined)),
+          commissionBeneficiaryName: isSuperAdmin
+            ? (isBeneficiaryDifferent && selectedBeneficiaryId 
+                ? (selectedBeneficiaryId === ATLAS_SELF_BENEFICIARY.id ? 'Atlas Self' : (beneficiaryObj ? (beneficiaryObj.organizationName || beneficiaryObj.name) : (orderBeingEdited.commissionBeneficiaryName || undefined))) 
+                : (docObj ? (docObj.organizationName || docObj.name) : (orderBeingEdited.commissionBeneficiaryName || undefined)))
+            : (orderBeingEdited.commissionBeneficiaryName || (docObj ? (docObj.organizationName || docObj.name) : undefined)),
           appointmentDate: normDate,
           appointmentTime,
           notes: orderNotes,
@@ -2231,23 +2235,29 @@ export const ReceptionPortal: React.FC = () => {
                   )}
                 </div>
 
-                {/* Decoupled Commission Beneficiary Selector */}
-                <div className="pt-2 border-t border-slate-100 space-y-2">
-                  <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 select-none">
-                    <input
-                      type="checkbox"
-                      checked={isBeneficiaryDifferent}
-                      onChange={e => {
-                        const checked = e.target.checked;
-                        setIsBeneficiaryDifferent(checked);
-                        if (!checked) {
-                          setSelectedBeneficiaryId('');
-                        }
-                      }}
-                      className="rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer"
-                    />
-                    <span>Referrer / Beneficiary is different from Prescribing Doctor</span>
-                  </label>
+                {/* Decoupled Commission Beneficiary Selector (Super Admin restricted during order editing) */}
+                {(!orderBeingEdited || isSuperAdmin) ? (
+                  <div className="pt-2 border-t border-slate-100 space-y-2">
+                    <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 select-none">
+                      <input
+                        type="checkbox"
+                        checked={isBeneficiaryDifferent}
+                        onChange={e => {
+                          const checked = e.target.checked;
+                          setIsBeneficiaryDifferent(checked);
+                          if (!checked) {
+                            setSelectedBeneficiaryId('');
+                          }
+                        }}
+                        className="rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer"
+                      />
+                      <span>Referrer / Beneficiary is different from Prescribing Doctor</span>
+                      {orderBeingEdited && isSuperAdmin && (
+                        <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded ml-auto">
+                          Super Admin Edit
+                        </span>
+                      )}
+                    </label>
 
                   {isBeneficiaryDifferent && (
                     <div className="p-3 bg-cyan-50/70 border border-cyan-200 rounded-2xl space-y-2 animate-fade-in" ref={beneficiaryDropdownRef}>
@@ -2358,6 +2368,19 @@ export const ReceptionPortal: React.FC = () => {
                     </div>
                   )}
                 </div>
+                ) : (
+                  /* Read-only notice for non-superadmin users editing an order */
+                  <div className="pt-2 border-t border-slate-100 text-xs text-slate-500 flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                    <div className="flex items-center gap-1.5">
+                      <Lock className="w-3.5 h-3.5 text-slate-400" />
+                      <span>
+                        <strong className="text-slate-700">Beneficiary:</strong>{' '}
+                        {orderBeingEdited.commissionBeneficiaryName || orderBeingEdited.referringDoctorName || 'Prescribing Doctor'}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-slate-400 italic">Only Super Admin can change beneficiary</span>
+                  </div>
+                )}
               </div>
 
               {/* Diagnostic Test Selector Card with Multi-Filter Suite */}
