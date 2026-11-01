@@ -85,6 +85,7 @@ export interface SyncPayload {
     | 'SYNC_STAFF_ATTENDANCE'
     | 'SYNC_TEST_CATALOG'
     | 'UPDATE_TEST_PRICE'
+    | 'SYNC_ACTIVITY'
     | 'FULL_BACKUP'
     | 'SYNC_ALL_DATA'
     | 'REPAIR_ORDER_COLUMNS'
@@ -139,6 +140,7 @@ export interface SyncPayload {
   rosterDoctor?: DoctorRosterItem;
   test?: DiagnosticTestItem;
   tests?: DiagnosticTestItem[];
+  activity?: any;
 }
 
 export interface SyncResult {
@@ -456,6 +458,29 @@ export const syncFullTestCatalogToGoogleSheets = async (
     return {
       success: false,
       message: `Failed to push test catalog to Google Sheets: ${err.message}`,
+      timestamp: new Date().toISOString()
+    };
+  }
+};
+
+
+export const syncActivityLogToGoogleSheets = async (
+  activity: any
+): Promise<SyncResult> => {
+  try {
+    const res = await postToGoogleAppsScript({
+      action: 'SYNC_ACTIVITY',
+      activity
+    });
+    return {
+      success: true,
+      message: res.message || `Activity logged to Google Sheets`,
+      timestamp: new Date().toISOString()
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: `Failed to push activity to Google Sheets: ${err.message}`,
       timestamp: new Date().toISOString()
     };
   }

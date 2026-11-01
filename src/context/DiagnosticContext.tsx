@@ -1,3 +1,4 @@
+import { syncActivityLogToGoogleSheets } from '../services/googleSheetsSync';
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import {
   formatSafeDate,
@@ -449,6 +450,8 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const next = [newAct, ...prev.filter(a => a.id !== newAct.id)].slice(0, 300);
       try {
         localStorage.setItem(`${STORAGE_PREFIX}ACTIVITIES`, JSON.stringify(next));
+        // Async background sync to Google Sheets without blocking UI
+        syncActivityLogToGoogleSheets(newAct).catch(err => console.warn('Activity sync failed:', err));
       } catch (e) {
         console.warn(e);
       }
