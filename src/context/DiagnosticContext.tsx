@@ -261,7 +261,7 @@ interface DiagnosticContextType {
 
 const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undefined);
 
-const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V14_';
+const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V15_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
 // Auto-purge stale cached data from earlier builds if needed
