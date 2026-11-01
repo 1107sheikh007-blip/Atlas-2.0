@@ -1730,7 +1730,10 @@ export const AdminDashboard: React.FC = () => {
         }
       }
     });
-    return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
+    // Only return beneficiaries that have at least 1 actual affiliated order
+    return Array.from(map.values())
+      .filter(b => b.count > 0)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [referrers, allOrders]);
 
   // Dynamically compile all unique Commission Beneficiaries from both registered roster and actual patient orders
@@ -1776,7 +1779,10 @@ export const AdminDashboard: React.FC = () => {
         }
       }
     });
-    return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
+    // Only return beneficiaries that have at least 1 actual affiliated order
+    return Array.from(map.values())
+      .filter(b => b.count > 0)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [referrers, allOrders]);
 
   // Filtered Referrers with Date Range & Affiliation Filter
