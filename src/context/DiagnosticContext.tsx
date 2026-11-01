@@ -263,7 +263,7 @@ interface DiagnosticContextType {
 
 const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undefined);
 
-const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V20_';
+const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V21_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
 export const normalizeDocNameKey = (name?: string) => {
@@ -296,7 +296,22 @@ export const deduplicateAndCleanReferrers = (list: ReferringDoctor[]): Referring
 
     if (idKey) seenIds.add(idKey);
     if (nameKey && nameKey.length >= 3) seenNames.add(nameKey);
-    result.push(r);
+
+    // Sanitize specialty and qualification: remove 'Referral Partner' / 'Beneficiary Partner' badges
+    let cleanSpecialty = (r.specialty || '').trim();
+    if (cleanSpecialty.toLowerCase() === 'referral partner' || cleanSpecialty.toLowerCase() === 'beneficiary partner') {
+      cleanSpecialty = '';
+    }
+    let cleanQual = (r.qualification || '').trim();
+    if (cleanQual.toLowerCase() === 'beneficiary partner' || cleanQual.toLowerCase() === 'referral partner') {
+      cleanQual = '';
+    }
+
+    result.push({
+      ...r,
+      specialty: cleanSpecialty,
+      qualification: cleanQual
+    });
   }
   return result;
 };

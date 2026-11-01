@@ -2194,14 +2194,14 @@ export const ReceptionPortal: React.FC = () => {
                                     <div className="min-w-0 pr-2">
                                       <div className="text-xs font-bold truncate flex items-center gap-1.5">
                                         <span>{doc.name}</span>
-                                        {doc.organizationName && (
-                                          <span className="text-[10px] font-bold text-purple-700">
-                                            (Org: {doc.organizationName})
-                                          </span>
-                                        )}
-                                        {doc.specialty && (
+                                        {doc.specialty && !doc.specialty.toLowerCase().includes('partner') && (
                                           <span className="text-[10px] font-normal text-slate-500">
                                             • {doc.specialty}
+                                          </span>
+                                        )}
+                                        {doc.qualification && !doc.qualification.toLowerCase().includes('partner') && !doc.qualification.toLowerCase().includes('ref-') && (
+                                          <span className="text-[10px] font-normal text-slate-400">
+                                            ({doc.qualification})
                                           </span>
                                         )}
                                       </div>
@@ -2303,6 +2303,7 @@ export const ReceptionPortal: React.FC = () => {
                           const checked = e.target.checked;
                           setIsBeneficiaryDifferent(checked);
                           if (!checked) {
+                            // Automatically revert beneficiary to prescribing doctor for this order
                             setSelectedBeneficiaryId(selectedDoctorId || '');
                             setBeneficiarySearchQuery('');
                             setIsBeneficiaryDropdownOpen(false);
@@ -2346,9 +2347,11 @@ export const ReceptionPortal: React.FC = () => {
                           <div className="min-w-0">
                             <div className="text-xs font-bold text-slate-900 dark:text-white truncate flex items-center gap-1.5">
                               <span>{selectedBeneficiaryObj.name || selectedBeneficiaryObj.organizationName}</span>
-                              <span className="text-[10px] text-sky-700 dark:text-sky-300 font-semibold px-1.5 py-0.2 bg-sky-50 dark:bg-sky-950/50 rounded">
-                                {selectedBeneficiaryObj.specialty || 'Beneficiary Partner'}
-                              </span>
+                              {selectedBeneficiaryObj.specialty && !selectedBeneficiaryObj.specialty.toLowerCase().includes('partner') && (
+                                <span className="text-[10px] text-sky-700 dark:text-sky-300 font-semibold px-1.5 py-0.2 bg-sky-50 dark:bg-sky-950/50 rounded">
+                                  {selectedBeneficiaryObj.specialty}
+                                </span>
+                              )}
                             </div>
                             <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
                               {selectedBeneficiaryObj.hospital || 'Direct Clinic / Center'} • {selectedBeneficiaryObj.commissionPct || 0}% commission
@@ -2420,7 +2423,7 @@ export const ReceptionPortal: React.FC = () => {
                                   >
                                     <div className="min-w-0 pr-2">
                                       <div className="font-semibold truncate">
-                                        {r.name || r.organizationName} — {r.specialty || 'Beneficiary Partner'}
+                                        {r.name || r.organizationName}
                                       </div>
                                       <div className="text-[10px] text-slate-400 dark:text-slate-400 truncate">
                                         {r.hospital || 'Direct Clinic'} • {r.commissionPct || 0}% commission
