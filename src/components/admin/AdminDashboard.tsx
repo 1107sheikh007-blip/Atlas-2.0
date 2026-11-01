@@ -1215,6 +1215,7 @@ export const AdminDashboard: React.FC = () => {
       // 3. AutoTable for Separated Diagnostic Line Items with MRP, Discount, Paid, Due & Billed By
       const tableHead = [
         [
+          'S.No.',
           'Date & Inv #',
           'Patient Details',
           'Investigation',
@@ -1225,7 +1226,7 @@ export const AdminDashboard: React.FC = () => {
         ]
       ];
 
-      const tableBody = filteredReferralMISOrders.map(({ order: ord }) => {
+      const tableBody = filteredReferralMISOrders.map(({ order: ord }, idx) => {
         const dateStr = formatSafeDate(ord.createdAt);
         const timeStr = formatSafeTime(ord.createdAt);
         const mrp = ord.subtotal || ord.totalAmount || 0;
@@ -1236,6 +1237,7 @@ export const AdminDashboard: React.FC = () => {
         const testsFormatted = tests.map(t => t.name).join('\n');
 
         return [
+          String(idx + 1),
           `${dateStr}\n${timeStr}\n#${ord.invoiceNumber}`,
           `${ord.patient.name}\n${ord.patient.gender[0]}/${ord.patient.age} • ${ord.patient.phone}`,
           testsFormatted,
@@ -1259,14 +1261,13 @@ export const AdminDashboard: React.FC = () => {
       autoTable(pdf, {
         head: tableHead,
         body: tableBody,
-        foot: misTestRows.length > 0 ? [
+        foot: filteredReferralMISOrders.length > 0 ? [
           [
-            { content: 'Total Summaries', colSpan: 3, styles: { halign: 'right', fontStyle: 'bold' } },
-            { content: `Rs. ${misTotalMRP.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold', textColor: [7, 89, 133] } },
-            { content: `Rs. ${misTotalDiscount.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold' } },
-            { content: `Rs. ${misTotalPaid.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold' } },
-            { content: `Rs. ${misTotalDue.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold', textColor: [185, 28, 28] } },
-
+            { content: 'Total Summaries', colSpan: 4, styles: { halign: 'right', fontStyle: 'bold' } },
+            { content: `Rs. ${misOrderTotalMRP.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold', textColor: [7, 89, 133] } },
+            { content: `Rs. ${misOrderTotalDiscount.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold' } },
+            { content: `Rs. ${misOrderTotalPaid.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold' } },
+            { content: `Rs. ${misOrderTotalDue.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold', textColor: [185, 28, 28] } },
           ]
         ] : undefined,
         startY: 40,
@@ -1297,13 +1298,14 @@ export const AdminDashboard: React.FC = () => {
           fillColor: [248, 250, 252]
         },
         columnStyles: {
-          0: { cellWidth: 24 }, // Date & Inv #
-          1: { cellWidth: 42 }, // Patient Details
-          2: { cellWidth: 54 }, // Investigation
-          3: { cellWidth: 18, halign: 'right', fontStyle: 'bold' }, // MRP
-          4: { cellWidth: 16, halign: 'right' }, // Discount
-          5: { cellWidth: 18, halign: 'right' }, // Paid
-          6: { cellWidth: 18, halign: 'right', fontStyle: 'bold', textColor: [185, 28, 28] } // Due
+          0: { cellWidth: 10, halign: 'center' }, // S.No.
+          1: { cellWidth: 24 }, // Date & Inv #
+          2: { cellWidth: 40 }, // Patient Details
+          3: { cellWidth: 48 }, // Investigation
+          4: { cellWidth: 17, halign: 'right', fontStyle: 'bold' }, // MRP
+          5: { cellWidth: 16, halign: 'right' }, // Discount
+          6: { cellWidth: 17, halign: 'right' }, // Paid
+          7: { cellWidth: 18, halign: 'right', fontStyle: 'bold', textColor: [185, 28, 28] } // Due
         },
         didDrawPage: (data) => {
           // Page Footer on every page
@@ -8452,6 +8454,7 @@ export const AdminDashboard: React.FC = () => {
                 <table className="w-full text-left text-[11px]">
                   <thead className="bg-slate-100 text-slate-800 uppercase text-[9px] font-black tracking-wider border-b border-slate-300">
                     <tr>
+                      <th className="p-2.5 text-center w-10">S.No.</th>
                       <th className="p-2.5">Date & Invoice</th>
                       <th className="p-2.5">Patient Details</th>
                       <th className="p-2.5">Investigation</th>
@@ -8459,11 +8462,10 @@ export const AdminDashboard: React.FC = () => {
                       <th className="p-2.5 text-right">Discount</th>
                       <th className="p-2.5 text-right">Paid</th>
                       <th className="p-2.5 text-right">Due</th>
-                      
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
-                    {filteredReferralMISOrders.map(({ order: ord }) => {
+                    {filteredReferralMISOrders.map(({ order: ord }, idx) => {
                       const mrp = ord.subtotal || ord.totalAmount || 0;
                       const discount = ord.discountAmount || 0;
                       const paid = ord.paidAmount || 0;
@@ -8472,6 +8474,9 @@ export const AdminDashboard: React.FC = () => {
 
                       return (
                         <tr key={ord.id}>
+                          <td className="p-2.5 text-center font-bold text-slate-500 font-mono text-[10px]">
+                            {idx + 1}
+                          </td>
                           <td className="p-2.5 font-mono text-[10px]">
                             <span className="font-bold text-slate-900 block">
                               {formatSafeDate(ord.createdAt)}
@@ -8503,7 +8508,7 @@ export const AdminDashboard: React.FC = () => {
                     })}
                     {filteredReferralMISOrders.length === 0 && (
                       <tr>
-                        <td colSpan={7} className="p-8 text-center text-slate-400 font-medium">
+                        <td colSpan={8} className="p-8 text-center text-slate-400 font-medium">
                           No referred diagnostic investigations found matching the selected filters.
                         </td>
                       </tr>
@@ -8512,7 +8517,7 @@ export const AdminDashboard: React.FC = () => {
                   {filteredReferralMISOrders.length > 0 && (
                     <tfoot className="bg-slate-100/80 font-bold border-t-2 border-slate-300 text-[11px]">
                       <tr>
-                        <td colSpan={3} className="p-2.5 text-right uppercase tracking-wider text-slate-700 font-black">
+                        <td colSpan={4} className="p-2.5 text-right uppercase tracking-wider text-slate-700 font-black">
                           Total Summaries:
                         </td>
                         <td className="p-2.5 text-right font-black text-sky-900">
