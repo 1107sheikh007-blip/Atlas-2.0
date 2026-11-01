@@ -2241,11 +2241,7 @@ export const ReceptionPortal: React.FC = () => {
                                     <div className="min-w-0 pr-2">
                                       <div className="text-xs font-bold truncate flex items-center gap-1.5">
                                         <span>{doc.name}</span>
-                                        {doc.organizationName && (
-                                          <span className="text-[10px] font-bold text-amber-800">
-                                            (Org: {doc.organizationName})
-                                          </span>
-                                        )}
+                                        
                                         {doc.specialty && (
                                           <span className="text-[10px] font-normal text-amber-700">
                                             • {doc.specialty} [Awaiting Approval]
