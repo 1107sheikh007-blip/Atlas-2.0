@@ -11,7 +11,8 @@ import {
   convert24To12HourTime,
   convert12To24HourTime,
   parsePatientNameParts,
-  normalizeAgeCalendar
+  normalizeAgeCalendar,
+  getOrderPaymentSplit
 } from '../../utils/dateUtils';
 import {
   UserPlus,
@@ -3208,9 +3209,27 @@ export const ReceptionPortal: React.FC = () => {
                             <span className="font-extrabold text-slate-900 text-sm block">
                               ₹{ord.paidAmount.toLocaleString()}
                             </span>
-                            <span className="text-[10px] text-slate-500 font-medium block">
-                              {ord.paymentMode}
-                            </span>
+                            {(() => {
+                              const isSplit = ord.paymentMode === "Split Payment" || String(ord.paymentMode || "").toLowerCase().includes("split");
+                              if (isSplit) {
+                                const split = getOrderPaymentSplit(ord);
+                                return (
+                                  <div className="mt-0.5 space-y-0.5">
+                                    <span className="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-sky-100 text-sky-800 border border-sky-200">
+                                      Split Payment
+                                    </span>
+                                    <span className="text-[10px] text-slate-600 font-medium block whitespace-nowrap">
+                                      Cash: ₹{split.cash.toLocaleString()} + UPI: ₹{split.online.toLocaleString()}
+                                    </span>
+                                  </div>
+                                );
+                              }
+                              return (
+                                <span className="text-[10px] text-slate-500 font-medium block">
+                                  {ord.paymentMode}
+                                </span>
+                              );
+                            })()}
                           </td>
 
                           {/* 8. Due by Patient */}
