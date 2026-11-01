@@ -553,9 +553,25 @@ export const ReceptionPortal: React.FC = () => {
 
       return false;
     };
+
+    // Deduplicate matches so that no identical doctor or duplicate organization entry appears multiple times
+    const dedupMatches = (list: any[]) => {
+      const seen = new Set<string>();
+      return list.filter(doc => {
+        const key = (doc.name || '')
+          .toLowerCase()
+          .replace(/^(dr\.?|doctor|mr\.?|mrs\.?|ms\.?)\s*/i, '')
+          .replace(/[^a-z0-9]/g, '')
+          .trim() || doc.id;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    };
+
     return {
-      approved: approvedReferrers.filter(match),
-      pending: pendingReferrers.filter(match)
+      approved: dedupMatches(approvedReferrers.filter(match)),
+      pending: dedupMatches(pendingReferrers.filter(match))
     };
   }, [doctorSearchQuery, approvedReferrers, pendingReferrers]);
 

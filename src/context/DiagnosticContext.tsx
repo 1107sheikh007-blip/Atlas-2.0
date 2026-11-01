@@ -264,6 +264,34 @@ const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undef
 const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V15_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
+export const normalizeDocNameKey = (name?: string) =>
+  String(name || '')
+    .toLowerCase()
+    .replace(/^(dr\.?|doctor|mr\.?|mrs\.?|ms\.?)\s*/i, '')
+    .replace(/[^a-z0-9]/g, '')
+    .replace(/sh/g, 's')
+    .trim();
+
+export const deduplicateAndCleanReferrers = (list: ReferringDoctor[]): ReferringDoctor[] => {
+  const result: ReferringDoctor[] = [];
+  const seenIds = new Set<string>();
+  const seenNames = new Set<string>();
+
+  for (const r of list) {
+    if (!r || !r.name) continue;
+    const idKey = String(r.id || '').trim().toLowerCase();
+    const nameKey = normalizeDocNameKey(r.name);
+
+    if (idKey && seenIds.has(idKey)) continue;
+    if (nameKey && nameKey.length >= 3 && seenNames.has(nameKey)) continue;
+
+    if (idKey) seenIds.add(idKey);
+    if (nameKey && nameKey.length >= 3) seenNames.add(nameKey);
+    result.push(r);
+  }
+  return result;
+};
+
 // Auto-purge stale cached data from earlier builds if needed
 try {
   if (!localStorage.getItem(`${STORAGE_PREFIX}INITIALIZED`)) {
@@ -718,7 +746,8 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const delList: string[] = savedDel ? JSON.parse(savedDel) : [];
       const saved = localStorage.getItem(`${STORAGE_PREFIX}REFERRERS`);
       const list = saved ? JSON.parse(saved) : [];
-      return list.filter((r: ReferringDoctor) => r.name !== 'Dr. Siddharth Mukherjee' && !delList.includes(r.id));
+      const filtered = list.filter((r: ReferringDoctor) => r.name !== 'Dr. Siddharth Mukherjee' && !delList.includes(r.id));
+      return deduplicateAndCleanReferrers(filtered);
     } catch {
       return [];
     }
@@ -1410,7 +1439,8 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
         // 4. REFERRING DOCTORS
         if (sheetRes.doctors !== undefined) {
-          const cleanDocs = (sheetRes.doctors || []).filter((d: ReferringDoctor) => !liveDelReferrers.has(String(d.id || '').trim().toLowerCase()));
+          const rawDocs = (sheetRes.doctors || []).filter((d: ReferringDoctor) => !liveDelReferrers.has(String(d.id || '').trim().toLowerCase()));
+          const cleanDocs = deduplicateAndCleanReferrers(rawDocs);
           setReferrers(cleanDocs);
           try {
             localStorage.setItem(`${STORAGE_PREFIX}REFERRERS`, JSON.stringify(cleanDocs));
@@ -1658,7 +1688,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       }
       if (e.key === `${STORAGE_PREFIX}REFERRERS` && e.newValue) {
         try {
-          setReferrers(JSON.parse(e.newValue));
+          setReferrers(deduplicateAndCleanReferrers(JSON.parse(e.newValue)));
         } catch {}
       }
       if (e.key === `${STORAGE_PREFIX}REPORTS` && e.newValue) {
@@ -2563,7 +2593,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       status: docData.status || (isSuperAdmin ? 'APPROVED' : 'PENDING_APPROVAL'),
       approvedAt: (docData.status === 'APPROVED' || isSuperAdmin) ? new Date().toISOString() : undefined
     };
-    setReferrers(prev => [newDoc, ...prev]);
+    setReferrers(prev => deduplicateAndCleanReferrers([newDoc, ...prev]));
     pushCurrentStateToCloud({ referrers: [newDoc, ...referrers] });
     syncReferringDoctorToGoogleSheets(newDoc).catch(() => {});
     triggerDebouncedFullBackupToSheets(300);
