@@ -261,7 +261,7 @@ interface DiagnosticContextType {
 
 const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undefined);
 
-const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V15_';
+const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V16_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
 export const normalizeDocNameKey = (name?: string) =>
@@ -2449,33 +2449,64 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       .trim();
 
   const approvedReferrers = useMemo(() => {
-    // Compute accurate live referral count & revenue from actual orders in the system
-    const statsMap = new Map<string, { count: number; revenue: number }>();
-    (allOrders || []).forEach(ord => {
-      if (ord.isDeleted) return;
-      const amt = Number(ord.totalAmount) || Number(ord.subtotal) || 0;
-      const docKey = normalizeDocNameKey(ord.referringDoctorName);
-      const benKey = normalizeDocNameKey(ord.commissionBeneficiaryName);
+    // Matching helper to relate patient order with a doctor or organization partner
+    const isOrderMatching = (ord: DiagnosticOrder, r: ReferringDoctor) => {
+      const rawDocName = (ord.referringDoctorName || '').trim();
+      const rawBenName = (ord.commissionBeneficiaryName || '').trim();
+      const isWalkInOrder =
+        !ord.referringDoctorId &&
+        !ord.commissionBeneficiaryId &&
+        (!rawDocName || /walk[\s-]*in|direct|^self$/i.test(rawDocName)) &&
+        (!rawBenName || /walk[\s-]*in|direct|^self$/i.test(rawBenName));
+      if (isWalkInOrder) return false;
 
-      const matchedKeys = new Set<string>();
-      if (docKey) matchedKeys.add(docKey);
-      if (benKey) matchedKeys.add(benKey);
+      if (ord.referringDoctorId && ord.referringDoctorId === r.id) return true;
+      if (ord.commissionBeneficiaryId && ord.commissionBeneficiaryId === r.id) return true;
 
-      matchedKeys.forEach(k => {
-        const cur = statsMap.get(k) || { count: 0, revenue: 0 };
-        cur.count += 1;
-        cur.revenue += amt;
-        statsMap.set(k, cur);
-      });
-    });
+      const normRName = normalizeDocNameKey(r.name);
+      const normROrg = normalizeDocNameKey(r.organizationName);
+      const normRHosp = normalizeDocNameKey(r.hospital);
+
+      const normDoc = normalizeDocNameKey(ord.referringDoctorName);
+      const normBen = normalizeDocNameKey(ord.commissionBeneficiaryName);
+      const normAff = normalizeDocNameKey((ord as any).doctorAffiliation);
+
+      const isValidToken = (s: string) =>
+        s.length >= 3 && !s.includes('walkin') && !s.includes('direct') && s !== 'self' && s !== 'independentpractice';
+
+      // Exact or strong doctor name match
+      if (isValidToken(normDoc) && isValidToken(normRName) && (normDoc === normRName || normDoc.includes(normRName) || normRName.includes(normDoc))) {
+        return true;
+      }
+
+      // Beneficiary name match
+      if (isValidToken(normBen) && isValidToken(normRName) && (normBen === normRName || normBen.includes(normRName) || normRName.includes(normBen))) {
+        return true;
+      }
+
+      // Organization / Affiliation match (only if partner has an actual distinct organization name)
+      if (isValidToken(normROrg) && normROrg !== 'self' && normROrg !== 'atlasself') {
+        if ((isValidToken(normDoc) && normDoc === normROrg) ||
+            (isValidToken(normBen) && normBen === normROrg) ||
+            (isValidToken(normAff) && normAff === normROrg)) {
+          return true;
+        }
+      }
+      if (isValidToken(normRHosp) && normRHosp !== 'self' && normRHosp !== 'atlasself') {
+        if ((isValidToken(normDoc) && normDoc === normRHosp) ||
+            (isValidToken(normBen) && normBen === normRHosp) ||
+            (isValidToken(normAff) && normAff === normRHosp)) {
+          return true;
+        }
+      }
+
+      return false;
+    };
 
     const seen = new Set<string>();
     return referrers
       .filter(r => r.status === 'APPROVED')
       .map(r => {
-        const normKey = normalizeDocNameKey(r.name);
-        const liveStats = normKey ? statsMap.get(normKey) : undefined;
-        
         // If doctor is SELF and organizationName is '0' or empty, use doctor's name
         let cleanOrg = r.organizationName;
         if (r.affiliationType === 'SELF' && (!cleanOrg || cleanOrg === '0' || cleanOrg === 'None')) {
@@ -2488,8 +2519,13 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           cleanSpec = '';
         }
 
-        const calculatedCount = liveStats ? liveStats.count : r.totalReferralsCount;
-        const calculatedRev = liveStats ? liveStats.revenue : r.totalRevenueGenerated;
+        const matchedOrders = (allOrders || []).filter(
+          o => !o.isDeleted && !o.deletionPendingApproval && isOrderMatching(o, r)
+        );
+        const calculatedCount = matchedOrders.length > 0 ? matchedOrders.length : (r.totalReferralsCount || 0);
+        const calculatedRev = matchedOrders.length > 0
+          ? matchedOrders.reduce((sum, o) => sum + (Number(o.totalAmount) || Number(o.subtotal) || 0), 0)
+          : (r.totalRevenueGenerated || 0);
 
         return {
           ...r,
