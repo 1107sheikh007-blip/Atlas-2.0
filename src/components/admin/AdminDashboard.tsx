@@ -1663,15 +1663,15 @@ export const AdminDashboard: React.FC = () => {
 
     // 1. If explicit beneficiary name exists
     if (isValidToken(normBen)) {
-      if (isValidToken(normRName) && (normBen === normRName || normBen.includes(normRName) || normRName.includes(normBen))) return true;
-      if (isValidToken(normROrg) && (normBen === normROrg || normBen.includes(normROrg) || normROrg.includes(normBen))) return true;
-      if (isValidToken(normRHosp) && (normBen === normRHosp || normBen.includes(normRHosp) || normRHosp.includes(normBen))) return true;
+      if (isValidToken(normRName) && normBen === normRName) return true;
+      if (isValidToken(normROrg) && normBen === normROrg) return true;
+      if (isValidToken(normRHosp) && normBen === normRHosp) return true;
       return false; // Order specifies a different beneficiary; prescribing doctor does NOT get commission!
     }
 
     // 2. If no separate beneficiary is specified, doctor is self-beneficiary
     if (ord.referringDoctorId && ord.referringDoctorId === r.id) return true;
-    if (isValidToken(normDoc) && isValidToken(normRName) && (normDoc === normRName || normDoc.includes(normRName) || normRName.includes(normDoc))) {
+    if (isValidToken(normDoc) && isValidToken(normRName) && normDoc === normRName) {
       return true;
     }
 
@@ -1923,7 +1923,7 @@ export const AdminDashboard: React.FC = () => {
         const effectiveBenName = ord.commissionBeneficiaryName || ord.referringDoctorName || '';
         const normBen = normalizeRefName(effectiveBenName);
         const matchesBen =
-          (normBen.length >= 3 && (normBen === qBen || normBen.includes(qBen) || qBen.includes(normBen))) ||
+          (normBen.length >= 3 && normBen === qBen) ||
           (ord.commissionBeneficiaryId && (ord.commissionBeneficiaryId === referralBeneficiaryFilter || normalizeRefName(ord.commissionBeneficiaryId) === qBen));
         if (!matchesBen) return false;
       }
