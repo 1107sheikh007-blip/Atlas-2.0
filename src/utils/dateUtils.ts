@@ -508,6 +508,9 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') {
       return 'Galaxy hospital khajrana';
     }
+    if (lower.includes('deepak') && (lower.includes('geeta') || lower.includes('gita'))) {
+      return 'DEEPAK GITA BHAWAN';
+    }
     if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') {
       return 'Direct Walk-in';
     }

@@ -1573,6 +1573,7 @@ export const AdminDashboard: React.FC = () => {
       .replace(/sh/g, 's')
       .trim();
     if (raw === 'galaxyhospital' || raw === 'galaxyhospitalkhajrana') return 'galaxyhospitalkhajrana';
+    if (raw.includes('deepak') && (raw.includes('geeta') || raw.includes('gita'))) return 'deepakgitabhawan';
     if (raw.includes('direct') && raw.includes('walkin')) return 'directwalkin';
     if (raw === 'walkin' || raw === 'direct') return 'directwalkin';
     return raw;
@@ -1683,6 +1684,7 @@ export const AdminDashboard: React.FC = () => {
       const lower = rawName.trim().toLowerCase();
       if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
       if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') return 'Galaxy hospital khajrana';
+      if (lower.includes('deepak') && (lower.includes('geeta') || lower.includes('gita'))) return 'DEEPAK GITA BHAWAN';
       if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') return 'Direct Walk-in';
       return rawName.trim();
     };
@@ -1734,6 +1736,7 @@ export const AdminDashboard: React.FC = () => {
       const lower = rawName.trim().toLowerCase();
       if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
       if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') return 'Galaxy hospital khajrana';
+      if (lower.includes('deepak') && (lower.includes('geeta') || lower.includes('gita'))) return 'DEEPAK GITA BHAWAN';
       if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') return 'Direct Walk-in';
       return rawName.trim();
     };
