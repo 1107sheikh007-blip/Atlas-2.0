@@ -1132,19 +1132,19 @@ export const AdminDashboard: React.FC = () => {
     }
     printElement('mis-report-printable-area', {
       title: `Atlas_MIS_Commission_Report_${new Date().toISOString().split('T')[0]}`,
-      pageSize: 'A4 landscape',
-      pageMargin: '8mm 10mm'
+      pageSize: 'A4 portrait',
+      pageMargin: '8mm 8mm'
     });
   };
 
   const handleDownloadMISPdf = async () => {
     setIsGeneratingMISPdf(true);
     try {
-      const pdf = new jsPDF('l', 'mm', 'a4');
-      const pageWidth = 297;
-      const pageHeight = 210;
-      const margin = 12;
-      const contentWidth = pageWidth - margin * 2; // 273mm
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = 210;
+      const pageHeight = 297;
+      const margin = 10;
+      const contentWidth = pageWidth - margin * 2; // 190mm
 
       // 1. Center Letterhead
       pdf.setFont('helvetica', 'bold');
@@ -1297,13 +1297,13 @@ export const AdminDashboard: React.FC = () => {
           fillColor: [248, 250, 252]
         },
         columnStyles: {
-          0: { cellWidth: 32 },
-          1: { cellWidth: 55 },
-          2: { cellWidth: 78 },
-          3: { cellWidth: 28, halign: 'right', fontStyle: 'bold' },
-          4: { cellWidth: 26, halign: 'right' },
-          5: { cellWidth: 26, halign: 'right' },
-          6: { cellWidth: 28, halign: 'right', fontStyle: 'bold', textColor: [185, 28, 28] }
+          0: { cellWidth: 24 }, // Date & Inv #
+          1: { cellWidth: 42 }, // Patient Details
+          2: { cellWidth: 54 }, // Investigation
+          3: { cellWidth: 18, halign: 'right', fontStyle: 'bold' }, // MRP
+          4: { cellWidth: 16, halign: 'right' }, // Discount
+          5: { cellWidth: 18, halign: 'right' }, // Paid
+          6: { cellWidth: 18, halign: 'right', fontStyle: 'bold', textColor: [185, 28, 28] } // Due
         },
         didDrawPage: (data) => {
           // Page Footer on every page
