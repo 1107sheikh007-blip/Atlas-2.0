@@ -1836,26 +1836,20 @@ export const AdminDashboard: React.FC = () => {
         return true;
       })
       .map(r => {
-      // Filter orders by this doctor/organization and date range
-      const docOrders = allOrders.filter(o => 
-        !o.isDeleted && !o.deletionPendingApproval &&
-        isOrderMatchingReferrer(o, r) &&
-        isDateInSelectedRange(o.createdAt, referralDateRange, referralStartDate, referralEndDate)
-      );
-      // Commission strictly belongs to the Beneficiary, NOT the Prescribing Doctor (unless doctor is their own beneficiary)
-      const commissionOrders = allOrders.filter(o =>
+      // Strict Beneficiary Matching: Orders and revenue belong strictly to the Beneficiary entity
+      const beneficiaryOrders = allOrders.filter(o => 
         !o.isDeleted && !o.deletionPendingApproval &&
         isOrderBeneficiaryMatching(o, r) &&
         isDateInSelectedRange(o.createdAt, referralDateRange, referralStartDate, referralEndDate)
       );
-      const periodRevenue = docOrders.reduce((sum, o) => sum + o.totalAmount, 0);
-      const periodCommission = Math.round(commissionOrders.reduce((sum, o) => sum + (o.totalAmount * ((r.commissionPct || 15) / 100)), 0));
-      const periodCount = docOrders.length;
+      const periodRevenue = beneficiaryOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+      const periodCommission = Math.round(beneficiaryOrders.reduce((sum, o) => sum + (o.totalAmount * ((r.commissionPct || 15) / 100)), 0));
+      const periodCount = beneficiaryOrders.length;
       return {
         ...r,
-        totalRevenueGenerated: referralDateRange === 'ALL' ? Math.max(r.totalRevenueGenerated || 0, periodRevenue) : periodRevenue,
-        totalReferralsCount: periodCount > 0 ? periodCount : (r.totalReferralsCount || 0),
-        totalCommissionEarned: referralDateRange === 'ALL' ? periodCommission : periodCommission
+        totalRevenueGenerated: periodRevenue,
+        totalReferralsCount: periodCount,
+        totalCommissionEarned: periodCommission
       };
     }).filter(r => {
       if (referralDoctorFilter !== 'ALL') {
@@ -9961,7 +9955,7 @@ export const AdminDashboard: React.FC = () => {
       {/* Referred Patients Drill-Down Modal */}
       {referredOrdersModalDoc && (() => {
         const matchingOrders = allOrders.filter(
-          o => !o.isDeleted && !o.deletionPendingApproval && isOrderMatchingReferrer(o, referredOrdersModalDoc)
+          o => !o.isDeleted && !o.deletionPendingApproval && isOrderBeneficiaryMatching(o, referredOrdersModalDoc)
         );
         const totalPaid = matchingOrders.reduce((sum, o) => sum + (o.paidAmount || 0), 0);
         const totalBilled = matchingOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
