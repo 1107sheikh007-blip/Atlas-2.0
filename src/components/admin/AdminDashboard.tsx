@@ -1754,34 +1754,25 @@ export const AdminDashboard: React.FC = () => {
         const key = name.toLowerCase();
         if (!map.has(key)) map.set(key, { name, count: 0 });
       }
-      const org = getCanonicalName(r.organizationName || '');
-      if (org) {
+      // If it's an organization partner entity, also list the org name
+      const isOrgEntity = r.affiliationType === 'ORGANIZATION' || !r.name.toLowerCase().startsWith('dr.');
+      if (isOrgEntity && r.organizationName) {
+        const org = getCanonicalName(r.organizationName);
         const key = org.toLowerCase();
         if (!map.has(key)) map.set(key, { name: org, count: 0 });
       }
     });
     allOrders.forEach(ord => {
       if (ord.isDeleted || ord.deletionPendingApproval) return;
-      const rawName = (ord.commissionBeneficiaryName || ord.referringDoctorName || '').trim();
-      if (rawName) {
-        const name = getCanonicalName(rawName);
+      const effectiveBenName = (ord.commissionBeneficiaryName || ord.referringDoctorName || '').trim();
+      if (effectiveBenName) {
+        const name = getCanonicalName(effectiveBenName);
         const key = name.toLowerCase();
         const existing = map.get(key);
         if (existing) {
           existing.count += 1;
         } else {
           map.set(key, { name, count: 1 });
-        }
-      }
-      const rawAff = ((ord as any).doctorAffiliation || '').trim();
-      if (rawAff) {
-        const aff = getCanonicalName(rawAff);
-        const key = aff.toLowerCase();
-        const existing = map.get(key);
-        if (existing) {
-          existing.count += 1;
-        } else {
-          map.set(key, { name: aff, count: 1 });
         }
       }
     });
@@ -1869,7 +1860,11 @@ export const AdminDashboard: React.FC = () => {
         const qBen = normalizeRefName(referralBeneficiaryFilter);
         const normR = normalizeRefName(r.name);
         const normOrg = normalizeRefName(r.organizationName);
-        if (normR !== qBen && normOrg !== qBen && r.id !== referralBeneficiaryFilter) return false;
+        // Only include if this partner itself is the beneficiary, or is an organization partner entity matching qBen
+        const isOrgPartner = r.affiliationType === 'ORGANIZATION' && (r.name.toLowerCase() === r.organizationName?.toLowerCase() || !r.name.toLowerCase().startsWith('dr.'));
+        if (r.id !== referralBeneficiaryFilter && normR !== qBen && (!isOrgPartner || normOrg !== qBen)) {
+          return false;
+        }
       }
       if (referralAffiliationFilter === 'SELF' && r.affiliationType === 'ORGANIZATION') return false;
       if (referralAffiliationFilter === 'ORGANIZATION' && r.affiliationType !== 'ORGANIZATION') return false;
@@ -1924,12 +1919,12 @@ export const AdminDashboard: React.FC = () => {
       // 2. Commission Beneficiary Filter
       if (referralBeneficiaryFilter !== 'ALL') {
         const qBen = normalizeRefName(referralBeneficiaryFilter);
-        const normBen = normalizeRefName(ord.commissionBeneficiaryName || prescribingDoc?.organizationName || ord.referringDoctorName);
-        const normAff = normalizeRefName((ord as any).doctorAffiliation || prescribingDoc?.organizationName || prescribingDoc?.hospital);
+        // Effective beneficiary: explicit commissionBeneficiaryName, or fallback to prescribing doctor if none set
+        const effectiveBenName = ord.commissionBeneficiaryName || ord.referringDoctorName || '';
+        const normBen = normalizeRefName(effectiveBenName);
         const matchesBen =
-          (normBen.length >= 3 && (normBen === qBen || normBen.includes(qBen))) ||
-          (normAff.length >= 3 && (normAff === qBen || normAff.includes(qBen))) ||
-          (ord.commissionBeneficiaryId && ord.commissionBeneficiaryId === referralBeneficiaryFilter);
+          (normBen.length >= 3 && (normBen === qBen || normBen.includes(qBen) || qBen.includes(normBen))) ||
+          (ord.commissionBeneficiaryId && (ord.commissionBeneficiaryId === referralBeneficiaryFilter || normalizeRefName(ord.commissionBeneficiaryId) === qBen));
         if (!matchesBen) return false;
       }
 
