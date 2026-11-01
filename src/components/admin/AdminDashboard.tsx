@@ -2353,14 +2353,6 @@ export const AdminDashboard: React.FC = () => {
       {/* TAB: INTERACTIVE CLICKABLE DASHBOARD */}
       {activeTab === 'DASHBOARD' && (
         <div className="space-y-6">
-          
-      {selectedPatientForEdit && (
-        <EditPatientModal
-          patient={selectedPatientForEdit}
-          onClose={() => setSelectedPatientForEdit(null)}
-          onSave={handleSavePatientEdits}
-        />
-      )}
 
             {/* Executive Welcome & Live Ops Status Strip */}
           <div className="p-5 sm:p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-3xl shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -2956,7 +2948,7 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Paid Amount</th>
                     <th className="p-3.5">Due by Patient</th>
                     <th className="p-3.5">Billed By</th>
-                    <th className="p-3.5 text-right">Actions</th>
+                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -3154,7 +3146,7 @@ export const AdminDashboard: React.FC = () => {
                           </td>
 
                           {/* 10. Actions */}
-                          <td className="p-3.5 text-right space-x-1.5">
+                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky right-0 bg-white group-hover:bg-sky-50/50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)]">
                             {/* Edit Invoice Button */}
                             <button
                               type="button"
@@ -4025,7 +4017,7 @@ export const AdminDashboard: React.FC = () => {
                       <th className="p-3.5">Punch-Out (Logout Time)</th>
                       <th className="p-3.5">Duration Logged</th>
                       <th className="p-3.5">Shift Compliance</th>
-                      <th className="p-3.5 text-right">Actions</th>
+                      <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -5264,7 +5256,7 @@ export const AdminDashboard: React.FC = () => {
                         <th className="p-3.5">Contact & Registration</th>
                         <th className="p-3.5">Patients Referred</th>
                         <th className="p-3.5">Gross Revenue</th>
-                        <th className="p-3.5 text-right">Actions</th>
+                        <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -5608,7 +5600,7 @@ export const AdminDashboard: React.FC = () => {
                       <th className="p-3.5 text-right">Paid</th>
                       <th className="p-3.5 text-right">Due</th>
                       <th className="p-3.5">Billed By</th>
-                      <th className="p-3.5 text-right">Actions</th>
+                      <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -5974,7 +5966,7 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Affiliation</th>
                     <th className="p-3.5">Referred Patients</th>
                     <th className="p-3.5">Gross Revenue</th>
-                    <th className="p-3.5 text-right">Actions</th>
+                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -6166,7 +6158,7 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Date</th>
                     <th className="p-3.5">Payment Mode</th>
                     <th className="p-3.5">Amount (₹)</th>
-                    <th className="p-3.5 text-right">Actions</th>
+                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -6272,7 +6264,7 @@ export const AdminDashboard: React.FC = () => {
                     <th className="p-3.5">Digital Sign / Seal</th>
                     {isSuperAdmin && <th className="p-3.5">Monthly Salary</th>}
                     <th className="p-3.5 text-center">Working Hours</th>
-                    <th className="p-3.5 text-right">Actions</th>
+                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -8150,6 +8142,15 @@ export const AdminDashboard: React.FC = () => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Edit Patient Demographics Modal (Universal Admin Level) */}
+      {selectedPatientForEdit && (
+        <EditPatientModal
+          patient={selectedPatientForEdit}
+          onClose={() => setSelectedPatientForEdit(null)}
+          onSave={handleSavePatientEdits}
+        />
       )}
 
       {/* Invoice Receipt Modal */}

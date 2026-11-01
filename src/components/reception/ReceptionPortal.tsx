@@ -3219,7 +3219,7 @@ export const ReceptionPortal: React.FC = () => {
                     <th className="p-3.5">Paid Amount</th>
                     <th className="p-3.5">Due by Patient</th>
                     <th className="p-3.5">Workflow Status</th>
-                    <th className="p-3.5 text-right">Instant Actions</th>
+                    <th className="p-3.5 text-right sticky right-0 z-10 bg-sky-50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)] min-w-[280px]">Instant Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -3255,6 +3255,16 @@ export const ReceptionPortal: React.FC = () => {
                           <td className="p-3.5">
                             <div className="flex items-center gap-1.5">
                               <span className="font-bold text-slate-900 block text-sm">{ord.patient.name}</span>
+                              {isSuperAdmin && (
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedPatientForEdit(ord.patient)}
+                                  title="Edit Patient Demographics"
+                                  className="p-1 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors cursor-pointer"
+                                >
+                                  <Edit3 className="w-3.5 h-3.5" />
+                                </button>
+                              )}
                               <button
                                 type="button"
                                 onClick={() => setViewingPatientDetails(ord.patient)}
@@ -3418,7 +3428,7 @@ export const ReceptionPortal: React.FC = () => {
                           </td>
 
                           {/* 10. Instant Actions */}
-                          <td className="p-3.5 text-right space-x-1.5">
+                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky right-0 bg-white group-hover:bg-sky-50/50 shadow-[-8px_0_12px_-4px_rgba(0,0,0,0.06)]">
                             {/* Edit Invoice Button */}
                             <button
                               type="button"
