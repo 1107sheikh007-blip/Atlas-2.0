@@ -1265,14 +1265,12 @@ export const ReceptionPortal: React.FC = () => {
           paymentStatus: balanceDue === 0 ? 'PAID' : (numericPaid > 0 ? 'PARTIAL' : 'DUE'),
           referringDoctorId: selectedDoctorId || orderBeingEdited.referringDoctorId || undefined,
           referringDoctorName: docObj ? docObj.name : (selectedDoctorId ? selectedDoctorId : (orderBeingEdited.referringDoctorName || 'Direct Walk-in')),
-          commissionBeneficiaryId: isSuperAdmin 
-            ? (isBeneficiaryDifferent && selectedBeneficiaryId ? (selectedBeneficiaryId === ATLAS_SELF_BENEFICIARY.id ? 'Atlas Self' : selectedBeneficiaryId) : (docObj ? docObj.id : (orderBeingEdited.commissionBeneficiaryId || undefined)))
-            : (orderBeingEdited.commissionBeneficiaryId || (docObj ? docObj.id : undefined)),
-          commissionBeneficiaryName: isSuperAdmin
-            ? (isBeneficiaryDifferent && selectedBeneficiaryId 
-                ? (selectedBeneficiaryId === ATLAS_SELF_BENEFICIARY.id ? 'Atlas Self' : (beneficiaryObj ? (beneficiaryObj.organizationName || beneficiaryObj.name) : (orderBeingEdited.commissionBeneficiaryName || undefined))) 
-                : (docObj ? (docObj.organizationName || docObj.name) : (orderBeingEdited.commissionBeneficiaryName || undefined)))
-            : (orderBeingEdited.commissionBeneficiaryName || (docObj ? (docObj.organizationName || docObj.name) : undefined)),
+          commissionBeneficiaryId: isBeneficiaryDifferent
+            ? (selectedBeneficiaryId === ATLAS_SELF_BENEFICIARY.id ? 'Atlas Self' : (selectedBeneficiaryId || undefined))
+            : (docObj ? docObj.id : (selectedDoctorId || undefined)),
+          commissionBeneficiaryName: isBeneficiaryDifferent
+            ? (selectedBeneficiaryId === ATLAS_SELF_BENEFICIARY.id ? 'Atlas Self' : (beneficiaryObj ? (beneficiaryObj.name || beneficiaryObj.organizationName) : (selectedBeneficiaryId || undefined)))
+            : (docObj ? docObj.name : (selectedDoctorId || 'Direct Walk-in')),
           appointmentDate: normDate,
           appointmentTime,
           notes: orderNotes,
@@ -2305,7 +2303,9 @@ export const ReceptionPortal: React.FC = () => {
                           const checked = e.target.checked;
                           setIsBeneficiaryDifferent(checked);
                           if (!checked) {
-                            setSelectedBeneficiaryId('');
+                            setSelectedBeneficiaryId(selectedDoctorId || '');
+                            setBeneficiarySearchQuery('');
+                            setIsBeneficiaryDropdownOpen(false);
                           }
                         }}
                         className="rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer"
@@ -2345,7 +2345,7 @@ export const ReceptionPortal: React.FC = () => {
                         <div className="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-between gap-2 shadow-2xs">
                           <div className="min-w-0">
                             <div className="text-xs font-bold text-slate-900 dark:text-white truncate flex items-center gap-1.5">
-                              <span>{selectedBeneficiaryObj.organizationName || selectedBeneficiaryObj.name}</span>
+                              <span>{selectedBeneficiaryObj.name || selectedBeneficiaryObj.organizationName}</span>
                               <span className="text-[10px] text-sky-700 dark:text-sky-300 font-semibold px-1.5 py-0.2 bg-sky-50 dark:bg-sky-950/50 rounded">
                                 {selectedBeneficiaryObj.specialty || 'Beneficiary Partner'}
                               </span>
@@ -2420,7 +2420,7 @@ export const ReceptionPortal: React.FC = () => {
                                   >
                                     <div className="min-w-0 pr-2">
                                       <div className="font-semibold truncate">
-                                        {r.organizationName || r.name} — {r.specialty || 'Beneficiary Partner'}
+                                        {r.name || r.organizationName} — {r.specialty || 'Beneficiary Partner'}
                                       </div>
                                       <div className="text-[10px] text-slate-400 dark:text-slate-400 truncate">
                                         {r.hospital || 'Direct Clinic'} • {r.commissionPct || 0}% commission
