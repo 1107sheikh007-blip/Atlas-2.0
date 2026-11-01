@@ -1225,22 +1225,20 @@ export const AdminDashboard: React.FC = () => {
         ]
       ];
 
-      const tableBody = misTestRows.map(({ order: ord, test, testPrice, commPct, commEarned, totalTestsInOrder }) => {
+      const tableBody = filteredReferralMISOrders.map(({ order: ord }) => {
         const dateStr = formatSafeDate(ord.createdAt);
         const timeStr = formatSafeTime(ord.createdAt);
-        const mrp = testPrice;
-        const discount = ord.subtotal > 0 ? Math.round((ord.discountAmount || 0) * (mrp / ord.subtotal)) : (totalTestsInOrder === 1 ? (ord.discountAmount || 0) : 0);
-        const paid = ord.subtotal > 0 ? Math.round((ord.paidAmount || 0) * (mrp / ord.subtotal)) : (totalTestsInOrder === 1 ? (ord.paidAmount || 0) : mrp);
-        const due = Math.max(0, mrp - discount - paid);
-        const billedBy = ord.createdByStaffName || 'Reception Desk';
-        const isSelfBeneficiary =
-          referralBeneficiaryFilter.toUpperCase().includes('SELF') ||
-          (ord.commissionBeneficiaryName && ord.commissionBeneficiaryName.toUpperCase().includes('SELF'));
+        const mrp = ord.subtotal || ord.totalAmount || 0;
+        const discount = ord.discountAmount || 0;
+        const paid = ord.paidAmount || 0;
+        const due = ord.dueAmount || 0;
+        const tests = (ord.tests && ord.tests.length > 0) ? ord.tests : [{ name: 'Diagnostic Services' }];
+        const testsFormatted = tests.map(t => t.name).join('\n');
 
         return [
           `${dateStr}\n${timeStr}\n#${ord.invoiceNumber}`,
           `${ord.patient.name}\n${ord.patient.gender[0]}/${ord.patient.age} • ${ord.patient.phone}`,
-          `${test.name}${test.category ? ` (${test.category})` : ''}`,
+          testsFormatted,
           `Rs. ${mrp.toLocaleString()}`,
           discount > 0 ? `Rs. ${discount.toLocaleString()}` : '-',
           `Rs. ${paid.toLocaleString()}`,
@@ -8464,17 +8462,15 @@ export const AdminDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
-                    {misTestRows.map(({ order: ord, test, testKey, testPrice, commPct, commEarned, totalTestsInOrder }) => {
-                      const mrp = testPrice;
-                      const discount = ord.subtotal > 0 ? Math.round((ord.discountAmount || 0) * (mrp / ord.subtotal)) : (totalTestsInOrder === 1 ? (ord.discountAmount || 0) : 0);
-                      const paid = ord.subtotal > 0 ? Math.round((ord.paidAmount || 0) * (mrp / ord.subtotal)) : (totalTestsInOrder === 1 ? (ord.paidAmount || 0) : mrp);
-                      const due = Math.max(0, mrp - discount - paid);
-                      const isSelfBeneficiary =
-                        referralBeneficiaryFilter.toUpperCase().includes('SELF') ||
-                        (ord.commissionBeneficiaryName && ord.commissionBeneficiaryName.toUpperCase().includes('SELF'));
+                    {filteredReferralMISOrders.map(({ order: ord }) => {
+                      const mrp = ord.subtotal || ord.totalAmount || 0;
+                      const discount = ord.discountAmount || 0;
+                      const paid = ord.paidAmount || 0;
+                      const due = ord.dueAmount || 0;
+                      const tests = (ord.tests && ord.tests.length > 0) ? ord.tests : [{ id: 't-d', name: 'Diagnostic Services' }];
 
                       return (
-                        <tr key={testKey}>
+                        <tr key={ord.id}>
                           <td className="p-2.5 font-mono text-[10px]">
                             <span className="font-bold text-slate-900 block">
                               {formatSafeDate(ord.createdAt)}
@@ -8489,44 +8485,47 @@ export const AdminDashboard: React.FC = () => {
                             <span className="text-[10px] text-slate-500">{ord.patient.gender[0]}/{ord.patient.age} • {ord.patient.phone}</span>
                           </td>
                           <td className="p-2.5">
-                            <span className="font-semibold text-slate-900 block">{test.name}</span>
-                            {test.category && <span className="text-[10px] text-slate-500">{test.category}</span>}
+                            <div className="space-y-0.5">
+                              {tests.map((t, tidx) => (
+                                <span key={t.id || tidx} className="block font-semibold text-slate-900 text-xs">
+                                  {t.name}
+                                </span>
+                              ))}
+                            </div>
                           </td>
                           <td className="p-2.5 font-bold text-slate-900 text-right">₹{mrp.toLocaleString()}</td>
                           <td className="p-2.5 font-semibold text-slate-600 text-right">{discount > 0 ? `₹${discount.toLocaleString()}` : '-'}</td>
                           <td className="p-2.5 font-bold text-emerald-700 text-right">₹{paid.toLocaleString()}</td>
                           <td className="p-2.5 font-bold text-rose-600 text-right">{due > 0 ? `₹${due.toLocaleString()}` : '-'}</td>
-                          
                         </tr>
                       );
                     })}
-                    {misTestRows.length === 0 && (
+                    {filteredReferralMISOrders.length === 0 && (
                       <tr>
-                        <td colSpan={10} className="p-8 text-center text-slate-400 font-medium">
+                        <td colSpan={7} className="p-8 text-center text-slate-400 font-medium">
                           No referred diagnostic investigations found matching the selected filters.
                         </td>
                       </tr>
                     )}
                   </tbody>
-                  {misTestRows.length > 0 && (
+                  {filteredReferralMISOrders.length > 0 && (
                     <tfoot className="bg-slate-100/80 font-bold border-t-2 border-slate-300 text-[11px]">
                       <tr>
                         <td colSpan={3} className="p-2.5 text-right uppercase tracking-wider text-slate-700 font-black">
                           Total Summaries:
                         </td>
                         <td className="p-2.5 text-right font-black text-sky-900">
-                          ₹{misTotalMRP.toLocaleString()}
+                          ₹{misOrderTotalMRP.toLocaleString()}
                         </td>
                         <td className="p-2.5 text-right font-bold text-slate-700">
-                          ₹{misTotalDiscount.toLocaleString()}
+                          ₹{misOrderTotalDiscount.toLocaleString()}
                         </td>
                         <td className="p-2.5 text-right font-bold text-emerald-800">
-                          ₹{misTotalPaid.toLocaleString()}
+                          ₹{misOrderTotalPaid.toLocaleString()}
                         </td>
                         <td className="p-2.5 text-right font-bold text-rose-700">
-                          ₹{misTotalDue.toLocaleString()}
+                          ₹{misOrderTotalDue.toLocaleString()}
                         </td>
-                        
                       </tr>
                     </tfoot>
                   )}

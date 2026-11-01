@@ -1,4 +1,19 @@
 import { DiagnosticOrder, Patient, PaymentMode } from '../types';
+import allTestsCatalog from '../data/allTestsCatalog.json';
+
+export const findCatalogTestPrice = (name: string): number => {
+  if (!name) return 1000;
+  const clean = name.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!clean) return 1000;
+  const exact = (allTestsCatalog as any[]).find(c => c.name.toLowerCase().replace(/[^a-z0-9]/g, '') === clean);
+  if (exact && exact.price > 0) return exact.price;
+  const contains = (allTestsCatalog as any[]).find(c => {
+    const cClean = c.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return cClean === clean || cClean.includes(clean) || clean.includes(cClean);
+  });
+  if (contains && contains.price > 0) return contains.price;
+  return 1000;
+};
 
 /**
  * Returns local YYYY-MM-DD string according to the client/system local time
@@ -539,15 +554,23 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
       if (tName.includes(',') && !tName.toLowerCase().includes('ltd') && !tName.toLowerCase().includes('inc')) {
         const parts = tName.split(',');
         parts.forEach((p, pIdx) => {
-          rawItems.push({
-            ...t,
-            id: `${t.id || 't'}-${pIdx}`,
-            name: p.trim(),
-            price: Math.round((Number(t.price) || 1000) / parts.length)
-          });
+          const trimmedP = p.trim();
+          if (trimmedP) {
+            const catalogPrice = findCatalogTestPrice(trimmedP);
+            rawItems.push({
+              ...t,
+              id: `${t.id || 't'}-${pIdx}`,
+              name: trimmedP,
+              price: catalogPrice
+            });
+          }
         });
       } else {
-        rawItems.push(t);
+        const catalogPrice = findCatalogTestPrice(tName);
+        rawItems.push({
+          ...t,
+          price: (t.price && t.price > 0) ? t.price : catalogPrice
+        });
       }
     });
 
