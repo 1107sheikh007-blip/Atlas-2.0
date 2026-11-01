@@ -1238,6 +1238,9 @@ export const AdminDashboard: React.FC = () => {
         const paid = ord.subtotal > 0 ? Math.round((ord.paidAmount || 0) * (mrp / ord.subtotal)) : (totalTestsInOrder === 1 ? (ord.paidAmount || 0) : mrp);
         const due = Math.max(0, mrp - discount - paid);
         const billedBy = ord.createdByStaffName || 'Reception Desk';
+        const isSelfBeneficiary =
+          referralBeneficiaryFilter.toUpperCase().includes('SELF') ||
+          (ord.commissionBeneficiaryName && ord.commissionBeneficiaryName.toUpperCase().includes('SELF'));
 
         return [
           `${dateStr}\n${timeStr}\n#${ord.invoiceNumber}`,
@@ -1247,8 +1250,8 @@ export const AdminDashboard: React.FC = () => {
           discount > 0 ? `Rs. ${discount.toLocaleString()}` : '-',
           `Rs. ${paid.toLocaleString()}`,
           due > 0 ? `Rs. ${due.toLocaleString()}` : '-',
-          `${commPct}%`,
-          `Rs. ${commEarned.toLocaleString()}`,
+          isSelfBeneficiary || commPct === 0 ? '' : `${commPct}%`,
+          isSelfBeneficiary || commEarned === 0 ? '' : `Rs. ${commEarned.toLocaleString()}`,
           billedBy
         ];
       });
@@ -1273,9 +1276,9 @@ export const AdminDashboard: React.FC = () => {
             { content: `Rs. ${misTotalDiscount.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold' } },
             { content: `Rs. ${misTotalPaid.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold' } },
             { content: `Rs. ${misTotalDue.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold', textColor: [185, 28, 28] } },
-            { content: '-', styles: { halign: 'center', fontStyle: 'bold' } },
-            { content: `Rs. ${misTotalCommission.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold', textColor: [6, 95, 70] } },
-            { content: '-', styles: { halign: 'center', fontStyle: 'bold' } }
+            { content: '', styles: { halign: 'center', fontStyle: 'bold' } },
+            { content: referralBeneficiaryFilter.toUpperCase().includes('SELF') || misTotalCommission === 0 ? '' : `Rs. ${misTotalCommission.toLocaleString()}`, styles: { halign: 'right', fontStyle: 'bold', textColor: [6, 95, 70] } },
+            { content: '', styles: { halign: 'center', fontStyle: 'bold' } }
           ]
         ] : undefined,
         startY: 40,
@@ -8376,6 +8379,9 @@ export const AdminDashboard: React.FC = () => {
                       const discount = ord.subtotal > 0 ? Math.round((ord.discountAmount || 0) * (mrp / ord.subtotal)) : (totalTestsInOrder === 1 ? (ord.discountAmount || 0) : 0);
                       const paid = ord.subtotal > 0 ? Math.round((ord.paidAmount || 0) * (mrp / ord.subtotal)) : (totalTestsInOrder === 1 ? (ord.paidAmount || 0) : mrp);
                       const due = Math.max(0, mrp - discount - paid);
+                      const isSelfBeneficiary =
+                        referralBeneficiaryFilter.toUpperCase().includes('SELF') ||
+                        (ord.commissionBeneficiaryName && ord.commissionBeneficiaryName.toUpperCase().includes('SELF'));
 
                       return (
                         <tr key={testKey}>
@@ -8400,8 +8406,12 @@ export const AdminDashboard: React.FC = () => {
                           <td className="p-2.5 font-semibold text-slate-600 text-right">{discount > 0 ? `₹${discount.toLocaleString()}` : '-'}</td>
                           <td className="p-2.5 font-bold text-emerald-700 text-right">₹{paid.toLocaleString()}</td>
                           <td className="p-2.5 font-bold text-rose-600 text-right">{due > 0 ? `₹${due.toLocaleString()}` : '-'}</td>
-                          <td className="p-2.5 font-semibold text-slate-700 text-center">{commPct}%</td>
-                          <td className="p-2.5 font-black text-emerald-800 text-right">₹{commEarned.toLocaleString()}</td>
+                          <td className="p-2.5 font-semibold text-slate-700 text-center">
+                            {isSelfBeneficiary || commPct === 0 ? '' : `${commPct}%`}
+                          </td>
+                          <td className="p-2.5 font-black text-emerald-800 text-right">
+                            {isSelfBeneficiary || commEarned === 0 ? '' : `₹${commEarned.toLocaleString()}`}
+                          </td>
                           <td className="p-2.5">
                             <span className="font-semibold text-slate-900 block text-xs">{resolveBilledByName(ord)}</span>
                             <span className="text-[10px] text-slate-400 font-mono">{ord.centerId || 'ATL-MAIN'}</span>
@@ -8435,11 +8445,11 @@ export const AdminDashboard: React.FC = () => {
                         <td className="p-2.5 text-right font-bold text-rose-700">
                           ₹{misTotalDue.toLocaleString()}
                         </td>
-                        <td className="p-2.5 text-center text-slate-400">-</td>
+                        <td className="p-2.5 text-center text-slate-400"></td>
                         <td className="p-2.5 text-right font-black text-emerald-900">
-                          ₹{misTotalCommission.toLocaleString()}
+                          {referralBeneficiaryFilter.toUpperCase().includes('SELF') || misTotalCommission === 0 ? '' : `₹${misTotalCommission.toLocaleString()}`}
                         </td>
-                        <td className="p-2.5 text-center text-slate-400">-</td>
+                        <td className="p-2.5 text-center text-slate-400"></td>
                       </tr>
                     </tfoot>
                   )}
