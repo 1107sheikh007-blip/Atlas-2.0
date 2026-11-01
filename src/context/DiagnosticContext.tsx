@@ -48,6 +48,7 @@ import {
   syncAppointmentToGoogleSheets,
   syncPatientToGoogleSheets,
   syncStaffToGoogleSheets,
+  syncStaffAttendanceToGoogleSheets,
   syncDoctorRosterToGoogleSheets,
   deleteDoctorRosterFromGoogleSheets,
   deleteAppointmentFromGoogleSheets,
@@ -451,7 +452,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       try {
         localStorage.setItem(`${STORAGE_PREFIX}ACTIVITIES`, JSON.stringify(next));
         // Async background sync to Google Sheets without blocking UI
-        syncActivityLogToGoogleSheets(newAct).catch(err => console.warn('Activity sync failed:', err));
+        syncActivityLogToGoogleSheets(newAct).catch((err: any) => console.warn('Activity sync failed:', err));
       } catch (e) {
         console.warn(e);
       }
@@ -1081,6 +1082,9 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           hourlyRate: mergedHourly,
           workedHoursThisMonth: Math.max(raw.workedHoursThisMonth || 0, existing.workedHoursThisMonth || 0),
           totalShiftsCompleted: Math.max(raw.totalShiftsCompleted || 0, existing.totalShiftsCompleted || 0),
+          isLoggedIn: existing.isLoggedIn ?? raw.isLoggedIn ?? false,
+          lastLoginAt: existing.lastLoginAt || raw.lastLoginAt,
+          lastLogoutAt: existing.lastLogoutAt || raw.lastLogoutAt,
           permissions: protectExisting ? (existing.permissions || raw.permissions) : (raw.permissions || existing.permissions),
           signatureUrl: existing.signatureUrl || raw.signatureUrl,
           sealUrl: existing.sealUrl || raw.sealUrl,
@@ -1832,6 +1836,10 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         status: "ONLINE"
       };
       setAttendanceLogs(prev => [newAttLog, ...prev]);
+      syncStaffAttendanceToGoogleSheets(newAttLog).catch((err: any) => console.warn('Attendance sync error:', err));
+      if (staffEmp) {
+        syncStaffToGoogleSheets({ ...staffEmp, isLoggedIn: true, lastLoginAt: newAttLog.loginAt }).catch(() => {});
+      }
 
       logActivity("STAFF_LOGIN", `${authUser.name} (${authUser.designation}) logged into system`, {
         username: authUser.username,
@@ -1992,11 +2000,30 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     if (currentUser?.staffId) {
       const now = new Date().toISOString();
       // Update staff logout time
-      setStaff(prev => prev.map(s => s.id === currentUser.staffId ? {
-        ...s,
-        isLoggedIn: false,
-        lastLogoutAt: now
-      } : s));
+      let updatedStaffRecord: StaffEmployee | null = null;
+      setStaff(prev => prev.map(s => {
+        if (s.id === currentUser.staffId) {
+          const matchingLog = attendanceLogs.find(a => a.staffId === s.id && a.status === 'ONLINE');
+          let addedHours = 0;
+          if (matchingLog) {
+            const mins = Math.max(1, Math.round((new Date(now).getTime() - new Date(matchingLog.loginAt).getTime()) / 60000));
+            addedHours = Math.round((mins / 60) * 10) / 10;
+          }
+          const updated = {
+            ...s,
+            isLoggedIn: false,
+            lastLogoutAt: now,
+            workedHoursThisMonth: Math.round(((s.workedHoursThisMonth || 0) + addedHours) * 10) / 10,
+            totalShiftsCompleted: (s.totalShiftsCompleted || 0) + (addedHours >= 4 ? 1 : 0)
+          };
+          updatedStaffRecord = updated;
+          return updated;
+        }
+        return s;
+      }));
+      if (updatedStaffRecord) {
+        syncStaffToGoogleSheets(updatedStaffRecord).catch(() => {});
+      }
 
       // Close open attendance session
       setAttendanceLogs(prev => prev.map(att => {
@@ -2004,12 +2031,14 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           const loginTime = new Date(att.loginAt).getTime();
           const logoutTime = new Date(now).getTime();
           const duration = Math.max(1, Math.round((logoutTime - loginTime) / 60000));
-          return {
+          const closedLog = {
             ...att,
             logoutAt: now,
             durationMinutes: duration,
-            status: 'LOGGED_OUT'
+            status: 'LOGGED_OUT' as const
           };
+          syncStaffAttendanceToGoogleSheets(closedLog).catch((err: any) => console.warn('Attendance sync error:', err));
+          return closedLog;
         }
         return att;
       }));

@@ -661,9 +661,10 @@ export const AdminDashboard: React.FC = () => {
   const staffAttendanceCalculations = useMemo(() => {
     return staff.map(emp => {
       const empCenter = centers.find(c => c.id === emp.assignedCenterId) || centers[0];
-      const isOnline = !!emp.isLoggedIn;
-      const matchingLog = attendanceLogs.find(a => a.staffId === emp.id && a.status === 'ONLINE');
-      const loginTimestamp = emp.lastLoginAt || matchingLog?.loginAt;
+      const isCurrentUser = currentUser?.staffId === emp.id || (currentUser?.username && emp.username && currentUser.username.toLowerCase() === emp.username.toLowerCase());
+      const matchingLog = attendanceLogs.find(a => (a.staffId === emp.id || (currentUser?.staffId === emp.id && a.status === 'ONLINE')) && a.status === 'ONLINE');
+      const isOnline = !!emp.isLoggedIn || isCurrentUser || !!matchingLog;
+      const loginTimestamp = emp.lastLoginAt || matchingLog?.loginAt || (isCurrentUser ? new Date().toISOString() : undefined);
       
       const quotaHours = 8; // Standard 8 hours per shift
       const quotaMinutes = quotaHours * 60; // 480 mins
@@ -738,12 +739,9 @@ export const AdminDashboard: React.FC = () => {
       const nameL = (s.name || '').toLowerCase();
       if (nameL.includes('anjali') || nameL.includes('siddharth')) return false;
 
-      if (!isSuperAdmin && ((s.role as string) === 'Center Director' || (s.role as string) === 'SUPER_ADMIN' || s.username === 'admin' || nameL.includes('admin'))) {
-        return false;
-      }
       return s.isOnline;
     });
-  }, [staffAttendanceCalculations, isSuperAdmin]);
+  }, [staffAttendanceCalculations]);
 
   const overtimeStaffList = useMemo(() => {
     return staffAttendanceCalculations.filter(s => {
@@ -779,10 +777,6 @@ export const AdminDashboard: React.FC = () => {
     return staffAttendanceCalculations.filter(s => {
       const nameL = (s.name || '').toLowerCase();
       if (nameL.includes('anjali') || nameL.includes('siddharth')) return false;
-
-      if (!isSuperAdmin && ((s.role as string) === 'Center Director' || (s.role as string) === 'SUPER_ADMIN' || s.username === 'admin' || nameL.includes('admin'))) {
-        return false;
-      }
       if (attCenterFilter !== 'ALL' && s.assignedCenterId !== attCenterFilter) return false;
       if (attRoleFilter !== 'ALL' && s.role !== attRoleFilter) return false;
       if (attStatusFilter === 'ONLINE_ONLY' && !s.isOnline) return false;

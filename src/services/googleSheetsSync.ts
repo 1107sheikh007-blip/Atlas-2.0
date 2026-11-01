@@ -141,6 +141,7 @@ export interface SyncPayload {
   test?: DiagnosticTestItem;
   tests?: DiagnosticTestItem[];
   activity?: any;
+  attendanceLog?: any;
 }
 
 export interface SyncResult {
@@ -463,6 +464,29 @@ export const syncFullTestCatalogToGoogleSheets = async (
   }
 };
 
+
+
+export const syncStaffAttendanceToGoogleSheets = async (
+  log: any
+): Promise<SyncResult> => {
+  try {
+    const res = await postToGoogleAppsScript({
+      action: 'SYNC_STAFF_ATTENDANCE',
+      attendanceLog: log
+    });
+    return {
+      success: true,
+      message: res.message || 'Staff attendance session synced to Google Sheets',
+      timestamp: new Date().toISOString()
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: 'Failed to push staff attendance to Google Sheets: ' + (err?.message || err),
+      timestamp: new Date().toISOString()
+    };
+  }
+};
 
 export const syncActivityLogToGoogleSheets = async (
   activity: any
