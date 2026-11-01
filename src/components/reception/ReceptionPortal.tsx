@@ -476,6 +476,18 @@ export const ReceptionPortal: React.FC = () => {
   const [isBeneficiaryDropdownOpen, setIsBeneficiaryDropdownOpen] = useState(false);
   const beneficiaryDropdownRef = useRef<HTMLDivElement>(null);
 
+  // Quick Register New Beneficiary Modal State (Super Admin authorized)
+  const [isRegisterBeneficiaryModalOpen, setIsRegisterBeneficiaryModalOpen] = useState(false);
+  const [newBenName, setNewBenName] = useState('');
+  const [newBenType, setNewBenType] = useState<'SELF' | 'ORGANIZATION'>('ORGANIZATION');
+  const [newBenOrgName, setNewBenOrgName] = useState('');
+  const [newBenSpecialty, setNewBenSpecialty] = useState('Beneficiary Partner');
+  const [newBenHospital, setNewBenHospital] = useState('');
+  const [newBenPhone, setNewBenPhone] = useState('');
+  const [newBenEmail, setNewBenEmail] = useState('');
+  const [newBenCommissionPct, setNewBenCommissionPct] = useState<number>(0);
+  const [newBenNotes, setNewBenNotes] = useState('');
+
   // Close doctor & beneficiary dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -816,6 +828,52 @@ export const ReceptionPortal: React.FC = () => {
   const [queueStartDate, setQueueStartDate] = useState<string>('');
   const [queueEndDate, setQueueEndDate] = useState<string>('');
 
+  const handleRegisterNewBeneficiary = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newBenName.trim() && !newBenOrgName.trim()) {
+      showToast('Please enter a beneficiary partner name or organization.');
+      return;
+    }
+    const finalName = newBenName.trim() || newBenOrgName.trim();
+    const finalOrg = newBenType === 'ORGANIZATION' ? (newBenOrgName.trim() || finalName) : '';
+
+    try {
+      const createdId = addReferringDoctor({
+        name: finalName,
+        organizationName: finalOrg,
+        affiliationType: newBenType,
+        qualification: '',
+        specialty: newBenSpecialty.trim() || 'Beneficiary Partner',
+        hospital: newBenHospital.trim() || 'Direct Clinic / Center',
+        phone: newBenPhone.trim() || '',
+        email: newBenEmail.trim() || '',
+        commissionPct: Number(newBenCommissionPct) || 0,
+        notes: newBenNotes.trim() || 'Added as Beneficiary Partner during invoice edit',
+        status: 'APPROVED',
+        addedByRole: isSuperAdmin ? 'SUPER_ADMIN' : 'RECEPTIONIST'
+      });
+
+      setSelectedBeneficiaryId(createdId);
+      setIsBeneficiaryDifferent(true);
+      setIsRegisterBeneficiaryModalOpen(false);
+      setBeneficiarySearchQuery('');
+      setIsBeneficiaryDropdownOpen(false);
+
+      // Reset
+      setNewBenName('');
+      setNewBenOrgName('');
+      setNewBenPhone('');
+      setNewBenEmail('');
+      setNewBenHospital('');
+      setNewBenCommissionPct(0);
+      setNewBenNotes('');
+
+      showToast(`Beneficiary Partner "${finalName}" added to Referring Doctors Master and selected!`);
+    } catch (err: any) {
+      showToast('Error registering beneficiary: ' + (err?.message || 'Failed'));
+    }
+  };
+
   const handleRegisterDoctorDirectly = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newDoctorName.trim()) {
@@ -973,6 +1031,7 @@ export const ReceptionPortal: React.FC = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsStandaloneDoctorModalOpen(false);
+        setIsRegisterBeneficiaryModalOpen(false);
         setIsScheduleModalOpen(false);
         setDueCollectOrder(null);
         setInvoiceModalOrder(null);
@@ -2260,21 +2319,39 @@ export const ReceptionPortal: React.FC = () => {
                     </label>
 
                   {isBeneficiaryDifferent && (
-                    <div className="p-3 bg-cyan-50/70 border border-cyan-200 rounded-2xl space-y-2 animate-fade-in" ref={beneficiaryDropdownRef}>
-                      <label className="block text-[11px] font-bold text-cyan-900 uppercase">
-                        Select Person / Partner Referring Patient (Beneficiary) *
-                      </label>
+                    <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl space-y-2.5 animate-fade-in" ref={beneficiaryDropdownRef}>
+                      <div className="flex items-center justify-between">
+                        <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                          Select Person / Partner Referring Patient (Beneficiary) *
+                        </label>
+                        {isSuperAdmin && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setNewBenName(beneficiarySearchQuery.trim());
+                              setNewBenOrgName(beneficiarySearchQuery.trim());
+                              setIsRegisterBeneficiaryModalOpen(true);
+                              setIsBeneficiaryDropdownOpen(false);
+                            }}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-[10px] font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
+                          >
+                            <Plus className="w-3 h-3" />
+                            <span>Add New Beneficiary</span>
+                          </button>
+                        )}
+                      </div>
+
                       {selectedBeneficiaryObj && !isBeneficiaryDropdownOpen ? (
-                        <div className="p-2.5 bg-white border border-cyan-300 rounded-xl flex items-center justify-between gap-2">
+                        <div className="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-between gap-2 shadow-2xs">
                           <div className="min-w-0">
-                            <div className="text-xs font-bold text-slate-900 truncate">
-                              {selectedBeneficiaryObj.organizationName || selectedBeneficiaryObj.name}
-                              <span className="text-[10px] text-cyan-700 ml-1 font-semibold">
-                                ({selectedBeneficiaryObj.specialty})
+                            <div className="text-xs font-bold text-slate-900 dark:text-white truncate flex items-center gap-1.5">
+                              <span>{selectedBeneficiaryObj.organizationName || selectedBeneficiaryObj.name}</span>
+                              <span className="text-[10px] text-sky-700 dark:text-sky-300 font-semibold px-1.5 py-0.2 bg-sky-50 dark:bg-sky-950/50 rounded">
+                                {selectedBeneficiaryObj.specialty || 'Beneficiary Partner'}
                               </span>
                             </div>
-                            <div className="text-[10px] text-slate-500 truncate">
-                              {selectedBeneficiaryObj.hospital || 'Direct'} • {selectedBeneficiaryObj.commissionPct}% commission
+                            <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                              {selectedBeneficiaryObj.hospital || 'Direct Clinic / Center'} • {selectedBeneficiaryObj.commissionPct || 0}% commission
                             </div>
                           </div>
                           <div className="flex items-center gap-1 shrink-0">
@@ -2284,7 +2361,7 @@ export const ReceptionPortal: React.FC = () => {
                                 setIsBeneficiaryDropdownOpen(true);
                                 setBeneficiarySearchQuery('');
                               }}
-                              className="px-2 py-0.5 text-[10px] font-bold text-cyan-800 bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 rounded-lg cursor-pointer"
+                              className="px-2 py-1 text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/60 hover:bg-sky-100 dark:hover:bg-sky-900 border border-sky-200 dark:border-sky-800 rounded-lg cursor-pointer transition-colors"
                             >
                               Change
                             </button>
@@ -2313,7 +2390,7 @@ export const ReceptionPortal: React.FC = () => {
                             }}
                             onFocus={() => setIsBeneficiaryDropdownOpen(true)}
                             placeholder="Search beneficiary partner by name, clinic..."
-                            className="w-full bg-white border border-cyan-300 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 font-medium"
+                            className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl pl-9 pr-8 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium"
                           />
                           {beneficiarySearchQuery && (
                             <button
@@ -2325,7 +2402,7 @@ export const ReceptionPortal: React.FC = () => {
                             </button>
                           )}
                           {isBeneficiaryDropdownOpen && (
-                            <div className="absolute z-20 left-0 right-0 mt-1 bg-white border border-cyan-200 rounded-xl shadow-lg max-h-48 overflow-y-auto divide-y divide-slate-100">
+                            <div className="absolute z-20 left-0 right-0 mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl max-h-52 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
                               {filteredBeneficiaries.map(r => {
                                 const isSelected = selectedBeneficiaryId === r.id;
                                 return (
@@ -2337,32 +2414,49 @@ export const ReceptionPortal: React.FC = () => {
                                       setIsBeneficiaryDropdownOpen(false);
                                       setBeneficiarySearchQuery('');
                                     }}
-                                    className={`w-full text-left px-3 py-2 text-xs hover:bg-cyan-50 flex items-center justify-between cursor-pointer ${
-                                      isSelected ? 'bg-cyan-50 font-bold text-cyan-900' : 'text-slate-700'
+                                    className={`w-full text-left px-3 py-2 text-xs hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center justify-between cursor-pointer transition-colors ${
+                                      isSelected ? 'bg-sky-50 dark:bg-slate-800 font-bold text-sky-900 dark:text-sky-200' : 'text-slate-700 dark:text-slate-200'
                                     }`}
                                   >
                                     <div className="min-w-0 pr-2">
                                       <div className="font-semibold truncate">
-                                        {r.organizationName || r.name} — {r.specialty}
+                                        {r.organizationName || r.name} — {r.specialty || 'Beneficiary Partner'}
                                       </div>
-                                      <div className="text-[10px] text-slate-400 truncate">
-                                        {r.hospital || 'Direct'} • {r.commissionPct}% commission
+                                      <div className="text-[10px] text-slate-400 dark:text-slate-400 truncate">
+                                        {r.hospital || 'Direct Clinic'} • {r.commissionPct || 0}% commission
                                       </div>
                                     </div>
-                                    {isSelected && <Check className="w-3.5 h-3.5 text-cyan-600 shrink-0" />}
+                                    {isSelected && <Check className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />}
                                   </button>
                                 );
                               })}
                               {filteredBeneficiaries.length === 0 && (
-                                <div className="p-2.5 text-center text-xs text-slate-500">
-                                  No beneficiary partners found
+                                <div className="p-3 text-center space-y-2">
+                                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                                    No beneficiary partners found matching "{beneficiarySearchQuery}"
+                                  </p>
+                                  {isSuperAdmin && (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setNewBenName(beneficiarySearchQuery.trim());
+                                        setNewBenOrgName(beneficiarySearchQuery.trim());
+                                        setIsRegisterBeneficiaryModalOpen(true);
+                                        setIsBeneficiaryDropdownOpen(false);
+                                      }}
+                                      className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-bold transition-all inline-flex items-center gap-1 shadow-xs cursor-pointer active:scale-95"
+                                    >
+                                      <Plus className="w-3.5 h-3.5" />
+                                      Register "{beneficiarySearchQuery.trim() || 'New Beneficiary'}"
+                                    </button>
+                                  )}
                                 </div>
                               )}
                             </div>
                           )}
                         </div>
                       )}
-                      <p className="text-[10px] text-cyan-800 font-medium">
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                         Patient prescription will attribute to the prescribing doctor above, while referral revenue and commission calculations will credit directly to this selected beneficiary partner.
                       </p>
                     </div>
@@ -4704,6 +4798,172 @@ export const ReceptionPortal: React.FC = () => {
                   className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs cursor-pointer transition-all"
                 >
                   Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Register New Beneficiary Partner to Referring Doctors Master (Super Admin authorized) */}
+      {isRegisterBeneficiaryModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto animate-fade-in"
+          onClick={e => {
+            if (e.target === e.currentTarget) setIsRegisterBeneficiaryModalOpen(false);
+          }}
+        >
+          <div className="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl my-8">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 rounded-xl border border-sky-100 dark:border-sky-800/50">
+                  <Building2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-base">Add Beneficiary Partner</h3>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Automatically registers into Referring Doctor Master and links to this order
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsRegisterBeneficiaryModalOpen(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleRegisterNewBeneficiary} className="space-y-3.5 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Beneficiary Entity Type *
+                  </label>
+                  <select
+                    value={newBenType}
+                    onChange={e => setNewBenType(e.target.value as 'SELF' | 'ORGANIZATION')}
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer"
+                  >
+                    <option value="ORGANIZATION">Organization / Clinic / Hospital</option>
+                    <option value="SELF">Individual Doctor / Partner</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Beneficiary Partner Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newBenName}
+                    onChange={e => setNewBenName(e.target.value)}
+                    placeholder="e.g. Dr. Rajesh Reddy / City Polyclinic"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+              </div>
+
+              {newBenType === 'ORGANIZATION' && (
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Organization / Center Display Name
+                  </label>
+                  <input
+                    type="text"
+                    value={newBenOrgName}
+                    onChange={e => setNewBenOrgName(e.target.value)}
+                    placeholder="e.g. Apollo Clinic / Rainbow Care"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Hospital / Clinic Address or Branch
+                  </label>
+                  <input
+                    type="text"
+                    value={newBenHospital}
+                    onChange={e => setNewBenHospital(e.target.value)}
+                    placeholder="e.g. Malviya Nagar / Central Hub"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Specialty / Partner Category
+                  </label>
+                  <input
+                    type="text"
+                    value={newBenSpecialty}
+                    onChange={e => setNewBenSpecialty(e.target.value)}
+                    placeholder="e.g. Beneficiary Partner, Physician"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Mobile Phone / WhatsApp
+                  </label>
+                  <input
+                    type="tel"
+                    value={newBenPhone}
+                    onChange={e => setNewBenPhone(e.target.value)}
+                    placeholder="10-digit phone number"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Commission Share (%)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={newBenCommissionPct}
+                    onChange={e => setNewBenCommissionPct(Number(e.target.value) || 0)}
+                    placeholder="e.g. 20"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Administrative Notes / Remarks
+                </label>
+                <input
+                  type="text"
+                  value={newBenNotes}
+                  onChange={e => setNewBenNotes(e.target.value)}
+                  placeholder="Optional notes for Super Admin and billing ledger"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setIsRegisterBeneficiaryModalOpen(false)}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-xl text-xs transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs shadow-xs transition-all cursor-pointer inline-flex items-center gap-1.5 active:scale-95"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Save & Link to Order</span>
                 </button>
               </div>
             </form>

@@ -977,7 +977,7 @@ export const AdminDashboard: React.FC = () => {
       return;
     }
     try {
-      addReferringDoctor({
+      const createdId = addReferringDoctor({
         name: newPartnerName.trim(),
         specialty: newPartnerSpecialty.trim(),
         qualification: newPartnerQualification.trim(),
@@ -992,7 +992,11 @@ export const AdminDashboard: React.FC = () => {
         addedByRole: isSuperAdmin ? 'SUPER_ADMIN' : 'CENTER_MANAGER',
         status: 'APPROVED'
       });
-      showToast(`Doctor ${newPartnerName.trim()} registered and activated in roster successfully!`);
+      if (editingInvoiceOrder) {
+        setEditBeneficiaryId(createdId);
+        setEditBeneficiaryName(newPartnerAffiliationType === 'ORGANIZATION' && newPartnerOrgName.trim() ? newPartnerOrgName.trim() : newPartnerName.trim());
+      }
+      showToast(`Doctor / Beneficiary partner ${newPartnerName.trim()} registered in master and linked successfully!`);
       setIsRegisterPartnerModalOpen(false);
       setNewPartnerName('');
       setNewPartnerSpecialty('');
@@ -8742,14 +8746,36 @@ export const AdminDashboard: React.FC = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1 flex items-center justify-between">
-                      <span>Beneficiary Partner</span>
-                      {!isSuperAdmin && (
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 uppercase">
+                        Beneficiary Partner
+                      </label>
+                      {isSuperAdmin ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setNewPartnerAffiliationType('ORGANIZATION');
+                            setNewPartnerName('');
+                            setNewPartnerOrgName('');
+                            setNewPartnerSpecialty('Beneficiary Partner');
+                            setNewPartnerHospital('Direct Clinic');
+                            setNewPartnerPhone('');
+                            setNewPartnerEmail('');
+                            setNewPartnerRegNo('');
+                            setNewPartnerNotes('Added via invoice quick edit');
+                            setIsRegisterPartnerModalOpen(true);
+                          }}
+                          className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-600 hover:text-sky-700 bg-sky-50 hover:bg-sky-100 px-2 py-0.5 rounded-lg border border-sky-200 transition-colors cursor-pointer"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Add New</span>
+                        </button>
+                      ) : (
                         <span className="text-[10px] text-amber-700 font-semibold lowercase tracking-normal flex items-center gap-1">
                           <Lock className="w-3 h-3" /> super admin only
                         </span>
                       )}
-                    </label>
+                    </div>
                     {isSuperAdmin ? (
                       <select
                         value={editBeneficiaryId || (editBeneficiaryName === 'Direct / Walk-in' ? '' : editBeneficiaryName)}
@@ -8762,7 +8788,7 @@ export const AdminDashboard: React.FC = () => {
                             const doc = referrers.find(r => r.id === val);
                             if (doc) {
                               setEditBeneficiaryId(doc.id);
-                              setEditBeneficiaryName(doc.name);
+                              setEditBeneficiaryName(doc.organizationName || doc.name);
                             } else {
                               setEditBeneficiaryId('');
                               setEditBeneficiaryName(val);
@@ -8774,7 +8800,7 @@ export const AdminDashboard: React.FC = () => {
                         <option value="">Same as Doctor / Walk-in</option>
                         {approvedReferrers.map(doc => (
                           <option key={doc.id} value={doc.id}>
-                            {doc.name} ({doc.commissionPct}% Share)
+                            {doc.organizationName ? `${doc.organizationName} (${doc.name})` : doc.name} ({doc.commissionPct}% Share)
                           </option>
                         ))}
                       </select>
