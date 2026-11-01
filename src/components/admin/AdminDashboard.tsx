@@ -3154,7 +3154,10 @@ export const AdminDashboard: React.FC = () => {
                             {/* Edit Invoice Button */}
                             <button
                               type="button"
-                              onClick={() => openEditInvoiceModal(ord)}
+                              onClick={() => {
+                                startEditingOrder(ord);
+                                setAdminOrdersViewMode('NEW_ORDER');
+                              }}
                               title="Edit Invoice, Tests, Patient & Payments in Full Invoice Workspace"
                               className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl transition-colors inline-flex items-center gap-1 text-xs font-bold shadow-xs cursor-pointer"
                             >
