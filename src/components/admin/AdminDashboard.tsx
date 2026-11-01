@@ -1663,15 +1663,19 @@ export const AdminDashboard: React.FC = () => {
     const normDoc = normalizeRefName(rawDocName);
     const isValidToken = (s: string) => s.length >= 3 && !s.includes('walkin') && !s.includes('direct') && s !== 'self' && s !== 'independentpractice';
 
-    // 1. If explicit beneficiary name exists
+    const isOrgEntity = r.affiliationType === 'ORGANIZATION' && (!r.name.toLowerCase().startsWith('dr.') || r.name.toLowerCase() === r.organizationName?.toLowerCase());
+
+    // 1. If explicit beneficiary name exists on the order
     if (isValidToken(normBen)) {
+      // Direct match with this partner's own name
       if (isValidToken(normRName) && normBen === normRName) return true;
-      if (isValidToken(normROrg) && normBen === normROrg) return true;
-      if (isValidToken(normRHosp) && normBen === normRHosp) return true;
-      return false; // Order specifies a different beneficiary; prescribing doctor does NOT get commission!
+      // If this partner is an organization entity itself, match its organization name
+      if (isOrgEntity && isValidToken(normROrg) && normBen === normROrg) return true;
+      // Otherwise, this doctor is NOT the beneficiary of this order!
+      return false;
     }
 
-    // 2. If no separate beneficiary is specified, doctor is self-beneficiary
+    // 2. If no separate beneficiary is specified, the prescribing doctor is their own self-beneficiary
     if (ord.referringDoctorId && ord.referringDoctorId === r.id) return true;
     if (isValidToken(normDoc) && isValidToken(normRName) && normDoc === normRName) {
       return true;
