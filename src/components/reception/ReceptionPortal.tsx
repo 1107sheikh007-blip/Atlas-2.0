@@ -3219,7 +3219,7 @@ export const ReceptionPortal: React.FC = () => {
                     <th className="p-3.5">Paid Amount</th>
                     <th className="p-3.5">Due by Patient</th>
                     <th className="p-3.5">Workflow Status</th>
-                    <th className="p-3.5 text-right sticky-action-col min-w-[290px]">Instant Actions</th>
+                    <th className="p-3.5 text-right">Instant Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -3428,7 +3428,7 @@ export const ReceptionPortal: React.FC = () => {
                           </td>
 
                           {/* 10. Instant Actions */}
-                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap sticky-action-col">
+                          <td className="p-3.5 text-right space-x-1.5 whitespace-nowrap">
                             {/* Edit Invoice Button */}
                             <button
                               type="button"

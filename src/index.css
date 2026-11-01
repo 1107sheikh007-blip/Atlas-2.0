@@ -535,32 +535,3 @@ html.dark .thermal-slip * {
 }
 
 
-/* Sticky Table Actions Column & Solid Dark Overrides */
-.sticky-action-col {
-  position: sticky !important;
-  right: 0 !important;
-  z-index: 20 !important;
-  background-color: #ffffff !important;
-  box-shadow: -8px 0 16px -4px rgba(0, 0, 0, 0.08) !important;
-}
-
-html.dark .sticky-action-col {
-  background-color: #111726 !important;
-  box-shadow: -8px 0 16px -4px rgba(0, 0, 0, 0.45) !important;
-}
-
-thead th.sticky-action-col {
-  background-color: #f0f9ff !important;
-}
-
-html.dark thead th.sticky-action-col {
-  background-color: #0b101c !important;
-}
-
-tr:hover .sticky-action-col {
-  background-color: #f8fafc !important;
-}
-
-html.dark tr:hover .sticky-action-col {
-  background-color: #162032 !important;
-}
