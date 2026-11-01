@@ -1588,7 +1588,7 @@ export const AdminDashboard: React.FC = () => {
   }, []);
 
   // Matching helper to relate patient order with a doctor or organization partner
-  const isOrderMatchingReferrer = useCallback((ord: DiagnosticOrder, r: ReferringDoctor) => {
+    const isOrderMatchingReferrer = useCallback((ord: DiagnosticOrder, r: ReferringDoctor) => {
     const rawDocName = (ord.referringDoctorName || '').trim();
     const rawBenName = (ord.commissionBeneficiaryName || '').trim();
     // Only exclude as walk-in if NEITHER referring doctor NOR beneficiary is assigned to a real partner
@@ -1634,6 +1634,39 @@ export const AdminDashboard: React.FC = () => {
           (isValidToken(normAff) && normAff === normRHosp)) {
         return true;
       }
+    }
+
+    return false;
+  }, [normalizeRefName]);
+
+  // Strict Beneficiary-Only Matching helper: Commission strictly belongs to the Beneficiary, NOT the Prescribing Doctor (unless Doctor is Self-Beneficiary)
+  const isOrderBeneficiaryMatching = useCallback((ord: DiagnosticOrder, r: ReferringDoctor) => {
+    const rawBenName = (ord.commissionBeneficiaryName || '').trim();
+    const rawDocName = (ord.referringDoctorName || '').trim();
+
+    // Direct check if order beneficiary matches r
+    if (ord.commissionBeneficiaryId && ord.commissionBeneficiaryId === r.id) return true;
+
+    const normRName = normalizeRefName(r.name);
+    const normROrg = normalizeRefName(r.organizationName);
+    const normRHosp = normalizeRefName(r.hospital);
+
+    const normBen = normalizeRefName(rawBenName);
+    const normDoc = normalizeRefName(rawDocName);
+    const isValidToken = (s: string) => s.length >= 3 && !s.includes('walkin') && !s.includes('direct') && s !== 'self' && s !== 'independentpractice';
+
+    // 1. If explicit beneficiary name exists
+    if (isValidToken(normBen)) {
+      if (isValidToken(normRName) && (normBen === normRName || normBen.includes(normRName) || normRName.includes(normBen))) return true;
+      if (isValidToken(normROrg) && (normBen === normROrg || normBen.includes(normROrg) || normROrg.includes(normBen))) return true;
+      if (isValidToken(normRHosp) && (normBen === normRHosp || normBen.includes(normRHosp) || normRHosp.includes(normBen))) return true;
+      return false; // Order specifies a different beneficiary; prescribing doctor does NOT get commission!
+    }
+
+    // 2. If no separate beneficiary is specified, doctor is self-beneficiary
+    if (ord.referringDoctorId && ord.referringDoctorId === r.id) return true;
+    if (isValidToken(normDoc) && isValidToken(normRName) && (normDoc === normRName || normDoc.includes(normRName) || normRName.includes(normDoc))) {
+      return true;
     }
 
     return false;
@@ -1765,14 +1798,20 @@ export const AdminDashboard: React.FC = () => {
         isOrderMatchingReferrer(o, r) &&
         isDateInSelectedRange(o.createdAt, referralDateRange, referralStartDate, referralEndDate)
       );
+      // Commission strictly belongs to the Beneficiary, NOT the Prescribing Doctor (unless doctor is their own beneficiary)
+      const commissionOrders = allOrders.filter(o =>
+        !o.isDeleted && !o.deletionPendingApproval &&
+        isOrderBeneficiaryMatching(o, r) &&
+        isDateInSelectedRange(o.createdAt, referralDateRange, referralStartDate, referralEndDate)
+      );
       const periodRevenue = docOrders.reduce((sum, o) => sum + o.totalAmount, 0);
-      const periodCommission = Math.round(docOrders.reduce((sum, o) => sum + (o.totalAmount * ((r.commissionPct || 15) / 100)), 0));
+      const periodCommission = Math.round(commissionOrders.reduce((sum, o) => sum + (o.totalAmount * ((r.commissionPct || 15) / 100)), 0));
       const periodCount = docOrders.length;
       return {
         ...r,
         totalRevenueGenerated: referralDateRange === 'ALL' ? Math.max(r.totalRevenueGenerated || 0, periodRevenue) : periodRevenue,
         totalReferralsCount: referralDateRange === 'ALL' ? Math.max(r.totalReferralsCount || 0, periodCount) : periodCount,
-        totalCommissionEarned: referralDateRange === 'ALL' ? Math.max(r.totalCommissionEarned || 0, periodCommission) : periodCommission
+        totalCommissionEarned: referralDateRange === 'ALL' ? periodCommission : periodCommission
       };
     }).filter(r => {
       if (referralDoctorFilter !== 'ALL') {
@@ -1886,7 +1925,12 @@ export const AdminDashboard: React.FC = () => {
       );
       const beneficiaryDoc = (!isWalkIn && ord.commissionBeneficiaryId)
         ? referrers.find(r => r.id === ord.commissionBeneficiaryId)
-        : prescribingDoc;
+        : (!isWalkIn && ord.commissionBeneficiaryName)
+          ? referrers.find(r => {
+              const nb = normalizeRefName(ord.commissionBeneficiaryName);
+              return nb.length >= 3 && (normalizeRefName(r.name) === nb || normalizeRefName(r.organizationName) === nb || normalizeRefName(r.hospital) === nb);
+            })
+          : prescribingDoc;
 
       const doctorName = ord.referringDoctorName || prescribingDoc?.name || 'Direct Walk-in';
       const rawAffiliation = isWalkIn
@@ -1905,7 +1949,7 @@ export const AdminDashboard: React.FC = () => {
         doctorAffiliation,
         beneficiaryName,
         beneficiaryOrg: doctorAffiliation,
-        refDoc: prescribingDoc || beneficiaryDoc
+        refDoc: beneficiaryDoc || prescribingDoc
       };
     });
   }, [allOrders, referrers, isOrderMatchingReferrer, normalizeRefName, referralDoctorFilter, referralBeneficiaryFilter, referralAffiliationFilter, referralDateRange, referralStartDate, referralEndDate, referralSearch]);
