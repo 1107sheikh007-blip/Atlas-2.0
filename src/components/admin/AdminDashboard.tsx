@@ -1574,6 +1574,9 @@ export const AdminDashboard: React.FC = () => {
       .trim();
     if (raw === 'galaxyhospital' || raw === 'galaxyhospitalkhajrana') return 'galaxyhospitalkhajrana';
     if (raw.includes('deepak') && (raw.includes('geeta') || raw.includes('gita'))) return 'deepakgitabhawan';
+    if (raw.includes('irfan') && (raw.includes('thyro') || raw.includes('cear') || raw.includes('care'))) return 'irfanthyrocare';
+    if (raw.includes('loyal') && raw.includes('multi')) return 'loyalmultispeciality';
+    if (raw.includes('femida') || raw.includes('fehmida')) return 'femidaaasha';
     if (raw.includes('direct') && raw.includes('walkin')) return 'directwalkin';
     if (raw === 'walkin' || raw === 'direct') return 'directwalkin';
     return raw;
@@ -1685,6 +1688,9 @@ export const AdminDashboard: React.FC = () => {
       if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
       if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') return 'Galaxy hospital khajrana';
       if (lower.includes('deepak') && (lower.includes('geeta') || lower.includes('gita'))) return 'DEEPAK GITA BHAWAN';
+      if (lower.includes('irfan') && (lower.includes('thyro') || lower.includes('cear') || lower.includes('care'))) return 'IRFAN THYRO CARE';
+      if (lower.includes('loyal') && lower.includes('multi')) return 'LOYAL MULTISPECIALITY';
+      if (lower.includes('femida') || lower.includes('fehmida')) return 'FEMIDA AASHA';
       if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') return 'Direct Walk-in';
       return rawName.trim();
     };
@@ -1737,6 +1743,9 @@ export const AdminDashboard: React.FC = () => {
       if (lower === 'self' || lower === 'atlas self' || lower === 'dr. self') return 'ATLAS SELF';
       if (lower === 'galaxy hospital' || lower === 'galaxy hospital khajrana' || lower === 'galaxy hospital khajrana ') return 'Galaxy hospital khajrana';
       if (lower.includes('deepak') && (lower.includes('geeta') || lower.includes('gita'))) return 'DEEPAK GITA BHAWAN';
+      if (lower.includes('irfan') && (lower.includes('thyro') || lower.includes('cear') || lower.includes('care'))) return 'IRFAN THYRO CARE';
+      if (lower.includes('loyal') && lower.includes('multi')) return 'LOYAL MULTISPECIALITY';
+      if (lower.includes('femida') || lower.includes('fehmida')) return 'FEMIDA AASHA';
       if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') return 'Direct Walk-in';
       return rawName.trim();
     };

@@ -478,7 +478,8 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     if (!docStr) return true;
     const trimmed = docStr.trim();
     if (!trimmed) return true;
-    if (/^\d+$/.test(trimmed)) return true;
+    if (/^\d+(\.\d+)?$/.test(trimmed)) return true;
+    if (/^(bhms|bams|mbbs|md|ms|dnb|bpt|mpt|bds|mds)(\s+(bhms|bams|mbbs|md|ms|dnb|bpt|mpt|bds|mds))*$/i.test(trimmed)) return true;
     if (/^(atl-main|cnt-|atl-bar|atl-p|atl-ord|bar-|inv-|emp-|sample|order|no|none|null|undefined)/i.test(trimmed)) return true;
     if (['sample_collected', 'processing', 'result_entered', 'verified', 'completed', 'order_placed', 'cancelled'].includes(trimmed.toLowerCase())) return true;
     return false;
@@ -510,6 +511,15 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     }
     if (lower.includes('deepak') && (lower.includes('geeta') || lower.includes('gita'))) {
       return 'DEEPAK GITA BHAWAN';
+    }
+    if (lower.includes('irfan') && (lower.includes('thyro') || lower.includes('cear') || lower.includes('care'))) {
+      return 'IRFAN THYRO CARE';
+    }
+    if (lower.includes('loyal') && lower.includes('multi')) {
+      return 'LOYAL MULTISPECIALITY';
+    }
+    if (lower.includes('femida') || lower.includes('fehmida')) {
+      return 'FEMIDA AASHA';
     }
     if (/^direct[\s/\\-]*walk[\s-]*in$/i.test(lower) || lower === 'walk-in' || lower === 'walkin' || lower === 'direct') {
       return 'Direct Walk-in';

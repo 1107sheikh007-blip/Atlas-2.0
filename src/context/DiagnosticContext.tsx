@@ -263,7 +263,7 @@ interface DiagnosticContextType {
 
 const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undefined);
 
-const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V19_';
+const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V20_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
 export const normalizeDocNameKey = (name?: string) => {
@@ -274,6 +274,10 @@ export const normalizeDocNameKey = (name?: string) => {
     .replace(/sh/g, 's')
     .trim();
   if (raw === 'galaxyhospital' || raw === 'galaxyhospitalkhajrana') return 'galaxyhospitalkhajrana';
+    if (raw.includes('deepak') && (raw.includes('geeta') || raw.includes('gita'))) return 'deepakgitabhawan';
+    if (raw.includes('irfan') && (raw.includes('thyro') || raw.includes('cear') || raw.includes('care'))) return 'irfanthyrocare';
+    if (raw.includes('loyal') && raw.includes('multi')) return 'loyalmultispeciality';
+    if (raw.includes('femida') || raw.includes('fehmida')) return 'femidaaasha';
   return raw;
 };
 
@@ -2505,6 +2509,10 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       .replace(/sh/g, 's')
       .trim();
     if (raw === 'galaxyhospital' || raw === 'galaxyhospitalkhajrana') return 'galaxyhospitalkhajrana';
+    if (raw.includes('deepak') && (raw.includes('geeta') || raw.includes('gita'))) return 'deepakgitabhawan';
+    if (raw.includes('irfan') && (raw.includes('thyro') || raw.includes('cear') || raw.includes('care'))) return 'irfanthyrocare';
+    if (raw.includes('loyal') && raw.includes('multi')) return 'loyalmultispeciality';
+    if (raw.includes('femida') || raw.includes('fehmida')) return 'femidaaasha';
     return raw;
   };
 
