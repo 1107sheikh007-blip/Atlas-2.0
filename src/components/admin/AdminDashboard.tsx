@@ -1226,7 +1226,7 @@ export const AdminDashboard: React.FC = () => {
         ]
       ];
 
-      const tableBody = filteredReferralMISOrders.map(({ order: ord }, idx) => {
+      const tableBody = misReportOrdersAsc.map(({ order: ord }, idx) => {
         const dateStr = formatSafeDate(ord.createdAt);
         const timeStr = formatSafeTime(ord.createdAt);
         const mrp = ord.subtotal || ord.totalAmount || 0;
@@ -2034,6 +2034,16 @@ export const AdminDashboard: React.FC = () => {
       });
     });
   }, [filteredReferralMISOrders, customCommissionMap]);
+
+  // Orders sorted in strict ASCENDING chronological order for MIS Report printing and viewing
+  const misReportOrdersAsc = useMemo(() => {
+    return [...filteredReferralMISOrders].sort((a, b) => {
+      const timeA = new Date(a.order.createdAt || 0).getTime();
+      const timeB = new Date(b.order.createdAt || 0).getTime();
+      if (timeA !== timeB) return timeA - timeB;
+      return (a.order.invoiceNumber || '').localeCompare(b.order.invoiceNumber || '');
+    });
+  }, [filteredReferralMISOrders]);
 
   // Consolidated Order Bill totals for Grouped MIS view
   const misOrderTotalMRP = useMemo(() => {
@@ -8465,7 +8475,7 @@ export const AdminDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
-                    {filteredReferralMISOrders.map(({ order: ord }, idx) => {
+                    {misReportOrdersAsc.map(({ order: ord }, idx) => {
                       const mrp = ord.subtotal || ord.totalAmount || 0;
                       const discount = ord.discountAmount || 0;
                       const paid = ord.paidAmount || 0;
