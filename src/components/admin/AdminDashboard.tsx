@@ -1846,7 +1846,8 @@ export const AdminDashboard: React.FC = () => {
         isOrderBeneficiaryMatching(o, r) &&
         isDateInSelectedRange(o.createdAt, referralDateRange, referralStartDate, referralEndDate)
       );
-      const periodRevenue = beneficiaryOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+      // Gross Bill Value / MRP Revenue of all affiliated orders
+      const periodRevenue = beneficiaryOrders.reduce((sum, o) => sum + (o.subtotal || o.totalAmount || 0), 0);
       const periodCommission = Math.round(beneficiaryOrders.reduce((sum, o) => sum + (o.totalAmount * ((r.commissionPct || 15) / 100)), 0));
       const periodCount = beneficiaryOrders.length;
       return {

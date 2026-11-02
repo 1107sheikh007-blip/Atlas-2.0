@@ -830,6 +830,10 @@ export const ReceptionPortal: React.FC = () => {
 
   const handleRegisterNewBeneficiary = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isSuperAdmin) {
+      showToast('Only Super Admin is authorized to add beneficiary partners.');
+      return;
+    }
     if (!newBenName.trim() && !newBenOrgName.trim()) {
       showToast('Please enter a beneficiary partner name or organization.');
       return;
@@ -850,7 +854,7 @@ export const ReceptionPortal: React.FC = () => {
         commissionPct: Number(newBenCommissionPct) || 0,
         notes: newBenNotes.trim() || 'Added as Beneficiary Partner during invoice edit',
         status: 'APPROVED',
-        addedByRole: isSuperAdmin ? 'SUPER_ADMIN' : 'RECEPTIONIST'
+        addedByRole: 'SUPER_ADMIN'
       });
 
       setSelectedBeneficiaryId(createdId);
@@ -919,11 +923,15 @@ export const ReceptionPortal: React.FC = () => {
       commissionPct: 0, // Commission is allotted by Super Admin upon approval
       affiliationType: newDoctorAffiliationType,
       organizationName: newDoctorAffiliationType === 'ORGANIZATION' ? newDoctorOrganizationName.trim() : undefined,
-      status: 'PENDING_APPROVAL',
-      addedByRole: 'RECEPTIONIST'
+      status: isSuperAdmin ? 'APPROVED' : 'PENDING_APPROVAL',
+      addedByRole: isSuperAdmin ? 'SUPER_ADMIN' : (isManager ? 'CENTER_MANAGER' : 'RECEPTIONIST')
     });
 
-    showToast(`${newDoctorName.trim()} registered! Submitted for Super Admin approval & commission allotment.`);
+    if (isSuperAdmin) {
+      showToast(`${newDoctorName.trim()} registered and directly approved to doctor roster!`);
+    } else {
+      showToast(`${newDoctorName.trim()} registered! Submitted for Super Admin approval & commission allotment.`);
+    }
     
     if (newDoctorPhone.trim()) {
       sendWelcomeDoctorWhatsApp({
@@ -2036,7 +2044,19 @@ export const ReceptionPortal: React.FC = () => {
                     <Send className="w-4 h-4 text-cyan-600" />
                     2. Referring Doctor / Partner Organization
                   </h3>
-
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNewDoctorName(doctorSearchQuery.trim());
+                      setIsStandaloneDoctorModalOpen(true);
+                      setIsDoctorDropdownOpen(false);
+                    }}
+                    className="text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold px-3 py-1.5 rounded-xl border border-sky-200 flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-2xs self-start sm:self-auto"
+                    title={isSuperAdmin ? "Directly add and approve doctor to roster" : "Register doctor to roster (submits for Super Admin approval)"}
+                  >
+                    <UserPlus className="w-3.5 h-3.5 text-sky-600" />
+                    <span>+ Add Doctor</span>
+                  </button>
                 </div>
 
                 <div ref={doctorDropdownRef} className="relative">
@@ -4036,8 +4056,14 @@ export const ReceptionPortal: React.FC = () => {
                   <Building className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-base">Register Doctor to Partner Roster</h3>
-                  <p className="text-[11px] text-slate-500">Submits doctor for Super Admin approval & commission allotment</p>
+                  <h3 className="font-bold text-slate-900 text-base">
+                    {isSuperAdmin ? 'Add Doctor to Partner Roster (Direct Approval)' : 'Register Doctor to Partner Roster'}
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    {isSuperAdmin
+                      ? 'Instantly registers and activates doctor in the approved roster'
+                      : 'Submits doctor for Super Admin approval & commission allotment'}
+                  </p>
                 </div>
               </div>
               <button
@@ -4215,9 +4241,9 @@ export const ReceptionPortal: React.FC = () => {
               <div className="flex gap-3 pt-3 border-t border-slate-100">
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs shadow-xs cursor-pointer transition-all"
+                  className="flex-1 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-xs shadow-xs cursor-pointer transition-all active:scale-95"
                 >
-                  Submit for Super Admin Approval
+                  {isSuperAdmin ? 'Directly Approve & Add to Roster' : 'Submit for Super Admin Approval'}
                 </button>
                 <button
                   type="button"
@@ -4814,8 +4840,8 @@ export const ReceptionPortal: React.FC = () => {
         </div>
       )}
 
-      {/* MODAL: Register New Beneficiary Partner to Referring Doctors Master (Super Admin authorized) */}
-      {isRegisterBeneficiaryModalOpen && (
+      {/* MODAL: Register New Beneficiary Partner to Referring Doctors Master (Super Admin authorized only) */}
+      {isSuperAdmin && isRegisterBeneficiaryModalOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto animate-fade-in"
           onClick={e => {
