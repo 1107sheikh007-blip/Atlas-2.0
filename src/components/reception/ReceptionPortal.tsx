@@ -3134,43 +3134,79 @@ export const ReceptionPortal: React.FC = () => {
       {/* TAB 2: LIVE CENTER ORDERS QUEUE & SAMPLE COLLECTION */}
       {activeTab === 'ORDERS_QUEUE' && (
         <div className="space-y-4">
-          {/* Real-Time Queue Financial Metrics Row (Restricted strictly to Super Admin & Center Manager) */}
-          {canViewFinancialMetrics && (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-              <div className="p-4 bg-white border border-sky-100 rounded-2xl shadow-xs">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Queue Orders</span>
-                <span className="text-xl font-black text-slate-900 mt-1 block">{filteredOrders.length}</span>
-                <span className="text-[10px] text-slate-400">Total Billed: ₹{filteredOrders.reduce((s, o) => s + (o.totalAmount || 0), 0).toLocaleString()}</span>
-              </div>
-
-              <div className="p-4 bg-white border border-emerald-100 rounded-2xl shadow-xs">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
-                  <Banknote className="w-3 h-3 text-emerald-600" /> Cash Income
-                </span>
-                <span className="text-xl font-black text-emerald-700 mt-1 block">₹{queueCashIncome.toLocaleString()}</span>
-                <span className="text-[10px] text-emerald-600">Physical cash collected</span>
-              </div>
-
-              <div className="p-4 bg-white border border-sky-100 rounded-2xl shadow-xs">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-sky-800 flex items-center gap-1">
-                  <QrCode className="w-3 h-3 text-sky-600" /> Online Income
-                </span>
-                <span className="text-xl font-black text-sky-700 mt-1 block">₹{queueOnlineIncome.toLocaleString()}</span>
-                <span className="text-[10px] text-sky-600">UPI, QR & Card transactions</span>
-              </div>
-
-              <div className="p-4 bg-white border border-amber-100 rounded-2xl shadow-xs">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">Pending Dues</span>
-                  {queueTotalRefunds > 0 && (
-                    <span className="text-[10px] font-bold text-rose-600">₹{queueTotalRefunds.toLocaleString()} Ref</span>
-                  )}
-                </div>
-                <span className="text-xl font-black text-amber-700 mt-1 block">₹{queueTotalDue.toLocaleString()}</span>
-                <span className="text-[10px] text-amber-600">Balance to collect at desk</span>
-              </div>
+          {/* Real-Time Queue Metrics Row */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            <div className="p-4 bg-white border border-sky-100 rounded-2xl shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Total Orders</span>
+              <span className="text-2xl font-black text-slate-900 mt-1 block">{filteredOrders.length}</span>
+              <span className="text-[10px] text-slate-400">
+                {filteredOrders.length !== orders.length ? `Filtered from ${orders.length} total orders` : 'All registered center orders'}
+              </span>
             </div>
-          )}
+
+            {canViewFinancialMetrics ? (
+              <>
+                <div className="p-4 bg-white border border-emerald-100 rounded-2xl shadow-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
+                    <Banknote className="w-3 h-3 text-emerald-600" /> Cash Income
+                  </span>
+                  <span className="text-xl font-black text-emerald-700 mt-1 block">₹{queueCashIncome.toLocaleString()}</span>
+                  <span className="text-[10px] text-emerald-600">Physical cash collected</span>
+                </div>
+
+                <div className="p-4 bg-white border border-sky-100 rounded-2xl shadow-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-sky-800 flex items-center gap-1">
+                    <QrCode className="w-3 h-3 text-sky-600" /> Online Income
+                  </span>
+                  <span className="text-xl font-black text-sky-700 mt-1 block">₹{queueOnlineIncome.toLocaleString()}</span>
+                  <span className="text-[10px] text-sky-600">UPI, QR & Card transactions</span>
+                </div>
+
+                <div className="p-4 bg-white border border-amber-100 rounded-2xl shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">Pending Dues</span>
+                    {queueTotalRefunds > 0 && (
+                      <span className="text-[10px] font-bold text-rose-600">₹{queueTotalRefunds.toLocaleString()} Ref</span>
+                    )}
+                  </div>
+                  <span className="text-xl font-black text-amber-700 mt-1 block">₹{queueTotalDue.toLocaleString()}</span>
+                  <span className="text-[10px] text-amber-600">Balance to collect at desk</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="p-4 bg-white border border-amber-100 rounded-2xl shadow-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1">
+                    <FlaskConical className="w-3 h-3 text-amber-600" /> Pending Sample
+                  </span>
+                  <span className="text-xl font-black text-amber-700 mt-1 block">
+                    {filteredOrders.filter(o => o.status === 'ORDER_PLACED' || !o.sampleCollected).length}
+                  </span>
+                  <span className="text-[10px] text-amber-600">Awaiting phlebotomy collection</span>
+                </div>
+
+                <div className="p-4 bg-white border border-indigo-100 rounded-2xl shadow-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-800 flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-indigo-600" /> In Processing
+                  </span>
+                  <span className="text-xl font-black text-indigo-700 mt-1 block">
+                    {filteredOrders.filter(o => o.status === 'SAMPLE_COLLECTED' || o.status === 'DOCTOR_REVIEW').length}
+                  </span>
+                  <span className="text-[10px] text-indigo-600">Samples collected / review</span>
+                </div>
+
+                <div className="p-4 bg-white border border-emerald-100 rounded-2xl shadow-xs">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Completed
+                  </span>
+                  <span className="text-xl font-black text-emerald-700 mt-1 block">
+                    {filteredOrders.filter(o => o.status === 'VERIFIED' || o.status === 'DISPATCHED').length}
+                  </span>
+                  <span className="text-[10px] text-emerald-600">Reports authorized / dispatched</span>
+                </div>
+              </>
+            )}
+          </div>
 
           {/* Filter Bar & Order Count Summary */}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-3 p-4 bg-white border border-sky-100 rounded-3xl shadow-xs">
