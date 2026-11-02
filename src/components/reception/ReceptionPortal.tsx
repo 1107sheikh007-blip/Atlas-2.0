@@ -3172,20 +3172,45 @@ export const ReceptionPortal: React.FC = () => {
             </div>
           )}
 
-          {/* Filter Bar */}
+          {/* Filter Bar & Order Count Summary */}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-3 p-4 bg-white border border-sky-100 rounded-3xl shadow-xs">
-            <div className="relative w-full lg:w-72">
-              <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
-              <input
-                type="text"
-                value={queueSearch}
-                onChange={e => setQueueSearch(e.target.value)}
-                placeholder="Search patient, doctor, UHID or invoice..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
+            <div className="flex items-center gap-3 w-full lg:w-auto">
+              <div className="relative w-full lg:w-72">
+                <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <input
+                  type="text"
+                  value={queueSearch}
+                  onChange={e => setQueueSearch(e.target.value)}
+                  placeholder="Search patient, doctor, UHID or invoice..."
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              {/* Total Orders Badge */}
+              <div className="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-sky-50 text-sky-800 border border-sky-200 rounded-xl text-xs font-bold whitespace-nowrap shadow-2xs shrink-0">
+                <Receipt className="w-3.5 h-3.5 text-sky-600" />
+                <span>
+                  Total Orders: <strong className="text-sky-950 font-black">{filteredOrders.length}</strong>
+                  {filteredOrders.length !== orders.length && (
+                    <span className="text-[11px] text-sky-600 font-semibold ml-1">
+                      (of {orders.length})
+                    </span>
+                  )}
+                </span>
+              </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-start lg:justify-end">
+              {/* Mobile Total Orders Pill */}
+              <div className="sm:hidden flex items-center gap-1.5 px-2.5 py-1.5 bg-sky-50 text-sky-800 border border-sky-200 rounded-xl text-[11px] font-bold w-full justify-between shadow-2xs">
+                <span className="flex items-center gap-1 text-slate-600">
+                  <Receipt className="w-3.5 h-3.5 text-sky-600" /> Total Orders
+                </span>
+                <span className="text-sky-950 font-black text-xs">
+                  {filteredOrders.length} {filteredOrders.length !== orders.length && <span className="font-normal text-sky-700">/ {orders.length}</span>}
+                </span>
+              </div>
+
               {/* Date Range Preset & Custom Selector */}
               <DateRangeFilter
                 preset={queueDateRange}
