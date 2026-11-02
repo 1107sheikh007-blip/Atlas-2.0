@@ -279,6 +279,17 @@ export const syncOrderToGoogleSheets = async (
     if (orderToSync.patient) {
       orderToSync.patient = ensureCombinedPatientName(orderToSync.patient)!;
     }
+
+    // If Split Payment, encode the exact cash and online breakdown into paymentMode string
+    // e.g. "Split: Cash ₹1000 + UPI ₹2000" so Google Sheets stores the exact amounts in the Payment Mode cell!
+    const isSplit = orderToSync.paymentMode === 'Split Payment' || String(orderToSync.paymentMode || '').toLowerCase().includes('split');
+    if (isSplit && orderToSync.splitPaymentDetails) {
+      const c = Number(orderToSync.splitPaymentDetails.cashAmount) || 0;
+      const u = Number(orderToSync.splitPaymentDetails.onlineAmount) || 0;
+      const oMode = orderToSync.splitPaymentDetails.onlineMode || 'UPI / QR';
+      (orderToSync as any).paymentMode = `Split: Cash ₹${c} + ${oMode} ₹${u}`;
+    }
+
     // Keep doctor and beneficiary clean and separated - do not append "| Ben: ..." into doctor name
     const res = await postToGoogleAppsScript({
       action: 'CREATE_ORDER',
