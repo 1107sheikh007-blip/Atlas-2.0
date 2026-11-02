@@ -3758,24 +3758,47 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     let updatedOrder: DiagnosticOrder | undefined;
     setAllOrders(prev => {
       const next = prev.map(ord => {
-        if (ord.id === orderId) {
+        if (ord.id === orderId || ord.invoiceNumber === orderId) {
           updatedOrder = {
             ...ord,
             status: 'SAMPLE_COLLECTED' as OrderStatus,
             sampleCollected: true,
             sampleCollectedAt: now,
-            sampleCollectedBy: collector
+            sampleCollectedBy: collector,
+            syncedToGoogleSheets: false
           };
+          (updatedOrder as any).updatedAt = new Date().toISOString();
+          dirtyOrderUpdatesRef.current.set(String(updatedOrder.id || '').trim().toLowerCase(), {
+            order: updatedOrder,
+            timestamp: Date.now()
+          });
+          dirtyOrderUpdatesRef.current.set(String(updatedOrder.invoiceNumber || '').trim().toLowerCase(), {
+            order: updatedOrder,
+            timestamp: Date.now()
+          });
           return updatedOrder;
         }
         return ord;
       });
+      try {
+        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+      } catch (e) {}
       pushCurrentStateToCloud({ orders: next });
       return next;
     });
     logActivity('SAMPLE_COLLECTED', `Sample collected for Order #${orderId} by ${collector}`, { orderId, collector });
     if (updatedOrder) {
-      syncOrderToGoogleSheets(updatedOrder, updatedOrder.centerCode || selectedCenter.code);
+      syncOrderToGoogleSheets(updatedOrder, (updatedOrder as DiagnosticOrder).centerCode || selectedCenter.code).then(res => {
+        if (res.success) {
+          setAllOrders(prev => {
+            const next = prev.map(o => (o.id === updatedOrder?.id ? { ...o, syncedToGoogleSheets: true } : o));
+            try {
+              localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+            } catch (e) {}
+            return next;
+          });
+        }
+      });
       triggerDebouncedFullBackupToSheets(1000);
     }
   };
@@ -3918,31 +3941,59 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, []);
 
   const updateOrderStatus = (orderId: string, newStatus: OrderStatus) => {
+    let updatedOrder: DiagnosticOrder | undefined;
     setAllOrders(prev => {
       const next = prev.map(ord => {
-        if (ord.id === orderId) {
-          const mod = {
+        if (ord.id === orderId || ord.invoiceNumber === orderId) {
+          const mod: DiagnosticOrder = {
             ...ord,
             status: newStatus,
             reportReadyAt: (newStatus === 'VERIFIED' || newStatus === 'DISPATCHED') ? (ord.reportReadyAt || new Date().toISOString()) : ord.reportReadyAt,
-            dispatchedAt: newStatus === 'DISPATCHED' ? new Date().toISOString() : ord.dispatchedAt
+            dispatchedAt: newStatus === 'DISPATCHED' ? new Date().toISOString() : ord.dispatchedAt,
+            syncedToGoogleSheets: false
           };
-          syncOrderToGoogleSheets(mod, mod.centerCode || selectedCenter.code);
+          (mod as any).updatedAt = new Date().toISOString();
+          dirtyOrderUpdatesRef.current.set(String(mod.id || '').trim().toLowerCase(), {
+            order: mod,
+            timestamp: Date.now()
+          });
+          dirtyOrderUpdatesRef.current.set(String(mod.invoiceNumber || '').trim().toLowerCase(), {
+            order: mod,
+            timestamp: Date.now()
+          });
+          updatedOrder = mod;
           return mod;
         }
         return ord;
       });
+      try {
+        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+      } catch (e) {}
       pushCurrentStateToCloud({ orders: next });
-      triggerDebouncedFullBackupToSheets(1000);
       return next;
     });
+
+    if (updatedOrder) {
+      syncOrderToGoogleSheets(updatedOrder, (updatedOrder as DiagnosticOrder).centerCode || selectedCenter.code).then(res => {
+        if (res.success) {
+          setAllOrders(prev => {
+            const next = prev.map(o => (o.id === updatedOrder?.id ? { ...o, syncedToGoogleSheets: true } : o));
+            try {
+              localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+            } catch (e) {}
+            return next;
+          });
+        }
+      });
+      triggerDebouncedFullBackupToSheets(1000);
+    }
   };
 
   const markPaymentReceived = (orderId: string, additionalAmount: number, paymentMode: PaymentMode) => {
     let updatedOrder: DiagnosticOrder | undefined;
     setAllOrders(prev => {
       const next = prev.map(ord => {
-        if (ord.id === orderId) {
+        if (ord.id === orderId || ord.invoiceNumber === orderId) {
           const newPaid = ord.paidAmount + additionalAmount;
           const newDue = Math.max(0, ord.totalAmount - newPaid);
           updatedOrder = {
@@ -3950,12 +4001,25 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             paidAmount: newPaid,
             dueAmount: newDue,
             paymentMode,
-            paymentStatus: newDue === 0 ? 'PAID' : 'PARTIAL'
+            paymentStatus: newDue === 0 ? 'PAID' : 'PARTIAL',
+            syncedToGoogleSheets: false
           };
+          (updatedOrder as any).updatedAt = new Date().toISOString();
+          dirtyOrderUpdatesRef.current.set(String(updatedOrder.id || '').trim().toLowerCase(), {
+            order: updatedOrder,
+            timestamp: Date.now()
+          });
+          dirtyOrderUpdatesRef.current.set(String(updatedOrder.invoiceNumber || '').trim().toLowerCase(), {
+            order: updatedOrder,
+            timestamp: Date.now()
+          });
           return updatedOrder;
         }
         return ord;
       });
+      try {
+        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+      } catch (e) {}
       pushCurrentStateToCloud({ orders: next });
       return next;
     });
@@ -3963,7 +4027,17 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     logActivity('PAYMENT_RECEIVED', `Received ₹${additionalAmount} payment (${paymentMode}) for Bill #${updatedOrder?.invoiceNumber || orderId}`, { orderId, additionalAmount, paymentMode });
 
     if (updatedOrder) {
-      syncOrderToGoogleSheets(updatedOrder, updatedOrder.centerCode || selectedCenter.code);
+      syncOrderToGoogleSheets(updatedOrder, (updatedOrder as DiagnosticOrder).centerCode || selectedCenter.code).then(res => {
+        if (res.success) {
+          setAllOrders(prev => {
+            const next = prev.map(o => (o.id === updatedOrder?.id ? { ...o, syncedToGoogleSheets: true } : o));
+            try {
+              localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+            } catch (e) {}
+            return next;
+          });
+        }
+      });
       triggerDebouncedFullBackupToSheets(1000);
     }
   };
