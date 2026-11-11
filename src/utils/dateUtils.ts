@@ -391,6 +391,15 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     dateFromInvoice = `20${invYY}-${invMM}-${invDD}T12:00:00.000+05:30`;
   }
 
+  // Resequence duplicate .00001 invoices across consecutive orders on the same day if patient differs
+  let cleanInvoice = rawInvoice;
+  if (ord.orderSequenceIndex && typeof ord.orderSequenceIndex === 'number' && ord.orderSequenceIndex > 1) {
+    if (invDateMatch) {
+      const invPrefix = rawInvoice.split('.')[0];
+      cleanInvoice = `${invPrefix}.${String(ord.orderSequenceIndex).padStart(5, '0')}`;
+    }
+  }
+
   let validDate = '';
   // If rawCreatedAt has a genuine booking date (e.g. 2026-10-25T11:50:00), respect it as the absolute truth.
   // Only fallback to invoice-encoded date if rawCreatedAt is completely missing or is an invalid date.
@@ -502,15 +511,24 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
 
   let realDoctor = 'Direct Walk-in';
   let realBeneficiary = rawBeneficiary || ord.commissionBeneficiaryName || '';
-  if (rawDoc && !isInvalidDoctorName(rawDoc) && !/^\d{8,14}$/.test(rawDoc)) {
-    if (rawDoc.includes(' | Ben: ')) {
-      const parts = rawDoc.split(' | Ben: ');
+
+  // Recover Doctor if it was shifted into discountReason or notes
+  let candidateDoctor = rawDoc;
+  if (isInvalidDoctorName(candidateDoctor) || /^\d+$/.test(candidateDoctor)) {
+    if (ord.discountReason && !isInvalidDoctorName(ord.discountReason) && !/concession/i.test(ord.discountReason)) {
+      candidateDoctor = ord.discountReason;
+    }
+  }
+
+  if (candidateDoctor && !isInvalidDoctorName(candidateDoctor) && !/^\d{8,14}$/.test(candidateDoctor)) {
+    if (candidateDoctor.includes(' | Ben: ')) {
+      const parts = candidateDoctor.split(' | Ben: ');
       realDoctor = parts[0].trim();
       if (parts[1] && parts[1].trim()) {
         realBeneficiary = parts[1].trim();
       }
     } else {
-      realDoctor = rawDoc;
+      realDoctor = candidateDoctor;
     }
   } else if (rawBeneficiary && !isInvalidDoctorName(rawBeneficiary) && !/^\d{8,14}$/.test(rawBeneficiary)) {
     realDoctor = rawBeneficiary;
@@ -633,10 +651,18 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
   const parsedSubtotal = parseFinancialAmount(ord.subtotal, -1);
   const parsedDiscount = parseFinancialAmount(ord.discountAmount, 0);
 
+  // If subtotal/total are 0 or negative but referringDoctorName holds a numeric amount (from a shifted row), recover price!
+  let recoveredAmountFromShiftedDoc = 0;
+  if (typeof ord.referringDoctorName === 'string' && /^\d+(\.\d+)?$/.test(ord.referringDoctorName.trim())) {
+    recoveredAmountFromShiftedDoc = parseFinancialAmount(ord.referringDoctorName, 0);
+  }
+
   if (parsedTotal > 0) {
     numSubtotal = parsedTotal + parsedDiscount;
   } else if (parsedSubtotal > 0) {
     numSubtotal = parsedSubtotal;
+  } else if (recoveredAmountFromShiftedDoc > 0) {
+    numSubtotal = recoveredAmountFromShiftedDoc;
   }
 
   let numDiscount = parsedDiscount;
@@ -675,7 +701,6 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
   const mm = String(dObj.getMonth() + 1).padStart(2, '0');
   const dd = String(dObj.getDate()).padStart(2, '0');
   
-  let cleanInvoice = rawInvoice;
   // If rawInvoice is empty or shifted, attempt recovery from barcode
   const rawBarcode = String(ord.barcode || '').trim();
   const barcodeMatch = rawBarcode.match(/ATL-BAR-(ATLS\d+\.\d+)/i);
@@ -820,8 +845,23 @@ export const getOrderPaymentSplit = (ord: {
 export const sanitizeOrdersCollection = (rawOrders: any[], existingPatients: Patient[] = []): DiagnosticOrder[] => {
   if (!Array.isArray(rawOrders) || rawOrders.length === 0) return [];
 
+  // Track invoice counts by date prefix to sequence any duplicate .00001 invoices across distinct patients
+  const seenDatePrefixCounts = new Map<string, number>();
+  const preparedOrders = rawOrders.map((o: any) => {
+    const rawInv = String(o?.invoiceNumber || '').trim();
+    const invMatch = rawInv.match(/^(ATLS\d{6})\./i);
+    let seqIdx = 1;
+    if (invMatch) {
+      const pfx = invMatch[1].toUpperCase();
+      const currentCount = seenDatePrefixCounts.get(pfx) || 0;
+      seqIdx = currentCount + 1;
+      seenDatePrefixCounts.set(pfx, seqIdx);
+    }
+    return { ...o, orderSequenceIndex: seqIdx };
+  });
+
   // 1. Sanitize individual fields
-  const sanitizedList = rawOrders.map(o => sanitizeOrderRecord(o, existingPatients));
+  const sanitizedList = preparedOrders.map(o => sanitizeOrderRecord(o, existingPatients));
 
   // Preserve genuine orders and canonical invoice numbers directly from Google Sheets
   return sanitizedList.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
