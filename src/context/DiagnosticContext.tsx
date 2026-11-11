@@ -1399,14 +1399,14 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           const preSanitized = sanitizeOrdersCollection(sheetRes.orders || [], availablePatients);
           const cleanSheetOrders = preSanitized
             .filter((o: any) => {
-              const inv = String(o.invoiceNumber || '');
-              const id = String(o.id || '');
-              return !inv.startsWith('INV-FB-') && !id.includes('INV-FB-');
+              const inv = String(o.invoiceNumber || '').trim().toLowerCase();
+              const id = String(o.id || '').trim().toLowerCase();
+              return !inv.startsWith('inv-fb-') && !id.includes('inv-fb-') && inv !== 'invoice no' && inv !== 'invoice_no';
             })
             .filter((o: DiagnosticOrder) => {
               const oId = String(o.id || '').trim().toLowerCase();
               const oInv = String(o.invoiceNumber || '').trim().toLowerCase();
-              return !liveDelOrders.has(oId) && !liveDelOrders.has(oInv) && !oInv.startsWith('inv-fb-');
+              return !liveDelOrders.has(oId) && !liveDelOrders.has(oInv) && !oInv.startsWith('inv-fb-') && oInv !== 'invoice no';
             });
 
           setAllOrders(prev => {
@@ -1418,7 +1418,9 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
                 dirtyOrderUpdatesRef.current.get(soId) ||
                 dirtyOrderUpdatesRef.current.get(soInv);
               const isRecentlyEdited = !!dirtyEntry && (Date.now() - dirtyEntry.timestamp < 180000);
-              sheetMap.set(so.id, isRecentlyEdited ? { ...so, ...dirtyEntry.order } : { ...so, syncedToGoogleSheets: true });
+              // Key by unique combination of id, invoice, and patientId to prevent accidental overwrites
+              const mapKey = so.id || `ord-${so.invoiceNumber}-${so.patientId || ''}`;
+              sheetMap.set(mapKey, isRecentlyEdited ? { ...so, ...dirtyEntry.order } : { ...so, syncedToGoogleSheets: true });
             });
 
             // Preserve local orders that are dirty, un-synced, or pending sheet write
