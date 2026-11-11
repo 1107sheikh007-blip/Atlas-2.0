@@ -1410,16 +1410,19 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             });
 
           setAllOrders(prev => {
+            // First sanitize and re-sequence raw sheet orders so duplicate .00001 placeholders receive proper sequence
+            const sanitizedSheetOrders = sanitizeOrdersCollection(cleanSheetOrders, availablePatients);
             const sheetMap = new Map<string, DiagnosticOrder>();
-            cleanSheetOrders.forEach(so => {
+
+            sanitizedSheetOrders.forEach(so => {
               const soId = String(so.id || '').trim().toLowerCase();
               const soInv = String(so.invoiceNumber || '').trim().toLowerCase();
               const dirtyEntry =
                 dirtyOrderUpdatesRef.current.get(soId) ||
                 dirtyOrderUpdatesRef.current.get(soInv);
               const isRecentlyEdited = !!dirtyEntry && (Date.now() - dirtyEntry.timestamp < 180000);
-              // Key by unique combination of id, invoice, and patientId to prevent accidental overwrites
-              const mapKey = so.id || `ord-${so.invoiceNumber}-${so.patientId || ''}`;
+              // Key by unique combination of id, invoice, patientId, and date to strictly prevent accidental overwrites
+              const mapKey = so.id || `ord-${so.invoiceNumber}-${so.patientId || ''}-${so.createdAt || ''}`;
               sheetMap.set(mapKey, isRecentlyEdited ? { ...so, ...dirtyEntry.order } : { ...so, syncedToGoogleSheets: true });
             });
 

@@ -391,9 +391,10 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     dateFromInvoice = `20${invYY}-${invMM}-${invDD}T12:00:00.000+05:30`;
   }
 
-  // Resequence duplicate .00001 invoices across consecutive orders on the same day if patient differs
+  // Resequence duplicate .00001 placeholder invoices across consecutive orders on the same day if patient differs
   let cleanInvoice = rawInvoice;
-  if (ord.orderSequenceIndex && typeof ord.orderSequenceIndex === 'number' && ord.orderSequenceIndex > 1) {
+  const isDuplicatePlaceholder = rawInvoice.endsWith('.00001') || !rawInvoice.includes('.');
+  if (isDuplicatePlaceholder && ord.orderSequenceIndex && typeof ord.orderSequenceIndex === 'number' && ord.orderSequenceIndex > 1) {
     if (invDateMatch) {
       const invPrefix = rawInvoice.split('.')[0];
       cleanInvoice = `${invPrefix}.${String(ord.orderSequenceIndex).padStart(5, '0')}`;
@@ -704,11 +705,11 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
   // If rawInvoice is empty or shifted, attempt recovery from barcode
   const rawBarcode = String(ord.barcode || '').trim();
   const barcodeMatch = rawBarcode.match(/ATL-BAR-(ATLS\d+\.\d+)/i);
-  if ((!cleanInvoice || cleanInvoice.includes('T')) && barcodeMatch) {
+  if ((!cleanInvoice || /\d{4}-\d{2}-\d{2}T/i.test(cleanInvoice)) && barcodeMatch) {
     cleanInvoice = barcodeMatch[1].toUpperCase();
   }
 
-  if (!cleanInvoice || (cleanInvoice.includes('T') && cleanInvoice.includes('Z'))) {
+  if (!cleanInvoice || (/\d{4}-\d{2}-\d{2}T/i.test(cleanInvoice) && cleanInvoice.includes('Z'))) {
     if (rawCreatedAt && /^(CK|ATLS|INV)\d+/i.test(rawCreatedAt)) {
       cleanInvoice = rawCreatedAt;
     } else {
@@ -724,7 +725,7 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     ? ord.createdByStaffName
     : 'Tashmiya';
 
-  const cleanId = (ord.id && !String(ord.id).includes('T') && !String(ord.id).startsWith('MO') && String(ord.id) === `ATL-ORD-${cleanInvoice}`)
+  const cleanId = (ord.id && !/\d{4}-\d{2}-\d{2}T/i.test(String(ord.id)) && !String(ord.id).startsWith('MO') && String(ord.id) === `ATL-ORD-${cleanInvoice}`)
     ? String(ord.id)
     : `ATL-ORD-${cleanInvoice}`;
 

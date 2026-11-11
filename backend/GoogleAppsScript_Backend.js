@@ -25,7 +25,7 @@
 // ==========================================
 
 var APP_NAME = "Atlas Diagnostics Center";
-var APP_VERSION = "5.4.0";
+var APP_VERSION = "5.5.0";
 
 var SHEET_NAMES = {
   MASTER_TESTS: "Master_Test_Catalog",
@@ -243,10 +243,11 @@ function doGet(e) {
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
+  var hasLock = false;
   try {
-    lock.waitLock(15000);
+    hasLock = lock.tryLock(5000);
   } catch (err) {
-    return createJsonResponse({ status: "ERROR", message: "Server lock timeout during write." });
+    hasLock = false;
   }
 
   try {
@@ -1000,7 +1001,9 @@ function doPost(e) {
   } catch (err) {
     return createJsonResponse({ status: "ERROR", message: err.toString(), stack: err.stack });
   } finally {
-    lock.releaseLock();
+    if (hasLock) {
+      try { lock.releaseLock(); } catch(eLock) {}
+    }
   }
 }
 
@@ -2338,28 +2341,34 @@ function fetchAllOrdersFromSheets(ss) {
           remark = colRemark >= 0 ? String(row[colRemark] || "") : "";
         }
 
-        var cleanInv = rawInv;
-        // Only recover from barcode if rawInv is missing or contains an invalid date string
-        if ((!cleanInv || cleanInv.indexOf("T") >= 0 || cleanInv.length < 5) && barcode && /ATL-BAR-(ATLS\d+\.\d+)/i.test(barcode)) {
-          var bMatch = barcode.match(/ATL-BAR-(ATLS\d+\.\d+)/i);
-          if (bMatch && bMatch[1]) {
-            cleanInv = bMatch[1].toUpperCase();
+        var cleanInv = String(rawInv || "").trim();
+        // Check if rawInv has a genuine ATLS invoice number (e.g. ATLS261109.00002)
+        var hasValidInvPattern = /^ATLS\d{6}\.\d{5}$/i.test(cleanInv);
+
+        if (!hasValidInvPattern) {
+          // If rawInv is not already a valid invoice, try recovering from barcode
+          if (barcode && /ATL-BAR-(ATLS\d+\.\d+)/i.test(barcode)) {
+            var bMatch = barcode.match(/ATL-BAR-(ATLS\d+\.\d+)/i);
+            if (bMatch && bMatch[1]) {
+              cleanInv = bMatch[1].toUpperCase();
+            }
+          } else if (!cleanInv || /\d{4}-\d{2}-\d{2}T/i.test(cleanInv) || cleanInv.length < 5) {
+            // Only synthesize invoice if cleanInv is empty or an ISO timestamp string
+            var dObj = new Date(rawDate);
+            if (isNaN(dObj.getTime()) || dObj.getFullYear() < 2000) dObj = new Date();
+            var yy = String(dObj.getFullYear()).slice(-2);
+            var mm = String(dObj.getMonth() + 1);
+            if (mm.length < 2) mm = "0" + mm;
+            var dd = String(dObj.getDate());
+            if (dd.length < 2) dd = "0" + dd;
+            var numStr = rawId.replace(/[^0-9]/g, "").slice(-5) || "00001";
+            while (numStr.length < 5) numStr = "0" + numStr;
+            cleanInv = "ATLS" + yy + mm + dd + "." + numStr;
           }
-        } else if (!cleanInv || cleanInv.indexOf("T") >= 0) {
-          var dObj = new Date(rawDate);
-          if (isNaN(dObj.getTime()) || dObj.getFullYear() < 2000) dObj = new Date();
-          var yy = String(dObj.getFullYear()).slice(-2);
-          var mm = String(dObj.getMonth() + 1);
-          if (mm.length < 2) mm = "0" + mm;
-          var dd = String(dObj.getDate());
-          if (dd.length < 2) dd = "0" + dd;
-          var numStr = rawId.replace(/[^0-9]/g, "").slice(-5) || "00001";
-          while (numStr.length < 5) numStr = "0" + numStr;
-          cleanInv = "ATLS" + yy + mm + dd + "." + numStr;
         }
 
         var cleanId = rawId;
-        if (!cleanId || cleanId.indexOf("T") >= 0) {
+        if (!cleanId || /\d{4}-\d{2}-\d{2}T/i.test(cleanId) || cleanId === "ATL-ORD-" || cleanId.startsWith("MO")) {
           cleanId = "ATL-ORD-" + cleanInv;
         }
 
