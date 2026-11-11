@@ -753,6 +753,75 @@ function doPost(e) {
       });
     }
 
+    // 19B. REPAIR DISCOUNT REASON COLUMN SHIFT ACROSS ALL CENTER SHEETS
+    if (action === "ALIGN_DISCOUNT_REASON_COLUMNS" || action === "REPAIR_DISCOUNT_REASON_SHIFT") {
+      var allSh = ss.getSheets();
+      var repairedCount = 0;
+      for (var s = 0; s < allSh.length; s++) {
+        var sh = allSh[s];
+        if (sh.getName().indexOf("Orders_") === 0) {
+          var sData = sh.getDataRange().getValues();
+          if (sData.length <= 1) continue;
+          var sHeaders = sData[0];
+          var discReasonCol = -1;
+          for (var hc = 0; hc < sHeaders.length; hc++) {
+            var hName = String(sHeaders[hc] || "").toLowerCase().trim();
+            if (hName.indexOf("discount reason") >= 0 || hName.indexOf("discount note") >= 0) {
+              discReasonCol = hc;
+              break;
+            }
+          }
+          if (discReasonCol >= 0) {
+            for (var r = 1; r < sData.length; r++) {
+              var sRow = sData[r];
+              var valAtDiscReason = String(sRow[discReasonCol] || "").trim();
+              var valAtDoctor = sRow[discReasonCol + 1];
+              // Detect if Doctor name is shifted into Discount Reason and Subtotal (a number) is in Referring Doctor!
+              var isDoctorInDiscReason = (
+                valAtDiscReason.match(/^(DR\.|DOCTOR|NEW PAL|HOSPITAL|CLINIC)/i) ||
+                (typeof valAtDoctor === "number" || (!isNaN(parseFloat(valAtDoctor)) && parseFloat(valAtDoctor) > 0))
+              );
+              if (isDoctorInDiscReason && (typeof valAtDoctor === "number" || !isNaN(parseFloat(valAtDoctor)))) {
+                // Shift columns from discReasonCol to the right by 1 column
+                var newRow = sRow.slice(0, discReasonCol);
+                newRow.push(""); // Discount Reason becomes blank
+                for (var sc = discReasonCol; sc < sRow.length - 1; sc++) {
+                  newRow.push(sRow[sc]);
+                }
+                sh.getRange(r + 1, 1, 1, newRow.length).setValues([newRow]);
+                repairedCount++;
+              }
+            }
+          }
+        }
+      }
+      return createJsonResponse({
+        status: "SUCCESS",
+        message: "Repaired " + repairedCount + " shifted order rows by restoring Discount Reason column alignment."
+      });
+    }
+
+    // 19C. RESTORE CLEAN ORDERS FROM MASTER EXCEL / BACKUP
+    if (action === "RESTORE_MASTER_ORDERS" || action === "OVERWRITE_ORDERS_MAIN") {
+      var targetCenter = payload.centerCode || "ATL_MAIN";
+      var sName = "Orders_" + targetCenter.replace(/[^a-zA-Z0-9]/g, "_").toUpperCase();
+      var sh = ss.getSheetByName(sName);
+      if (!sh) sh = getOrCreateSheet(ss, sName, getOrdersHeader());
+      var rawRows = payload.rows || [];
+      if (rawRows.length > 0) {
+        var existingLastRow = sh.getLastRow();
+        if (existingLastRow > 1) {
+          sh.deleteRows(2, existingLastRow - 1);
+        }
+        sh.getRange(2, 1, rawRows.length, rawRows[0].length).setValues(rawRows);
+        return createJsonResponse({
+          status: "SUCCESS",
+          message: "Successfully restored " + rawRows.length + " clean order rows into [" + sName + "]."
+        });
+      }
+      return createJsonResponse({ status: "ERROR", message: "No rows provided to restore." });
+    }
+
     // 20. REPAIR SHIFTED ORDER COLUMNS ACROSS ALL BRANCHES
     if (action === "REPAIR_ORDER_COLUMNS" || action === "FIX_SHIFTED_COLUMNS") {
       var allSh = ss.getSheets();
@@ -1012,6 +1081,7 @@ function getOrdersHeader() {
     "Age/Gender",
     "Phone",
     "Tests Ordered",
+    "Discount Reason",
     "Referring Doctor",
     "Subtotal (₹)",
     "Discount (₹)",
