@@ -865,7 +865,54 @@ export const sanitizeOrdersCollection = (rawOrders: any[], existingPatients: Pat
   const sanitizedList = preparedOrders.map(o => sanitizeOrderRecord(o, existingPatients));
 
   // Preserve genuine orders and canonical invoice numbers directly from Google Sheets
-  return sanitizedList.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  return sortOrdersChronologicallyDescending(sanitizedList);
+};
+
+/**
+ * Safely extracts a reliable millisecond timestamp for sorting diagnostic orders chronologically.
+ * Accurately parses createdAt, appointmentDate, and invoice number prefix (e.g. ATLSyymmdd.nnnnn).
+ */
+export const getOrderSortTimestamp = (ord?: Partial<DiagnosticOrder> | null): number => {
+  if (!ord) return 0;
+  // 1. Try parseSafeDate on createdAt
+  if (ord.createdAt) {
+    const d = parseSafeDate(ord.createdAt);
+    const t = d.getTime();
+    if (!isNaN(t) && t > 0) return t;
+  }
+  // 2. Try parseSafeDate on appointmentDate
+  if (ord.appointmentDate) {
+    const d = parseSafeDate(ord.appointmentDate);
+    const t = d.getTime();
+    if (!isNaN(t) && t > 0) return t;
+  }
+  // 3. Extract YYYY-MM-DD from invoice number (ATLSyymmdd.nnnnn)
+  const match = String(ord.invoiceNumber || '').match(/^ATLS(\d{2})(\d{2})(\d{2})/i);
+  if (match) {
+    const d = new Date(`20${match[1]}-${match[2]}-${match[3]}T12:00:00+05:30`);
+    const t = d.getTime();
+    if (!isNaN(t) && t > 0) return t;
+  }
+  return 0;
+};
+
+/**
+ * Strictly sorts diagnostic orders in descending chronological order (newest first).
+ * Resolves ties using descending alphanumeric invoice number (e.g. ATLS261113.00006 > ATLS261113.00005).
+ */
+export const sortOrdersChronologicallyDescending = <T extends Partial<DiagnosticOrder>>(orders: T[]): T[] => {
+  if (!Array.isArray(orders)) return [];
+  return [...orders].sort((a, b) => {
+    const timeA = getOrderSortTimestamp(a);
+    const timeB = getOrderSortTimestamp(b);
+    if (timeB !== timeA) {
+      return timeB - timeA; // Latest date/time first (descending)
+    }
+    // Secondary tie-breaker: sort by invoice number descending
+    const invA = String(a?.invoiceNumber || a?.id || '');
+    const invB = String(b?.invoiceNumber || b?.id || '');
+    return invB.localeCompare(invA, undefined, { numeric: true, sensitivity: 'base' });
+  });
 };
 
 /**

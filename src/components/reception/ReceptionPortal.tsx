@@ -12,7 +12,8 @@ import {
   convert12To24HourTime,
   parsePatientNameParts,
   normalizeAgeCalendar,
-  getOrderPaymentSplit
+  getOrderPaymentSplit,
+  sortOrdersChronologicallyDescending
 } from '../../utils/dateUtils';
 import {
   UserPlus,
@@ -1460,36 +1461,40 @@ export const ReceptionPortal: React.FC<ReceptionPortalProps> = ({ onClose, onOrd
     setRefundReason('');
   };
 
-  const filteredOrders = orders.filter(ord => {
-    if (ord.isDeleted || ord.deletionPendingApproval) return false;
+  const filteredOrders = useMemo(() => {
+    const filtered = orders.filter(ord => {
+      if (ord.isDeleted || ord.deletionPendingApproval) return false;
 
-    const dateMatches = 
-      isDateInSelectedRange(ord.createdAt, queueDateRange, queueStartDate, queueEndDate) ||
-      (ord.appointmentDate && isDateInSelectedRange(ord.appointmentDate, queueDateRange, queueStartDate, queueEndDate));
+      const dateMatches = 
+        isDateInSelectedRange(ord.createdAt, queueDateRange, queueStartDate, queueEndDate) ||
+        (ord.appointmentDate && isDateInSelectedRange(ord.appointmentDate, queueDateRange, queueStartDate, queueEndDate));
 
-    const q = (queueSearch || '').toLowerCase().trim();
-    if (q) {
-      const matchesSearch = 
-        (ord.patient?.name || '').toLowerCase().includes(q) ||
-        (ord.patientId || '').toLowerCase().includes(q) ||
-        (ord.id || '').toLowerCase().includes(q) ||
-        ((ord.invoiceNumber || '').toLowerCase().includes(q)) ||
-        (ord.barcode || '').toLowerCase().includes(q) ||
-        (ord.referringDoctorName || '').toLowerCase().includes(q) ||
-        (ord.commissionBeneficiaryName || '').toLowerCase().includes(q);
-      
-      // If user is searching explicitly (e.g. typing invoice number or name), prioritize showing the match
-      if (matchesSearch && q.length >= 2) {
-        if (queueStatusFilter === 'ALL') return true;
-        return ord.status === queueStatusFilter;
+      const q = (queueSearch || '').toLowerCase().trim();
+      if (q) {
+        const matchesSearch = 
+          (ord.patient?.name || '').toLowerCase().includes(q) ||
+          (ord.patientId || '').toLowerCase().includes(q) ||
+          (ord.id || '').toLowerCase().includes(q) ||
+          ((ord.invoiceNumber || '').toLowerCase().includes(q)) ||
+          (ord.barcode || '').toLowerCase().includes(q) ||
+          (ord.referringDoctorName || '').toLowerCase().includes(q) ||
+          (ord.commissionBeneficiaryName || '').toLowerCase().includes(q);
+        
+        // If user is searching explicitly (e.g. typing invoice number or name), prioritize showing the match
+        if (matchesSearch && q.length >= 2) {
+          if (queueStatusFilter === 'ALL') return true;
+          return ord.status === queueStatusFilter;
+        }
+        if (!matchesSearch) return false;
       }
-      if (!matchesSearch) return false;
-    }
 
-    if (!dateMatches) return false;
-    if (queueStatusFilter === 'ALL') return true;
-    return ord.status === queueStatusFilter;
-  });
+      if (!dateMatches) return false;
+      if (queueStatusFilter === 'ALL') return true;
+      return ord.status === queueStatusFilter;
+    });
+
+    return sortOrdersChronologicallyDescending(filtered);
+  }, [orders, queueDateRange, queueStartDate, queueEndDate, queueSearch, queueStatusFilter]);
 
   const queueCashIncome = useMemo(() => {
     return filteredOrders

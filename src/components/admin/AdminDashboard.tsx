@@ -10,7 +10,8 @@ import {
   getCurrent24HourTime,
   convert24To12HourTime,
   convert12To24HourTime,
-  getOrderPaymentSplit
+  getOrderPaymentSplit,
+  sortOrdersChronologicallyDescending
 } from '../../utils/dateUtils';
 import {
   Crown,
@@ -828,7 +829,7 @@ export const AdminDashboard: React.FC = () => {
 
   // Filtered Orders for Interactive Dashboard based on Dashboard Date Filter
   const dashboardFilteredOrders = useMemo(() => {
-    return allOrders.filter(o => {
+    const filtered = allOrders.filter(o => {
       if (o.isDeleted || o.deletionPendingApproval) return false;
       if (!isSuperAdmin && o.centerId && o.centerId !== selectedCenter.id) return false;
       return (
@@ -836,6 +837,7 @@ export const AdminDashboard: React.FC = () => {
         (o.appointmentDate ? isDateInSelectedRange(o.appointmentDate, dashboardDateRange, dashboardStartDate, dashboardEndDate) : false)
       );
     });
+    return sortOrdersChronologicallyDescending(filtered);
   }, [allOrders, isSuperAdmin, selectedCenter.id, dashboardDateRange, dashboardStartDate, dashboardEndDate]);
 
   // Filtered Expenses for Interactive Dashboard based on Dashboard Date Filter
@@ -2246,7 +2248,7 @@ export const AdminDashboard: React.FC = () => {
 
   // Filtered Orders for Patient Orders Tab (Excludes quarantined deletions)
   const filteredAdminOrders = useMemo(() => {
-    return allOrders.filter(ord => {
+    const filtered = allOrders.filter(ord => {
       if (ord.isDeleted || ord.deletionPendingApproval) return false;
       if (orderCenterFilter !== 'ALL' && ord.centerId !== orderCenterFilter) return false;
       if (orderPaymentFilter === 'PAID' && ord.dueAmount > 0) return false;
@@ -2273,6 +2275,8 @@ export const AdminDashboard: React.FC = () => {
 
       return true;
     });
+
+    return sortOrdersChronologicallyDescending(filtered);
   }, [allOrders, orderCenterFilter, orderPaymentFilter, orderDateRange, orderStartDate, orderEndDate, orderSearch]);
 
   const totalAdminOrdersMRP = Math.round(
@@ -9394,8 +9398,10 @@ export const AdminDashboard: React.FC = () => {
                 const isMemberOnline = member.status === 'Active' || onlineStaffList.some(o => o.id === member.id);
 
                 // Orders created by this staff member
-                const staffOrders = allOrders.filter(
-                  o => !o.isDeleted && (o.createdByStaffId === member.id || o.createdByStaffName === member.name)
+                const staffOrders = sortOrdersChronologicallyDescending(
+                  allOrders.filter(
+                    o => !o.isDeleted && (o.createdByStaffId === member.id || o.createdByStaffName === member.name)
+                  )
                 );
                 const staffBilledGross = staffOrders.reduce((s, o) => s + (o.subtotal || o.totalAmount), 0);
                 const staffPaidTotal = staffOrders.reduce((s, o) => s + (o.paidAmount || 0), 0);
@@ -9703,8 +9709,8 @@ export const AdminDashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {dashboardFilteredOrders
-                    .filter(o => {
+                  {sortOrdersChronologicallyDescending(
+                    dashboardFilteredOrders.filter(o => {
                       if (o.isDeleted) return false;
                       if (!ordersDrilldownSearch.trim()) return true;
                       const q = ordersDrilldownSearch.toLowerCase().trim();
@@ -9717,7 +9723,7 @@ export const AdminDashboard: React.FC = () => {
                         (o.tests || []).some(t => t.name.toLowerCase().includes(q))
                       );
                     })
-                    .map(ord => (
+                  ).map(ord => (
                       <tr key={ord.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/60">
                         <td className="p-3.5 font-mono font-bold text-sky-700 dark:text-sky-400">
                           #{ord.invoiceNumber}

@@ -12,7 +12,8 @@ import {
   normalizeToYYYYMMDD,
   parseDateToISO,
   buildSafeISOFromLocalDateAndTime,
-  getOrderPaymentSplit
+  getOrderPaymentSplit,
+  sortOrdersChronologicallyDescending
 } from '../utils/dateUtils';
 import {
   UserRole,
@@ -3689,7 +3690,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       commissionBeneficiary: newOrder.commissionBeneficiaryName
     });
 
-    const nextOrders = [newOrder, ...allOrders];
+    const nextOrders = sortOrdersChronologicallyDescending([newOrder, ...allOrders]);
     try {
       localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(nextOrders));
     } catch (e) {
@@ -3800,11 +3801,12 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         }
         return ord;
       });
+      const sortedNext = sortOrdersChronologicallyDescending(next);
       try {
-        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(sortedNext));
       } catch (e) {}
-      pushCurrentStateToCloud({ orders: next });
-      return next;
+      pushCurrentStateToCloud({ orders: sortedNext });
+      return sortedNext;
     });
     logActivity('SAMPLE_COLLECTED', `Sample collected for Order #${orderId} by ${collector}`, { orderId, collector });
     if (updatedOrder) {
@@ -3916,13 +3918,14 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         }
         return ord;
       });
+      const sortedNext = sortOrdersChronologicallyDescending(next);
       try {
-        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(sortedNext));
       } catch (e) {
         console.warn(e);
       }
-      pushCurrentStateToCloud({ orders: next });
-      return next;
+      pushCurrentStateToCloud({ orders: sortedNext });
+      return sortedNext;
     });
 
     if (updatedOrderRecord) {
@@ -3987,11 +3990,12 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         }
         return ord;
       });
+      const sortedNext = sortOrdersChronologicallyDescending(next);
       try {
-        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(sortedNext));
       } catch (e) {}
-      pushCurrentStateToCloud({ orders: next });
-      return next;
+      pushCurrentStateToCloud({ orders: sortedNext });
+      return sortedNext;
     });
 
     if (updatedOrder) {
@@ -4038,11 +4042,12 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         }
         return ord;
       });
+      const sortedNext = sortOrdersChronologicallyDescending(next);
       try {
-        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(next));
+        localStorage.setItem(`${STORAGE_PREFIX}ORDERS`, JSON.stringify(sortedNext));
       } catch (e) {}
-      pushCurrentStateToCloud({ orders: next });
-      return next;
+      pushCurrentStateToCloud({ orders: sortedNext });
+      return sortedNext;
     });
 
     logActivity('PAYMENT_RECEIVED', `Received ₹${additionalAmount} payment (${paymentMode}) for Bill #${updatedOrder?.invoiceNumber || orderId}`, { orderId, additionalAmount, paymentMode });
