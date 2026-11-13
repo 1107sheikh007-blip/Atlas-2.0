@@ -44,10 +44,11 @@ export function isDateInSelectedRange(
   startDate: string,
   endDate: string
 ): boolean {
-  if (!dateInput || preset === 'ALL') return true;
+  if (preset === 'ALL') return true;
+  if (!dateInput) return false;
 
   const itemDateStr = normalizeToYYYYMMDD(dateInput);
-  if (!itemDateStr) return true;
+  if (!itemDateStr) return false;
 
   const todayStr = getLocalYYYYMMDD();
 
@@ -64,8 +65,8 @@ export function isDateInSelectedRange(
     const firstDay = getLocalYYYYMMDD(new Date(now.getFullYear(), now.getMonth(), 1));
     return itemDateStr >= firstDay && itemDateStr <= todayStr;
   } else if (preset === 'CUSTOM') {
-    const normStart = normalizeToYYYYMMDD(startDate) || startDate;
-    const normEnd = normalizeToYYYYMMDD(endDate) || endDate;
+    const normStart = normalizeToYYYYMMDD(startDate);
+    const normEnd = normalizeToYYYYMMDD(endDate);
     if (normStart && itemDateStr < normStart) return false;
     if (normEnd && itemDateStr > normEnd) return false;
     return true;
@@ -157,8 +158,12 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
           <div className="relative">
             <input
               type="date"
-              value={startDate}
-              onChange={e => onStartDateChange(e.target.value)}
+              value={normalizeToYYYYMMDD(startDate) || ''}
+              onChange={e => {
+                const val = e.target.value;
+                const norm = normalizeToYYYYMMDD(val) || val;
+                onStartDateChange(norm);
+              }}
               title="From Date (Start Date)"
               className={`bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-2xs cursor-pointer [color-scheme:light] dark:[color-scheme:dark] ${inputClassName}`}
             />
@@ -167,8 +172,12 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
           <div className="relative">
             <input
               type="date"
-              value={endDate}
-              onChange={e => onEndDateChange(e.target.value)}
+              value={normalizeToYYYYMMDD(endDate) || ''}
+              onChange={e => {
+                const val = e.target.value;
+                const norm = normalizeToYYYYMMDD(val) || val;
+                onEndDateChange(norm);
+              }}
               title="To Date (End Date)"
               className={`bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-2xs cursor-pointer [color-scheme:light] dark:[color-scheme:dark] ${inputClassName}`}
             />

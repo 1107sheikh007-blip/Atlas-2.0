@@ -1467,7 +1467,9 @@ export const ReceptionPortal: React.FC<ReceptionPortalProps> = ({ onClose, onOrd
 
       const dateMatches = 
         isDateInSelectedRange(ord.createdAt, queueDateRange, queueStartDate, queueEndDate) ||
-        (ord.appointmentDate && isDateInSelectedRange(ord.appointmentDate, queueDateRange, queueStartDate, queueEndDate));
+        (ord.appointmentDate && ord.appointmentDate !== ord.createdAt
+          ? isDateInSelectedRange(ord.appointmentDate, queueDateRange, queueStartDate, queueEndDate)
+          : false);
 
       const q = (queueSearch || '').toLowerCase().trim();
       if (q) {

@@ -834,7 +834,9 @@ export const AdminDashboard: React.FC = () => {
       if (!isSuperAdmin && o.centerId && o.centerId !== selectedCenter.id) return false;
       return (
         isDateInSelectedRange(o.createdAt, dashboardDateRange, dashboardStartDate, dashboardEndDate) ||
-        (o.appointmentDate ? isDateInSelectedRange(o.appointmentDate, dashboardDateRange, dashboardStartDate, dashboardEndDate) : false)
+        (o.appointmentDate && o.appointmentDate !== o.createdAt
+          ? isDateInSelectedRange(o.appointmentDate, dashboardDateRange, dashboardStartDate, dashboardEndDate)
+          : false)
       );
     });
     return sortOrdersChronologicallyDescending(filtered);
@@ -900,7 +902,9 @@ export const AdminDashboard: React.FC = () => {
       if (misCenterFilter !== 'ALL' && o.centerId !== misCenterFilter) return false;
       return (
         isDateInSelectedRange(o.createdAt, misDateRange, misStartDate, misEndDate) ||
-        (o.appointmentDate ? isDateInSelectedRange(o.appointmentDate, misDateRange, misStartDate, misEndDate) : false)
+        (o.appointmentDate && o.appointmentDate !== o.createdAt
+          ? isDateInSelectedRange(o.appointmentDate, misDateRange, misStartDate, misEndDate)
+          : false)
       );
     });
   }, [allOrders, misCenterFilter, misDateRange, misStartDate, misEndDate]);
@@ -2256,7 +2260,9 @@ export const AdminDashboard: React.FC = () => {
 
       const isMatchDate =
         isDateInSelectedRange(ord.createdAt, orderDateRange, orderStartDate, orderEndDate) ||
-        (ord.appointmentDate ? isDateInSelectedRange(ord.appointmentDate, orderDateRange, orderStartDate, orderEndDate) : false);
+        (ord.appointmentDate && ord.appointmentDate !== ord.createdAt
+          ? isDateInSelectedRange(ord.appointmentDate, orderDateRange, orderStartDate, orderEndDate)
+          : false);
       if (!isMatchDate) return false;
 
       if (orderSearch) {
