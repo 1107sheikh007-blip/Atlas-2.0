@@ -77,7 +77,12 @@ const ATLAS_SELF_BENEFICIARY = {
   totalCommissionEarned: 0
 };
 
-export const ReceptionPortal: React.FC = () => {
+export interface ReceptionPortalProps {
+  onClose?: () => void;
+  onOrderCreatedOrUpdated?: () => void;
+}
+
+export const ReceptionPortal: React.FC<ReceptionPortalProps> = ({ onClose, onOrderCreatedOrUpdated }) => {
   const {
     patients,
     tests,
@@ -1326,7 +1331,11 @@ export const ReceptionPortal: React.FC = () => {
         } catch {}
 
         showToast(`Invoice #${invoiceNum} successfully updated!`);
+        setQueueSearch('');
+        setQueueStatusFilter('ALL');
+        setQueueDateRange('ALL');
         setActiveTab('ORDERS_QUEUE');
+        if (onOrderCreatedOrUpdated) onOrderCreatedOrUpdated();
         return;
       }
 
@@ -1392,14 +1401,17 @@ export const ReceptionPortal: React.FC = () => {
       } catch {}
 
       setInvoiceModalOrder(createdOrder);
+      setQueueSearch('');
+      setQueueStatusFilter('ALL');
+      setQueueDateRange('ALL');
       const isBackDate = appointmentDate && appointmentDate !== getLocalYYYYMMDD();
       if (isBackDate) {
-        setQueueDateRange('ALL');
         showToast(`Patient registered! Back-date Bill #${createdOrder.invoiceNumber} recorded for ${appointmentDate}.`);
       } else {
         showToast(`Patient registered! Bill #${createdOrder.invoiceNumber} created (Status: Sample Pending).`);
       }
       setActiveTab('ORDERS_QUEUE');
+      if (onOrderCreatedOrUpdated) onOrderCreatedOrUpdated();
     } catch (err: any) {
       console.error('Failed to generate invoice:', err);
       showToast(`Error: ${err?.message || 'Failed to generate invoice. Please try again.'}`);

@@ -263,7 +263,7 @@ interface DiagnosticContextType {
 
 const DiagnosticContext = createContext<DiagnosticContextType | undefined>(undefined);
 
-const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V21_';
+const STORAGE_PREFIX = 'ATLAS_DIAG_SHEET_HARDWIRED_V22_';
 const AUTH_STORAGE_KEY = 'ATLAS_DIAGNOSTICS_AUTH_USER_V12';
 
 export const normalizeDocNameKey = (name?: string) => {
@@ -1421,20 +1421,35 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
                 dirtyOrderUpdatesRef.current.get(soId) ||
                 dirtyOrderUpdatesRef.current.get(soInv);
               const isRecentlyEdited = !!dirtyEntry && (Date.now() - dirtyEntry.timestamp < 180000);
-              // Key by unique combination of id, invoice, patientId, and date to strictly prevent accidental overwrites
-              const mapKey = so.id || `ord-${so.invoiceNumber}-${so.patientId || ''}-${so.createdAt || ''}`;
+              // Normalize key strictly by uppercase invoice number (or id) to guarantee 1:1 match
+              const mapKey = (so.invoiceNumber || so.id || '').trim().toUpperCase();
               sheetMap.set(mapKey, isRecentlyEdited ? { ...so, ...dirtyEntry.order } : { ...so, syncedToGoogleSheets: true });
             });
 
             // Preserve local orders that are dirty, un-synced, or pending sheet write
+            // AND ensure newly created genuine local orders are NEVER dropped during background sync!
             prev.forEach(po => {
               const poId = String(po.id || '').trim().toLowerCase();
               const poInv = String(po.invoiceNumber || '').trim().toLowerCase();
+              const poKey = (po.invoiceNumber || po.id || '').trim().toUpperCase();
+
+              // Skip explicitly deleted or tombstoned orders
+              if (liveDelOrders.has(poId) || liveDelOrders.has(poInv)) {
+                return;
+              }
+
               const dirtyEntry = dirtyOrderUpdatesRef.current.get(poId) || dirtyOrderUpdatesRef.current.get(poInv);
               if (dirtyEntry && (Date.now() - dirtyEntry.timestamp < 180000)) {
-                sheetMap.set(po.id, dirtyEntry.order);
-              } else if (po.syncedToGoogleSheets === false && !sheetMap.has(po.id)) {
-                sheetMap.set(po.id, po);
+                sheetMap.set(poKey, dirtyEntry.order);
+              } else if (!sheetMap.has(poKey)) {
+                // If order was created locally and has not yet appeared in sheet response, strictly preserve it!
+                sheetMap.set(poKey, po);
+              } else {
+                // If order exists in both, preserve local paymentMode if sheet returned 'PAID' or missing
+                const existing = sheetMap.get(poKey);
+                if (existing && po.paymentMode && (po.paymentMode as any) !== 'PAID' && ((existing.paymentMode as any) === 'PAID' || !existing.paymentMode)) {
+                  sheetMap.set(poKey, { ...existing, paymentMode: po.paymentMode });
+                }
               }
             });
 
@@ -3885,6 +3900,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             paidAmount,
             dueAmount,
             paymentStatus,
+            paymentMode: updates.paymentMode || ord.paymentMode || 'Cash',
             syncedToGoogleSheets: false
           };
           (updatedOrderRecord as any).updatedAt = new Date().toISOString();

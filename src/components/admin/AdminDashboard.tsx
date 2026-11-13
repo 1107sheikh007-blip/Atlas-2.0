@@ -2837,7 +2837,10 @@ export const AdminDashboard: React.FC = () => {
 
           {adminOrdersViewMode === 'NEW_ORDER' ? (
             <div className="bg-transparent">
-              <ReceptionPortal />
+              <ReceptionPortal
+                onClose={() => setAdminOrdersViewMode('LEDGER')}
+                onOrderCreatedOrUpdated={() => setAdminOrdersViewMode('LEDGER')}
+              />
             </div>
           ) : (
             <>
@@ -3158,10 +3161,25 @@ export const AdminDashboard: React.FC = () => {
                                   </div>
                                 );
                               }
+                              const currentMode = (ord.paymentMode as any) === 'PAID' ? 'Cash' : (ord.paymentMode || 'Cash');
                               return (
-                                <span className="text-[10px] text-slate-500 font-semibold block">
-                                  {ord.paymentMode}
-                                </span>
+                                <div className="mt-0.5 flex items-center gap-1">
+                                  <select
+                                    value={currentMode}
+                                    onChange={(e) => {
+                                      const newMode = e.target.value as PaymentMode;
+                                      updateOrder(ord.id, { paymentMode: newMode });
+                                      showToast(`Bill #${ord.invoiceNumber} payment mode updated to ${newMode}`);
+                                    }}
+                                    className="text-[10px] font-semibold text-slate-700 bg-slate-50 hover:bg-white border border-slate-200 rounded px-1.5 py-0.5 cursor-pointer focus:outline-none focus:ring-1 focus:ring-sky-500 transition-colors"
+                                    title="Click to toggle or change payment mode"
+                                  >
+                                    <option value="Cash">Cash</option>
+                                    <option value="UPI / QR">UPI / QR</option>
+                                    <option value="Credit / Debit Card">Card</option>
+                                    <option value="Split Payment">Split Payment</option>
+                                  </select>
+                                </div>
                               );
                             })()}
                           </td>

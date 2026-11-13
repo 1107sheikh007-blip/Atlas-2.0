@@ -25,7 +25,7 @@
 // ==========================================
 
 var APP_NAME = "Atlas Diagnostics Center";
-var APP_VERSION = "5.5.0";
+var APP_VERSION = "5.6.0";
 
 var SHEET_NAMES = {
   MASTER_TESTS: "Master_Test_Catalog",
@@ -1301,9 +1301,17 @@ function buildOrderRowFromHeaders(headers, ord) {
       row.push(Number(ord.paidAmount) !== undefined && !isNaN(Number(ord.paidAmount)) ? Number(ord.paidAmount) : (Number(ord.totalAmount) || 0));
     } else if (h.indexOf("due") >= 0 || h.indexOf("balance") >= 0) {
       row.push(Number(ord.dueAmount) || 0);
-    } else if (h.indexOf("mode") >= 0 || h.indexOf("payment") >= 0) {
+    } else if ((h.indexOf("mode") >= 0 || h === "payment mode" || h === "pay mode") && h.indexOf("status") < 0) {
       row.push(ord.paymentMode || "Cash");
-    } else if (h.indexOf("status") >= 0) {
+    } else if (h.indexOf("payment status") >= 0 || h.indexOf("pay status") >= 0) {
+      var pStat = ord.paymentStatus;
+      if (!pStat || pStat === "Cash" || pStat === "UPI / QR") {
+        pStat = (Number(ord.dueAmount) <= 0) ? "PAID" : ((Number(ord.paidAmount) > 0) ? "PARTIAL" : "DUE");
+      }
+      row.push(pStat);
+    } else if (h.indexOf("whatsapp sent") >= 0 || (h.indexOf("whatsapp") >= 0 && h.indexOf("sent") >= 0)) {
+      row.push(ord.whatsappSent ? "YES" : "NO");
+    } else if ((h === "status" || h.indexOf("diagnostic status") >= 0) && h.indexOf("payment") < 0 && h.indexOf("remark") < 0) {
       row.push(ord.status || "ORDER_PLACED");
     } else if (h.indexOf("billed by") >= 0 || h.indexOf("staff") >= 0 || h.indexOf("created by") >= 0 || h.indexOf("operator") >= 0) {
       row.push(ord.createdByStaffName || "Reception Desk");
@@ -1351,8 +1359,6 @@ function findOrderRowIndex(sheet, orderId, invoiceNo, patientUhid, patientName) 
     var row = data[i];
     var rowInv = colInv >= 0 ? String(row[colInv] || "").trim().toLowerCase() : "";
     var rowId = colId >= 0 ? String(row[colId] || "").trim().toLowerCase() : "";
-    var rowUhid = colUhid >= 0 ? String(row[colUhid] || "").trim().toLowerCase() : "";
-    var rowName = colName >= 0 ? String(row[colName] || "").trim().toLowerCase() : "";
 
     var idMatch = (targetInv && colInv >= 0 && rowInv === targetInv) ||
                   (targetId && colId >= 0 && rowId === targetId);
@@ -1368,15 +1374,6 @@ function findOrderRowIndex(sheet, orderId, invoiceNo, patientUhid, patientName) 
     }
 
     if (idMatch) {
-      // If patient information is provided, verify it belongs to the same patient!
-      if (targetUhid && rowUhid && targetUhid !== rowUhid) {
-        // Different patient UHID! Collision, do NOT treat as the same order row!
-        continue;
-      }
-      if (targetName && rowName && targetName !== rowName) {
-        // Different patient name! Collision, do NOT treat as the same order row!
-        continue;
-      }
       return i + 1;
     }
   }
@@ -2156,9 +2153,6 @@ function purgeDuplicateOrdersFromAllSheets(ss) {
 }
 
 function fetchAllOrdersFromSheets(ss) {
-  try {
-    purgeDuplicateOrdersFromAllSheets(ss);
-  } catch(e) {}
   var orders = [];
   var sheets = ss.getSheets();
 
@@ -2174,20 +2168,20 @@ function fetchAllOrdersFromSheets(ss) {
       var headerRow = headerRowRaw.map(function(h) { return String(h || "").toLowerCase().trim(); });
 
       var colId = -1, colInv = -1, colDate = -1, colUhid = -1, colName = -1, colAge = -1, colGender = -1, colPhone = -1;
-      var colTests = -1, colSubtotal = -1, colDiscount = -1, colTotal = -1, colPaid = -1, colDue = -1, colPayMode = -1;
-      var colStatus = -1, colDoc = -1, colBeneficiary = -1, colStaff = -1, colBarcode = -1, colRemark = -1, colDiscountReason = -1;
+      var colTests = -1, colSubtotal = -1, colDiscount = -1, colTotal = -1, colPaid = -1, colDue = -1, colPayMode = -1, colPayStatus = -1;
+      var colStatus = -1, colDoc = -1, colBeneficiary = -1, colStaff = -1, colBarcode = -1, colRemark = -1, colDiscountReason = -1, colWhatsApp = -1;
 
       for (var c = 0; c < headerRow.length; c++) {
         var h = headerRow[c];
         if (h.indexOf("order id") >= 0 || h === "order #" || h === "ord id") colId = c;
         else if (h.indexOf("invoice") >= 0 || h === "inv" || h.indexOf("bill no") >= 0 || h.indexOf("bill #") >= 0) colInv = c;
-        else if ((h.indexOf("date") >= 0 || h.indexOf("time") >= 0) && h.indexOf("sync") < 0) colDate = c;
+        else if ((h.indexOf("date") >= 0 || h.indexOf("time") >= 0) && h.indexOf("sync") < 0 && h.indexOf("timestamp") < 0) colDate = c;
         else if (h.indexOf("uhid") >= 0 || h.indexOf("patient id") >= 0 || h === "pid") colUhid = c;
         else if (h.indexOf("patient name") >= 0 || h === "patient" || h === "name" || h === "client" || h === "patient_name") colName = c;
         else if (h.indexOf("age/gender") >= 0 || h.indexOf("age / gender") >= 0 || h.indexOf("age & gender") >= 0 || h === "age/sex") { colAge = c; colGender = c; }
         else if (h === "age") colAge = c;
         else if (h === "gender" || h === "sex") colGender = c;
-        else if (h.indexOf("phone") >= 0 || h.indexOf("mobile") >= 0 || h.indexOf("contact") >= 0 || h.indexOf("whatsapp") >= 0) colPhone = c;
+        else if (h.indexOf("phone") >= 0 || h.indexOf("mobile") >= 0 || h.indexOf("contact") >= 0 || (h.indexOf("whatsapp") >= 0 && h.indexOf("sent") < 0)) colPhone = c;
         else if (h.indexOf("test") >= 0 || h.indexOf("investigation") >= 0) colTests = c;
         else if (h.indexOf("subtotal") >= 0 || h.indexOf("mrp") >= 0 || h.indexOf("gross") >= 0) colSubtotal = c;
         else if (h.indexOf("discount reason") >= 0 || h.indexOf("discount note") >= 0 || h.indexOf("concession reason") >= 0 || h.indexOf("concession note") >= 0) colDiscountReason = c;
@@ -2195,11 +2189,13 @@ function fetchAllOrdersFromSheets(ss) {
         else if (h.indexOf("net") >= 0 || h.indexOf("total") >= 0) colTotal = c;
         else if (h.indexOf("paid") >= 0) colPaid = c;
         else if (h.indexOf("due") >= 0 || h.indexOf("balance") >= 0) colDue = c;
-        else if (h.indexOf("mode") >= 0 || h.indexOf("payment") >= 0) colPayMode = c;
-        else if (h.indexOf("status") >= 0) colStatus = c;
+        else if ((h.indexOf("mode") >= 0 || h === "payment mode" || h === "pay mode") && h.indexOf("status") < 0) colPayMode = c;
+        else if (h.indexOf("payment status") >= 0 || h.indexOf("pay status") >= 0) colPayStatus = c;
+        else if (h.indexOf("whatsapp sent") >= 0 || (h.indexOf("whatsapp") >= 0 && h.indexOf("sent") >= 0)) colWhatsApp = c;
+        else if ((h === "status" || h.indexOf("diagnostic status") >= 0) && h.indexOf("payment") < 0 && h.indexOf("remark") < 0) colStatus = c;
         else if (h.indexOf("doctor") >= 0 || h.indexOf("referr") >= 0) colDoc = c;
         else if (h.indexOf("beneficiary") >= 0) colBeneficiary = c;
-        else if (h.indexOf("billed by") >= 0 || h.indexOf("staff") >= 0 || h.indexOf("operator") >= 0) colStaff = c;
+        else if (h.indexOf("billed by") >= 0 || h.indexOf("staff") >= 0 || h.indexOf("operator") >= 0 || h.indexOf("created by") >= 0) colStaff = c;
         else if (h.indexOf("barcode") >= 0) colBarcode = c;
         else if (h.indexOf("remark") >= 0 || h.indexOf("intake") >= 0) colRemark = c;
       }
@@ -2271,31 +2267,7 @@ function fetchAllOrdersFromSheets(ss) {
           barcode = String(row[19] || ("ATL-BAR-" + rawInv));
           remark = String(row[22] || "");
 
-          // In-place auto-repair directly on Google Sheet!
-          try {
-            var repairedOrd = {
-              id: rawId || ("ATL-ORD-" + rawInv),
-              invoiceNumber: rawInv,
-              createdAt: rawDate,
-              patientId: rawUhid,
-              patient: { id: rawUhid, name: rawName, age: pAge, gender: pGender, phone: pPhone },
-              tests: [{ id: "t-01", name: tName, price: subtotal }],
-              subtotal: subtotal,
-              discountAmount: discount,
-              totalAmount: total,
-              paidAmount: paid,
-              dueAmount: due,
-              paymentMode: payMode,
-              status: status,
-              referringDoctorName: docName,
-              commissionBeneficiaryName: beneficiary,
-              createdByStaffName: billedBy,
-              barcode: barcode,
-              patientStatusRemark: remark
-            };
-            var repairedRowData = buildOrderRowFromHeaders(headerRowRaw, repairedOrd);
-            curSheet.getRange(r + 1, 1, 1, repairedRowData.length).setValues([repairedRowData]);
-          } catch(eRep) {}
+          // In-place auto-repair kept in-memory (no physical sheet mutation on GET)
         } else {
           rawId = colId >= 0 ? String(row[colId] || "") : "";
           rawInv = colInv >= 0 ? String(row[colInv] || "") : String(row[0] || "");
@@ -2332,8 +2304,15 @@ function fetchAllOrdersFromSheets(ss) {
           paid = colPaid >= 0 && row[colPaid] !== "" && row[colPaid] !== null ? parseFin(row[colPaid], total) : total;
           due = colDue >= 0 && row[colDue] !== "" && row[colDue] !== null ? parseFin(row[colDue], Math.max(0, total - paid)) : Math.max(0, total - paid);
           if (paid >= total) due = 0;
-          payMode = colPayMode >= 0 ? String(row[colPayMode] || "Cash") : "Cash";
-          status = colStatus >= 0 ? String(row[colStatus] || "ORDER_PLACED") : "ORDER_PLACED";
+          payMode = colPayMode >= 0 ? String(row[colPayMode] || "Cash").trim() : "Cash";
+          if (payMode === "PAID" || payMode === "DUE" || payMode === "PARTIAL" || !payMode) {
+            payMode = "Cash";
+          }
+          var resolvedPayStatus = colPayStatus >= 0 ? String(row[colPayStatus] || "").trim() : "";
+          if (!resolvedPayStatus || resolvedPayStatus === "Cash" || resolvedPayStatus === "UPI / QR") {
+            resolvedPayStatus = due <= 0 ? "PAID" : (paid > 0 ? "PARTIAL" : "DUE");
+          }
+          status = colStatus >= 0 ? String(row[colStatus] || "ORDER_PLACED").trim() : "ORDER_PLACED";
           docName = colDoc >= 0 ? String(row[colDoc] || "Direct Walk-in") : "Direct Walk-in";
           beneficiary = colBeneficiary >= 0 ? String(row[colBeneficiary] || "") : "";
           billedBy = colStaff >= 0 ? String(row[colStaff] || "Reception Desk") : "Reception Desk";
@@ -2429,7 +2408,7 @@ function fetchAllOrdersFromSheets(ss) {
           paidAmount: paid,
           dueAmount: due,
           paymentMode: payMode,
-          paymentStatus: due <= 0 ? "PAID" : (paid > 0 ? "PARTIAL" : "DUE"),
+          paymentStatus: resolvedPayStatus,
           status: status,
           referringDoctorName: docName,
           commissionBeneficiaryName: beneficiary || undefined,
@@ -2439,6 +2418,7 @@ function fetchAllOrdersFromSheets(ss) {
           discountReason: colDiscountReason >= 0 ? String(row[colDiscountReason] || "") : (discount > 0 ? (remark ? remark + " concession" : "Doctor reference concession") : ""),
           refundAmount: 0,
           refundReason: "",
+          centerId: "cnt-01",
           centerCode: (name.replace("Orders_", "").replace(/_/g, "-") || "ATL-MAIN"),
           syncedToGoogleSheets: true
         });

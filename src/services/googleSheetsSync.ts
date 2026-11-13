@@ -603,7 +603,7 @@ export const fetchOrdersAndDataFromGoogleSheets = async (): Promise<FetchDataRes
   try {
     const url = getGoogleSheetsUrl();
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
 
     const response = await fetch(`${url}?action=GET_ALL_DATA`, {
       method: 'GET',
