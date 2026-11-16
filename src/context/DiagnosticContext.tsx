@@ -977,10 +977,43 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   ];
 
-  // In-memory cache tracking recently modified staff and order records to lock them from stale background overwrites
+  // Load persistent pending order edits from localStorage so reloads/tab switches never lose uncommitted changes
+  const loadPersistentOrderEdits = (): Map<string, { order: DiagnosticOrder; timestamp: number }> => {
+    const map = new Map<string, { order: DiagnosticOrder; timestamp: number }>();
+    try {
+      const saved = localStorage.getItem(`${STORAGE_PREFIX}PENDING_ORDER_EDITS`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          parsed.forEach(([k, v]: [string, { order: DiagnosticOrder; timestamp: number }]) => {
+            if (k && v && v.order) map.set(k, v);
+          });
+        }
+      }
+    } catch {}
+    return map;
+  };
+
+  const savePersistentOrderEdits = (map: Map<string, { order: DiagnosticOrder; timestamp: number }>) => {
+    try {
+      const arr = Array.from(map.entries());
+      localStorage.setItem(`${STORAGE_PREFIX}PENDING_ORDER_EDITS`, JSON.stringify(arr));
+    } catch {}
+  };
+
+  // In-memory & localStorage-backed cache tracking recently modified staff and order records to lock them from stale background overwrites
   const dirtyStaffUpdatesRef = React.useRef<Map<string, { staff: StaffEmployee; timestamp: number }>>(new Map());
-  const dirtyOrderUpdatesRef = React.useRef<Map<string, { order: DiagnosticOrder; timestamp: number }>>(new Map());
+  const dirtyOrderUpdatesRef = React.useRef<Map<string, { order: DiagnosticOrder; timestamp: number }>>(loadPersistentOrderEdits());
   const staffRef = React.useRef<StaffEmployee[]>([]);
+
+  const markOrderDirty = React.useCallback((order: DiagnosticOrder) => {
+    const now = Date.now();
+    const idKey = String(order.id || '').trim().toLowerCase();
+    const invKey = String(order.invoiceNumber || '').trim().toLowerCase();
+    if (idKey) dirtyOrderUpdatesRef.current.set(idKey, { order, timestamp: now });
+    if (invKey) dirtyOrderUpdatesRef.current.set(invKey, { order, timestamp: now });
+    savePersistentOrderEdits(dirtyOrderUpdatesRef.current);
+  }, []);
 
 
   const deduplicateAndCleanStaff = React.useCallback((list: StaffEmployee[]): StaffEmployee[] => {
@@ -1421,10 +1454,39 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
               const dirtyEntry =
                 dirtyOrderUpdatesRef.current.get(soId) ||
                 dirtyOrderUpdatesRef.current.get(soInv);
-              const isRecentlyEdited = !!dirtyEntry && (Date.now() - dirtyEntry.timestamp < 180000);
-              // Normalize key strictly by uppercase invoice number (or id) to guarantee 1:1 match
               const mapKey = (so.invoiceNumber || so.id || '').trim().toUpperCase();
-              sheetMap.set(mapKey, isRecentlyEdited ? { ...so, ...dirtyEntry.order } : { ...so, syncedToGoogleSheets: true });
+
+              if (dirtyEntry && dirtyEntry.order) {
+                const sheetPaid = Number(so.paidAmount) || 0;
+                const dirtyPaid = Number(dirtyEntry.order.paidAmount) || 0;
+                const sheetDue = Number(so.dueAmount) || 0;
+                const dirtyDue = Number(dirtyEntry.order.dueAmount) || 0;
+                const sheetMode = String(so.paymentMode || '').trim().toLowerCase();
+                const dirtyMode = String(dirtyEntry.order.paymentMode || '').trim().toLowerCase();
+
+                const hasSheetCaughtUp = (
+                  sheetPaid === dirtyPaid &&
+                  sheetDue === dirtyDue &&
+                  (sheetMode === dirtyMode || (sheetMode && dirtyMode && sheetMode.includes(dirtyMode)))
+                );
+
+                if (hasSheetCaughtUp) {
+                  // Sheet has confirmed the write! Clear dirty entry
+                  dirtyOrderUpdatesRef.current.delete(soId);
+                  dirtyOrderUpdatesRef.current.delete(soInv);
+                  savePersistentOrderEdits(dirtyOrderUpdatesRef.current);
+                  sheetMap.set(mapKey, { ...so, syncedToGoogleSheets: true });
+                } else {
+                  // Sheet is still stale! Strictly KEEP the user's edit
+                  sheetMap.set(mapKey, { ...so, ...dirtyEntry.order, syncedToGoogleSheets: false });
+                  // If write has been pending > 4s, re-dispatch sync to Google Sheets
+                  if (Date.now() - dirtyEntry.timestamp > 4000) {
+                    syncOrderToGoogleSheets(dirtyEntry.order, dirtyEntry.order.centerCode || selectedCenter.code).catch(() => {});
+                  }
+                }
+              } else {
+                sheetMap.set(mapKey, { ...so, syncedToGoogleSheets: true });
+              }
             });
 
             // Preserve local orders that are dirty, un-synced, or pending sheet write
@@ -1440,16 +1502,15 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
               }
 
               const dirtyEntry = dirtyOrderUpdatesRef.current.get(poId) || dirtyOrderUpdatesRef.current.get(poInv);
-              if (dirtyEntry && (Date.now() - dirtyEntry.timestamp < 180000)) {
+              if (dirtyEntry && dirtyEntry.order) {
                 sheetMap.set(poKey, dirtyEntry.order);
               } else if (!sheetMap.has(poKey)) {
                 // If order was created locally and has not yet appeared in sheet response, strictly preserve it!
                 sheetMap.set(poKey, po);
               } else {
-                // If order exists in both, preserve local paymentMode if sheet returned 'PAID' or missing
                 const existing = sheetMap.get(poKey);
-                if (existing && po.paymentMode && (po.paymentMode as any) !== 'PAID' && ((existing.paymentMode as any) === 'PAID' || !existing.paymentMode)) {
-                  sheetMap.set(poKey, { ...existing, paymentMode: po.paymentMode });
+                if (existing && !existing.syncedToGoogleSheets) {
+                  sheetMap.set(poKey, { ...existing, ...po });
                 }
               }
             });
@@ -2126,13 +2187,22 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     if (currentRole === 'SUPER_ADMIN') {
       return activeOrders;
     }
-    return activeOrders.filter(o => 
-      !o.centerId || 
-      o.centerId === 'ALL' || 
-      o.centerId === selectedCenter.id || 
-      o.centerCode === selectedCenter.code ||
-      o.centerId === selectedCenter.code
-    );
+    const cleanSelId = String(selectedCenter.id || '').trim().toLowerCase();
+    const cleanSelCode = String(selectedCenter.code || '').trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    const isMainBranch = selectedCenter.isMain || cleanSelCode.includes('main') || cleanSelId === 'cnt-01';
+
+    return activeOrders.filter(o => {
+      if (!o.centerId && !o.centerCode) return true;
+      if (o.centerId === 'ALL') return true;
+      const oId = String(o.centerId || '').trim().toLowerCase();
+      const oCode = String(o.centerCode || '').trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      // Direct match on id or normalized code
+      if (oId === cleanSelId || oCode === cleanSelCode) return true;
+      // Main branch match
+      if (isMainBranch && (oCode.includes('main') || oId === 'cnt-01' || !oCode)) return true;
+      return false;
+    });
   }, [allOrders, currentRole, selectedCenter]);
 
   const activePatients = useMemo(() => {
@@ -3678,8 +3748,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       syncedToGoogleSheets: false
     };
 
-    dirtyOrderUpdatesRef.current.set(orderId.toLowerCase(), { order: newOrder, timestamp: Date.now() });
-    dirtyOrderUpdatesRef.current.set(invoiceNumber.toLowerCase(), { order: newOrder, timestamp: Date.now() });
+    markOrderDirty(newOrder);
 
     const newAct = logActivity('ORDER_CREATED', `Generated Bill #${newOrder.invoiceNumber} for ${resolvedPatient.name} (₹${totalAmount}) [Billed By: ${newOrder.createdByStaffName}] [Ref: ${newOrder.referringDoctorName}] [Beneficiary: ${newOrder.commissionBeneficiaryName}]`, {
       orderId,
@@ -3789,14 +3858,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             syncedToGoogleSheets: false
           };
           (updatedOrder as any).updatedAt = new Date().toISOString();
-          dirtyOrderUpdatesRef.current.set(String(updatedOrder.id || '').trim().toLowerCase(), {
-            order: updatedOrder,
-            timestamp: Date.now()
-          });
-          dirtyOrderUpdatesRef.current.set(String(updatedOrder.invoiceNumber || '').trim().toLowerCase(), {
-            order: updatedOrder,
-            timestamp: Date.now()
-          });
+          markOrderDirty(updatedOrder);
           return updatedOrder;
         }
         return ord;
@@ -3906,14 +3968,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             syncedToGoogleSheets: false
           };
           (updatedOrderRecord as any).updatedAt = new Date().toISOString();
-          dirtyOrderUpdatesRef.current.set(String(updatedOrderRecord.id || '').trim().toLowerCase(), {
-            order: updatedOrderRecord,
-            timestamp: Date.now()
-          });
-          dirtyOrderUpdatesRef.current.set(String(updatedOrderRecord.invoiceNumber || '').trim().toLowerCase(), {
-            order: updatedOrderRecord,
-            timestamp: Date.now()
-          });
+          markOrderDirty(updatedOrderRecord);
           return updatedOrderRecord;
         }
         return ord;
@@ -3977,14 +4032,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             syncedToGoogleSheets: false
           };
           (mod as any).updatedAt = new Date().toISOString();
-          dirtyOrderUpdatesRef.current.set(String(mod.id || '').trim().toLowerCase(), {
-            order: mod,
-            timestamp: Date.now()
-          });
-          dirtyOrderUpdatesRef.current.set(String(mod.invoiceNumber || '').trim().toLowerCase(), {
-            order: mod,
-            timestamp: Date.now()
-          });
+          markOrderDirty(mod);
           updatedOrder = mod;
           return mod;
         }
@@ -4030,14 +4078,7 @@ export const DiagnosticProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             syncedToGoogleSheets: false
           };
           (updatedOrder as any).updatedAt = new Date().toISOString();
-          dirtyOrderUpdatesRef.current.set(String(updatedOrder.id || '').trim().toLowerCase(), {
-            order: updatedOrder,
-            timestamp: Date.now()
-          });
-          dirtyOrderUpdatesRef.current.set(String(updatedOrder.invoiceNumber || '').trim().toLowerCase(), {
-            order: updatedOrder,
-            timestamp: Date.now()
-          });
+          markOrderDirty(updatedOrder);
           return updatedOrder;
         }
         return ord;

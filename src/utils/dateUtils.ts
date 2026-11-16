@@ -391,15 +391,8 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
     dateFromInvoice = `20${invYY}-${invMM}-${invDD}T12:00:00.000+05:30`;
   }
 
-  // Resequence duplicate .00001 placeholder invoices across consecutive orders on the same day if patient differs
+  // Canonical invoice numbers (e.g. ATLS261116.00001) must ALWAYS be preserved as-is!
   let cleanInvoice = rawInvoice;
-  const isDuplicatePlaceholder = rawInvoice.endsWith('.00001') || !rawInvoice.includes('.');
-  if (isDuplicatePlaceholder && ord.orderSequenceIndex && typeof ord.orderSequenceIndex === 'number' && ord.orderSequenceIndex > 1) {
-    if (invDateMatch) {
-      const invPrefix = rawInvoice.split('.')[0];
-      cleanInvoice = `${invPrefix}.${String(ord.orderSequenceIndex).padStart(5, '0')}`;
-    }
-  }
 
   let validDate = '';
   // If rawCreatedAt has a genuine booking date (e.g. 2026-10-25T11:50:00), respect it as the absolute truth.
@@ -673,23 +666,23 @@ export const sanitizeOrderRecord = (ord: any, existingPatients: Patient[] = []):
 
   let numTotal = Math.max(0, numSubtotal - numDiscount);
   
-  // Paid & Due - Prevent false due when order is settled or paid
-  const isMarkedPaid = String(ord.paymentStatus || '').toUpperCase() === 'PAID';
+  // Paid & Due - Calculate from explicit paidAmount and dueAmount numbers first
   let numPaid: number;
   let numDue: number;
 
   const rawPaid = ord.paidAmount;
   const rawDue = ord.dueAmount;
+  const isMarkedPaid = String(ord.paymentStatus || '').toUpperCase() === 'PAID';
 
-  if (isMarkedPaid) {
-    numPaid = numTotal;
-    numDue = 0;
-  } else if (rawPaid !== undefined && rawPaid !== null && String(rawPaid).trim() !== '') {
+  if (rawPaid !== undefined && rawPaid !== null && String(rawPaid).trim() !== '') {
     numPaid = parseFinancialAmount(rawPaid, numTotal);
     numDue = Math.max(0, numTotal - numPaid);
   } else if (rawDue !== undefined && rawDue !== null && String(rawDue).trim() !== '') {
     numDue = parseFinancialAmount(rawDue, 0);
     numPaid = Math.max(0, numTotal - numDue);
+  } else if (isMarkedPaid) {
+    numPaid = numTotal;
+    numDue = 0;
   } else {
     // Default to paid in full (no due)
     numPaid = numTotal;
@@ -846,26 +839,29 @@ export const getOrderPaymentSplit = (ord: {
 export const sanitizeOrdersCollection = (rawOrders: any[], existingPatients: Patient[] = []): DiagnosticOrder[] => {
   if (!Array.isArray(rawOrders) || rawOrders.length === 0) return [];
 
-  // Track invoice counts by date prefix to sequence any duplicate .00001 invoices across distinct patients
-  const seenDatePrefixCounts = new Map<string, number>();
-  const preparedOrders = rawOrders.map((o: any) => {
-    const rawInv = String(o?.invoiceNumber || '').trim();
-    const invMatch = rawInv.match(/^(ATLS\d{6})\./i);
-    let seqIdx = 1;
-    if (invMatch) {
-      const pfx = invMatch[1].toUpperCase();
-      const currentCount = seenDatePrefixCounts.get(pfx) || 0;
-      seqIdx = currentCount + 1;
-      seenDatePrefixCounts.set(pfx, seqIdx);
+  // 1. Sanitize individual fields preserving genuine canonical invoice numbers
+  const sanitizedList = rawOrders.map(o => sanitizeOrderRecord(o, existingPatients));
+
+  // 2. Deduplicate only identical invoice numbers: if two items have identical invoice numbers,
+  // preserve the one with higher paid amount, synced status, or later timestamp
+  const dedupMap = new Map<string, DiagnosticOrder>();
+  sanitizedList.forEach(item => {
+    const key = (item.invoiceNumber || item.id || '').trim().toUpperCase();
+    if (!key) return;
+    const existing = dedupMap.get(key);
+    if (!existing) {
+      dedupMap.set(key, item);
+    } else {
+      const existingTime = new Date((existing as any).updatedAt || existing.createdAt).getTime();
+      const itemTime = new Date((item as any).updatedAt || item.createdAt).getTime();
+      if (itemTime > existingTime || (!existing.syncedToGoogleSheets && item.syncedToGoogleSheets)) {
+        dedupMap.set(key, item);
+      }
     }
-    return { ...o, orderSequenceIndex: seqIdx };
   });
 
-  // 1. Sanitize individual fields
-  const sanitizedList = preparedOrders.map(o => sanitizeOrderRecord(o, existingPatients));
-
   // Preserve genuine orders and canonical invoice numbers directly from Google Sheets
-  return sortOrdersChronologicallyDescending(sanitizedList);
+  return sortOrdersChronologicallyDescending(Array.from(dedupMap.values()));
 };
 
 /**

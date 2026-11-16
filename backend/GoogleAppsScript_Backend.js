@@ -269,7 +269,7 @@ function doPost(e) {
     }
 
     // 2. CREATE / SYNC SINGLE ORDER
-    if (action === "CREATE_ORDER" || action === "SYNC_ORDER") {
+    if (action === "CREATE_ORDER" || action === "SYNC_ORDER" || action === "UPDATE_ORDER" || action === "UPDATE_ORDER_PAYMENT") {
       var ord = payload.order;
       if (!ord) return createJsonResponse({ status: "ERROR", message: "Order object is missing." });
 
@@ -1204,7 +1204,8 @@ function findRowIndexByColumnValue(sheet, colIndex, valueToFind) {
   if (!valueToFind) return -1;
   var data = sheet.getDataRange().getValues();
   var strFind = String(valueToFind).trim().toLowerCase();
-  for (var i = 1; i < data.length; i++) {
+  // Search bottom-to-top to immediately find and update the latest active ledger entry
+  for (var i = data.length - 1; i >= 1; i--) {
     if (String(data[i][colIndex - 1]).trim().toLowerCase() === strFind) {
       return i + 1;
     }
@@ -1355,7 +1356,8 @@ function findOrderRowIndex(sheet, orderId, invoiceNo, patientUhid, patientName) 
   var targetUhid = patientUhid ? String(patientUhid).trim().toLowerCase() : "";
   var targetName = patientName ? String(patientName).trim().toLowerCase() : "";
 
-  for (var i = 1; i < data.length; i++) {
+  // Search bottom-to-top to immediately find and update the latest active ledger entry
+  for (var i = data.length - 1; i >= 1; i--) {
     var row = data[i];
     var rowInv = colInv >= 0 ? String(row[colInv] || "").trim().toLowerCase() : "";
     var rowId = colId >= 0 ? String(row[colId] || "").trim().toLowerCase() : "";
@@ -1476,7 +1478,8 @@ function findDoctorRowIndex(sheet, targetId, targetName, targetPhone) {
   var normTName = String(targetName || "").toLowerCase().replace(/^(dr\.?|mr\.?|mrs\.?|ms\.?)\s+/i, '').replace(/[^a-z0-9]/g, '').trim();
   var normTPhone = String(targetPhone || "").replace(/[^0-9]/g, '');
 
-  for (var i = 1; i < data.length; i++) {
+  // Search bottom-to-top to immediately find and update the latest active ledger entry
+  for (var i = data.length - 1; i >= 1; i--) {
     var row = data[i];
     var rId = String(row[cId] || "").trim().toLowerCase();
     var rName = String(row[cName] || "").toLowerCase().replace(/^(dr\.?|mr\.?|mrs\.?|ms\.?)\s+/i, '').replace(/[^a-z0-9]/g, '').trim();

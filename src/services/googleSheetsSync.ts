@@ -46,12 +46,12 @@ export const getGoogleSheetsUrl = (): string => {
     if (saved) {
       const parsed = JSON.parse(saved);
       const current = String(parsed.webAppUrl || parsed.customEndpoint || '').trim();
-      // Auto-migrate previous deployment URLs to the new master URL
-      if (current.includes('AKfycbyHSu0pGl1tVgVAmzaweD6W79gp_1uKSbBrYy0Wb7wpNkjKud7W59W5moUtUZeQfQ') || current.includes('AKfycbzJTcM5BSIGM5lGgyXVju3fMl9sovknr0hLKTSRaBX3wE5l_ayZfpOwj3rGF34EMF8y')) {
-        setGoogleSheetsUrl(EMBEDDED_GOOGLE_SHEETS_URL);
-        return EMBEDDED_GOOGLE_SHEETS_URL;
-      }
-      if (current.startsWith('http')) {
+      // Auto-migrate any outdated or deprecated Apps Script deployment URLs directly to the master URL
+      if (current.startsWith('http') && current.includes('macros/s/')) {
+        if (!current.includes('AKfycbx7lf5tjL1_kmqGMmw2tpwaR33geHoCQECxG6tkwEAXcyBnaiu73wvOpQawusAZ8HE')) {
+          setGoogleSheetsUrl(EMBEDDED_GOOGLE_SHEETS_URL);
+          return EMBEDDED_GOOGLE_SHEETS_URL;
+        }
         return current;
       }
     }
@@ -65,6 +65,8 @@ export interface SyncPayload {
     | 'INITIALIZE_SHEETS'
     | 'CREATE_ORDER'
     | 'SYNC_ORDER'
+    | 'UPDATE_ORDER'
+    | 'UPDATE_ORDER_PAYMENT'
     | 'DELETE_ORDER'
     | 'ADD_EXPENSE'
     | 'SYNC_EXPENSE'
