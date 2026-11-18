@@ -284,13 +284,55 @@ export const CLINICAL_TEMPLATES: ClinicalTemplate[] = [
   }
 ,
   {
-    id: "tpl-ap-obs-anomaly-scan",
-    name: "AP OBS ANOMALY SCAN",
-    category: "Radiology",
-    department: "Obstetric Ultrasound",
-    htmlContent: "<h3>OBSTETRIC ANOMALY SCAN</h3>\n<ul>\n  <li>Clinical LMP:                        Avg. Gestation:  Wks  Days                           Clinical EDD:  /01/2024</li>\n  <li>Single live intrauterine fetus seen with Changing presentation at the time of scanning.</li>\n  <li>Fetal cardiac activity is regular ( FHR = \u2026    bpm ). Fetal movements are normal.</li>\n  <li>Placenta is \u2026\u2026.. with grade \"    \"  maturity. Liquor is adequate.</li>\n  <li>The fetal growth parameters are as follow :</li>\n  <li>Parameters</li>\n  <li>Value (cm)</li>\n  <li>Weeks</li>\n  <li>Days</li>\n  <li>Bi-parietal Diameter :</li>\n  <li>Head Circumference :</li>\n  <li>Abdominal Circumference:</li>\n  <li>Femoral Length:</li>\n  <li>Tibial Length:</li>\n  <li>Humerus Length:</li>\n  <li>Ulnar Length:</li>\n  <li>Outer Orbital Distance:</li>\n  <li>Transverse Cerebellar Distance:</li>\n  <li>Average gestation by USG:     wks     days  +/-  1 wk</li>\n  <li>EDD [USG]:</li>\n  <li>Fetal weight:       grams +/- 10 %</li>\n  <li>FETAL MORPHOLOGY:</li>\n  <li>FETAL CNS</li>\n  <li>Fetal skull bones are normal.</li>\n  <li>Midline echo is seen.</li>\n  <li>Cavum Septum pellucidum (CSP) is visualized</li>\n  <li>The atriums of the lateral ventricles are normal. (Normal: &lt;10mm)</li>\n  <li>Trans cerebellar diameter measures        cm</li>\n  <li>Cisterna magna measures      mm and is normal. (Normal = 2-11mm)</li>\n  <li>FETAL SPINE</li>\n  <li>Fetal spine appears grossly normal.</li>\n  <li>Curvatures appear normal.</li>\n  <li>Skin cover over the vertebrae is seen.</li>\n  <li>FETAL FACE</li>\n  <li>Facial profile appears normal.</li>\n  <li>Nasal bone seen.</li>\n  <li>Outer orbital diameter (OOD) =    cm</li>\n  <li>Visualized orbits, lips and mandible appear normal.</li>\n  <li>FETAL NECK</li>\n  <li>Cystic/ solid lesion not seen.</li>\n  <li>FETALTHORAX</li>\n  <li>Cardiac is four chambered.</li>\n  <li>Cardiac apex is to the left.</li>\n  <li>Cardiac outflow tracts (LVOT and RVOT) appear normal.</li>\n  <li>The lungs are echogenic and normal. No e/o diaphragmatic hernia / pleural or pericardial effusion.</li>\n  <li>The diaphragm appears normal.</li>\n  <li>Situs normal.</li>\n  <li>FETALABDOMEN</li>\n  <li>The fetal stomach bubble appears normal and seen on the left side.</li>\n  <li>Right kidney is visualized and appears normal. No significant calyceal dilatation.</li>\n  <li>Left kidney is visualized and appears normal. No significant calyceal dilatation.</li>\n  <li>Urinary bladder is visualized.</li>\n  <li>Anterior abdominal wall is intact.</li>\n  <li>FETAL EXTREMITIES</li>\n  <li>The limbs are normal to the visible extent at the time of study.</li>\n  <li>Length of long bones of all 4 limbs corresponding to gestational age.</li>\n  <li>Anomalies of toes and fingers cannot be entirely ruled out.</li>\n  <li>UMBILICAL CORD</li>\n  <li>Triple vessel and shows normal vascularity.</li>\n  <li>PI of bilateral uterine arteries are 0.95 & 0.86 on right & left side respectively and are normal for gestational age.</li>\n  <li>Cervical length is normal =       cm.</li>\n</ul>",
-    defaultImpression: "SINGLE LIVE INTRAUTERINE FETUS OF MGA    WKS     DAYS WITH CHANGING PRESENTATION AT THE TIME OF SCANNING. NO SONOLOGICALLY DETECTABLE ANOMALIES SEEN AT PRESENT.",
-    defaultRecommendations: "FETAL ECHOCARDIOGRAPHY IS ADVISED TO RULE OUT CARDIAC ANOMALIES. Please note that all anomalies cannot be detected all the times due to various technical and circumstantial reasons like gestation period, fetal position, quantity of liquor, fetal movements, maternal abdominal wall thickness and tissue echogenicity. Therefore All Congenital anomalies CANNOT BE DETECTED BY ULTRASONOGRAPHY esp. cardiac, ear, spina bifida occulta, Mental retardation, metabolic anomalies. Fetal cardiac Doppler is done separately to rule out cardiac anomalies. (I Dr.    declare that while conducting the sonography Mrs I have neither detected nor disclosed the sex of the fetus to anybody in any manner.)"
+    id: 'tpl-ap-obs-anomaly-scan',
+    name: 'OBSTETRIC ANOMALY SCAN (LEVEL II / TARGET SCAN)',
+    category: 'Radiology',
+    department: 'Obstetric Ultrasound',
+    htmlContent: `
+      <h3>OBSTETRIC ANOMALY SCAN</h3>
+      <p><strong>Clinical LMP:</strong> &nbsp;&nbsp;&nbsp;&nbsp; <strong>Avg. Gestation:</strong> &nbsp;&nbsp; Wks &nbsp;&nbsp; Days &nbsp;&nbsp;&nbsp;&nbsp; <strong>Clinical EDD:</strong></p>
+      <p>Single live intrauterine fetus seen with Changing presentation at the time of scanning.</p>
+      <p>Fetal cardiac activity is regular (FHR = … bpm). Fetal movements are normal.</p>
+      <p>Placenta is …… with grade “ ” maturity. Liquor is adequate.</p>
+      <p><strong>The fetal growth parameters are as follow :</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <thead>
+          <tr style="background-color: #f1f5f9; border-bottom: 1px solid #000;">
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Parameters</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Value (cm)</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Weeks</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Days</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Bi-parietal Diameter (BPD)</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Head Circumference (HC)</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Abdominal Circumference (AC)</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Femoral Length (FL)</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Tibial Length</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Humerus Length</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Ulnar Length</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Outer Orbital Distance (OOD)</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Transverse Cerebellar Distance (TCD)</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Average gestation by USG:</strong> &nbsp;&nbsp;&nbsp; wks &nbsp;&nbsp; days &plusmn; 1 wk<br/>
+      <strong>EDD [USG]:</strong> &nbsp;&nbsp;&nbsp;&nbsp; <strong>Fetal weight:</strong> &nbsp;&nbsp;&nbsp; grams &plusmn; 10%</p>
+      <h4>FETAL MORPHOLOGY:</h4>
+      <ul>
+        <li><strong>FETAL CNS:</strong> Fetal skull bones are normal. Midline echo is seen. Cavum Septum pellucidum (CSP) is visualized. The atriums of the lateral ventricles are normal (&lt;10mm). Cisterna magna is normal (2-11mm).</li>
+        <li><strong>FETAL SPINE:</strong> Fetal spine appears grossly normal. Curvatures appear normal. Intact skin cover over the vertebrae is seen.</li>
+        <li><strong>FETAL FACE:</strong> Facial profile appears normal. Nasal bone seen. Visualized orbits, lips and mandible appear normal.</li>
+        <li><strong>FETAL THORAX:</strong> Cardiac four chambers visualized. Cardiac apex to the left. Outflow tracts (LVOT and RVOT) appear normal. Lungs echogenic and normal.</li>
+        <li><strong>FETAL ABDOMEN:</strong> Stomach bubble visualized on left. Both kidneys visualized and normal. Urinary bladder seen. Anterior abdominal wall intact.</li>
+        <li><strong>FETAL EXTREMITIES:</strong> All 4 limbs seen to visible extent. Length of long bones corresponds to GA.</li>
+        <li><strong>UMBILICAL CORD:</strong> Three vessels seen with normal insertion and vascularity.</li>
+      </ul>
+      <p style="font-size: 0.9em; margin-top: 14px; color: #333;">(It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness. Therefore, all fetal anomalies may not necessarily be detected at every examination).</p>
+      <p style="font-size: 0.9em; font-weight: bold; color: #111;">I, Dr. SHRUTI KUCHARIYA declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner.</p>
+    `,
+    defaultImpression: 'Single live intrauterine fetus of estimated gestational age corresponding to clinical dates. No gross congenital malformation detected at current scan.',
+    defaultRecommendations: 'Clinical correlation and follow-up.'
   },
   {
     id: "tpl-color-doppler-lower-limb-venous-system-4",
@@ -338,31 +380,147 @@ export const CLINICAL_TEMPLATES: ClinicalTemplate[] = [
     defaultRecommendations: "ice -\u00a0\u00a0\u00a0 Clinical correlation."
   },
   {
-    id: "tpl-twing-obst-growth-scan",
-    name: "TWING OBST GROWTH SCAN",
-    category: "Radiology",
-    department: "Obstetric Ultrasound",
-    htmlContent: "<h3>OBSTETRIC SONOGRAPHY</h3>\n<ul>\n  <li>LMP- 30/01/2026           GA BY LMP-  31 weeks 6 days         EDD BY LMP \u2013 06/11/2026</li>\n  <li>Gravid uterus reveal twin live fetuses with fetus A in transverse presentation and fetus B is cephalic (at present scan) lie with following parameters (monochronic diamniotic)</li>\n  <li>Fetus A  is towards maternal right.</li>\n  <li>FETUS \u2013A</li>\n  <li>BPD</li>\n  <li>7.9 cm</li>\n  <li>32 wks</li>\n  <li>0 days</li>\n  <li>HC</li>\n  <li>29.2 cm</li>\n  <li>32 wks</li>\n  <li>2 days</li>\n  <li>AC</li>\n  <li>27.1 cm</li>\n  <li>31 wks</li>\n  <li>2 days</li>\n  <li>FL</li>\n  <li>6.1 cm</li>\n  <li>31 wks</li>\n  <li>5 days</li>\n  <li>MGA: 31 wks 6 day</li>\n  <li>Fetal cardiac activity is seen & is regular FHR \u2013 137 Bpm. Fetal movements are seen.</li>\n  <li>Placenta is anterior more towards right & grade II is away from os. Internal os is closed.</li>\n  <li>Estimated fetal Wt. :  1789 gm ( +/-10 %)</li>\n  <li>FETUS \u2013 B</li>\n  <li>BPD</li>\n  <li>8.0 cm</li>\n  <li>32 wks</li>\n  <li>1 days</li>\n  <li>HC</li>\n  <li>28.9 cm</li>\n  <li>31 wks</li>\n  <li>6 days</li>\n  <li>AC</li>\n  <li>27.2 cm</li>\n  <li>31 wks</li>\n  <li>2 days</li>\n  <li>FL</li>\n  <li>6.1 cm</li>\n  <li>31 wks</li>\n  <li>5 days</li>\n  <li>MGA :  31 wks  6 day</li>\n  <li>Fetal cardiac activity is seen & is regular FHR \u2013 136 Bpm. Fetal movements are seen.</li>\n  <li>.</li>\n  <li>Placenta is anterior more towards right & grade II is away from os. Internal os is closed.</li>\n  <li>Estimated fetal Wt. : 1796   gm ( +/-10 %)</li>\n  <li>Amniotic fluid is adequate for gestational age. (AFI \u2013 15-16 cm).</li>\n  <li>Cervical length is normal 4 cm.</li>\n  <li>EDD by USG \u2013 06/11/2026</li>\n</ul>",
-    defaultImpression: "Twin live intrauterine fetuses of about 31 weeks 6 day (+/- 1 week) (FETUS \u2013A MATERNAL RIGHT) and  31 weeks 6  day (+/- 1 week)  (FETUS \u2013B  MATERNAL LEFT )  gestational age.",
-    defaultRecommendations: "ice follow up. This is not anomaly scan. (It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness . Therefore all fetal anomalies may not necessarily be detected at every examination). I, Dr NIVEDITA PRAJAPATI  declare that while conducting USG on MRS SANA HUSSAIN I have neither detected nor disclosed the sex of her fetus to anybody in any manner."
+    id: 'tpl-twing-obst-growth-scan',
+    name: 'TWIN OBSTETRIC GROWTH SCAN',
+    category: 'Radiology',
+    department: 'Obstetric Ultrasound',
+    htmlContent: `
+      <h3>TWIN OBSTETRIC SONOGRAPHY</h3>
+      <p><strong>LMP:</strong> 30/01/2026 &nbsp;&nbsp;&nbsp;&nbsp; <strong>GA BY LMP:</strong> 31 weeks 6 days &nbsp;&nbsp;&nbsp;&nbsp; <strong>EDD BY LMP:</strong> 06/11/2026</p>
+      <p>Gravid uterus reveals twin live fetuses (monochorionic diamniotic).</p>
+      <h4>FETUS – A (Towards Maternal Right)</h4>
+      <p>Presentation: Transverse lie. Fetal cardiac activity regular (FHR: 137 BPM). Spontaneous fetal movements seen.</p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold; width: 25%;">BPD</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">7.9 cm</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">32 wks</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">0 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">HC</td><td style="border: 1px solid #000; padding: 6px 12px;">29.2 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">32 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">2 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">AC</td><td style="border: 1px solid #000; padding: 6px 12px;">27.1 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">31 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">2 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">FL</td><td style="border: 1px solid #000; padding: 6px 12px;">6.1 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">31 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">5 days</td></tr>
+        </tbody>
+      </table>
+      <p><strong>MGA Fetus A:</strong> 31 wks 6 day &nbsp;&nbsp;&nbsp;&nbsp; <strong>Estimated Fetal Weight:</strong> 1789 gm (±10%)</p>
+      <h4>FETUS – B (Towards Maternal Left)</h4>
+      <p>Presentation: Cephalic lie. Fetal cardiac activity regular (FHR: 136 BPM). Spontaneous fetal movements seen.</p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold; width: 25%;">BPD</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">8.0 cm</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">32 wks</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">1 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">HC</td><td style="border: 1px solid #000; padding: 6px 12px;">28.9 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">31 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">6 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">AC</td><td style="border: 1px solid #000; padding: 6px 12px;">27.2 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">31 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">2 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">FL</td><td style="border: 1px solid #000; padding: 6px 12px;">6.1 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">31 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">5 days</td></tr>
+        </tbody>
+      </table>
+      <p><strong>MGA Fetus B:</strong> 31 wks 6 day &nbsp;&nbsp;&nbsp;&nbsp; <strong>Estimated Fetal Weight:</strong> 1796 gm (±10%)</p>
+      <p>Placenta is anterior more towards right, grade II maturity, well away from os. Internal os is closed. Liquor is adequate in both sacs.</p>
+      <p style="font-size: 0.9em; margin-top: 14px; color: #333;">(It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness. Therefore, all fetal anomalies may not necessarily be detected at every examination).</p>
+      <p style="font-size: 0.9em; font-weight: bold; color: #111;">I, Dr. SHRUTI KUCHARIYA declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner.</p>
+    `,
+    defaultImpression: 'Twin live monochorionic diamniotic intrauterine fetuses of average gestational age 31-32 weeks with adequate growth concordance.',
+    defaultRecommendations: 'Follow-up scan after 2-3 weeks for interval growth monitoring.'
   },
   {
-    id: "tpl-twins-obst-doppler",
-    name: "TWINS OBST DOPPLER",
-    category: "Radiology",
-    department: "Color Doppler",
-    htmlContent: "<h3>COLOR DOPPLER OBSTETRICS SONOGRAPH</h3>\n<ul>\n  <li>LMP-    10/12/2023            GA BY LMP-  35 weeks 5 days                 EDD BY LMP \u2013 15/09/2024</li>\n  <li>Gravid uterus reveal twin live fetuses with fetus A in cephalic presentation and  fetus B is transverse lie with following parameters:</li>\n  <li>FETUS \u2013A (MATERNAL LEFT)</li>\n  <li>BPD</li>\n  <li>8.9 cm</li>\n  <li>36 wks</li>\n  <li>0 days</li>\n  <li>HC</li>\n  <li>32.1 cm</li>\n  <li>36 wks</li>\n  <li>2 days</li>\n  <li>AC</li>\n  <li>30.3 cm</li>\n  <li>34 wks</li>\n  <li>2 days</li>\n  <li>FL</li>\n  <li>6.9 cm</li>\n  <li>35 wks</li>\n  <li>3 days</li>\n  <li>MGA : 35 wks  4 day</li>\n  <li>Fetal cardiac activity is seen & is regular FHR \u2013 154 Bpm. Fetal movements are seen.</li>\n  <li>Amniotic fluid is adequate (AFI  - 6-7 cm) reaching lower limit of normal.</li>\n  <li>Placenta is Anterior & grade II is away from os. Internal os is closed.</li>\n  <li>Cervical length is normal.</li>\n  <li>Estimated fetal Wt. :  2386 gm ( +/-10 %)</li>\n  <li>FETUS \u2013 B  (MATERNAL RIGHT)</li>\n  <li>BPD</li>\n  <li>8.6 cm</li>\n  <li>35 wks</li>\n  <li>0 days</li>\n  <li>HC</li>\n  <li>31.5 cm</li>\n  <li>35 wks</li>\n  <li>2 days</li>\n  <li>AC</li>\n  <li>30.7 cm</li>\n  <li>34  wks</li>\n  <li>5 days</li>\n  <li>FL</li>\n  <li>6.8 cm</li>\n  <li>35 wks</li>\n  <li>3 days</li>\n  <li>MGA :  35 wks  1 day</li>\n  <li>Fetal cardiac activity is seen & is regular FHR \u2013 148 Bpm. Fetal movements are seen.</li>\n  <li>Amniotic fluid is adequate (AFI  - 7-8 cm) .</li>\n  <li>Placenta is Anterior & grade II is away from os. Internal os is closed.</li>\n  <li>Estimated fetal Wt. : 2396   gm ( +/-10 %)</li>\n  <li>DOPPLER</li>\n  <li>Uterine, umbilical & middle cerebral arteries reveal normal wave form & indices</li>\n  <li>for gestational age.</li>\n  <li>Maternal \u2013</li>\n  <li>Uterine                                                  Rt :-</li>\n  <li>0.56</li>\n  <li>0.41</li>\n  <li>Normal</li>\n  <li>Lt :-</li>\n  <li>0.48</li>\n  <li>0.37</li>\n  <li>Normal</li>\n  <li>Fetus \u2013A</li>\n  <li>PI</li>\n  <li>RI</li>\n  <li>Percentile</li>\n  <li>Umbilical</li>\n  <li>0.86</li>\n  <li>0.56</li>\n  <li>Normal</li>\n  <li>Middle cerebral artery</li>\n  <li>1.86</li>\n  <li>0.70</li>\n  <li>Normal</li>\n  <li>CPR:  &gt;2.1 , (Normal)</li>\n  <li>Ductus venous show normal flow and spectrum.</li>\n  <li>Umbilical vein show normal flow.</li>\n  <li>Fetus - B</li>\n  <li>PI</li>\n  <li>RI</li>\n  <li>Percentile</li>\n  <li>Umbilical</li>\n  <li>0.83</li>\n  <li>0.56</li>\n  <li>Normal</li>\n  <li>Middle cerebral artery</li>\n  <li>1.93</li>\n  <li>1.00</li>\n  <li>Normal</li>\n  <li>CPR:  &gt;1.8 , (Normal)</li>\n  <li>Ductus venous show normal flow and spectrum.</li>\n  <li>Umbilical vein show normal flow.</li>\n</ul>",
-    defaultImpression: "Twin live intrauterine fetuses of about 35 weeks 4  day (+/- 1 week) (FETUS \u2013A MATERNAL LEFT) and  35 weeks 1  day (+/- 1 week)  (FETUS \u2013B  MATERNAL RIGHT )  gestational age. COLOR DOPPLER OBSTETRICS STUDY IS NORMAL.",
-    defaultRecommendations: "ice follow up. This is not anomaly scan (It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness . Therefore all fetal anomalies may not necessarily be detected at every examination). I, Dr.   declare that while conducting USG on MRS..I have neither detected nor disclosed the sex of her fetus to anybody in any manner."
+    id: 'tpl-twins-obst-doppler',
+    name: 'TWIN OBSTETRICS COLOR DOPPLER',
+    category: 'Radiology',
+    department: 'Obstetric Ultrasound',
+    htmlContent: `
+      <h3>TWIN OBSTETRICS COLOR DOPPLER</h3>
+      <p><strong>LMP:</strong> 10/12/2023 &nbsp;&nbsp;&nbsp;&nbsp; <strong>GA BY LMP:</strong> 35 weeks 5 days &nbsp;&nbsp;&nbsp;&nbsp; <strong>EDD BY LMP:</strong> 15/09/2024</p>
+      <p>Gravid uterus reveals twin live fetuses with Fetus A in cephalic presentation and Fetus B in transverse lie:</p>
+      <h4>FETUS – A (Maternal Left)</h4>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold; width: 25%;">BPD</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">8.9 cm</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">36 wks</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">0 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">HC</td><td style="border: 1px solid #000; padding: 6px 12px;">32.1 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">36 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">2 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">AC</td><td style="border: 1px solid #000; padding: 6px 12px;">30.3 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">34 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">2 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">FL</td><td style="border: 1px solid #000; padding: 6px 12px;">6.9 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">35 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">3 days</td></tr>
+        </tbody>
+      </table>
+      <p><strong>MGA Fetus A:</strong> 35 wks 4 day &nbsp;&nbsp;&nbsp;&nbsp; <strong>FHR:</strong> 154 BPM &nbsp;&nbsp;&nbsp;&nbsp; <strong>AFI:</strong> 6-7 cm &nbsp;&nbsp;&nbsp;&nbsp; <strong>EFW:</strong> 2390 gm (±10%)</p>
+      <h4>FETUS – B (Maternal Right)</h4>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold; width: 25%;">BPD</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">8.5 cm</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">34 wks</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">2 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">HC</td><td style="border: 1px solid #000; padding: 6px 12px;">31.4 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">35 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">0 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">AC</td><td style="border: 1px solid #000; padding: 6px 12px;">29.4 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">33 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">2 days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">FL</td><td style="border: 1px solid #000; padding: 6px 12px;">6.6 cm</td><td style="border: 1px solid #000; padding: 6px 12px;">34 wks</td><td style="border: 1px solid #000; padding: 6px 12px;">0 days</td></tr>
+        </tbody>
+      </table>
+      <p><strong>MGA Fetus B:</strong> 34 wks 0 day &nbsp;&nbsp;&nbsp;&nbsp; <strong>FHR:</strong> 142 BPM &nbsp;&nbsp;&nbsp;&nbsp; <strong>AFI:</strong> 6-7 cm &nbsp;&nbsp;&nbsp;&nbsp; <strong>EFW:</strong> 2150 gm (±10%)</p>
+      <h4>TWIN COLOR DOPPLER INDICES</h4>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <thead>
+          <tr style="background-color: #f1f5f9; border-bottom: 1px solid #000;">
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Vessel / Parameter</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">Fetus A (PI / RI)</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">Fetus B (PI / RI)</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Umbilical Artery</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.82 / 0.52</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.85 / 0.54</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal forward diastolic flow</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Middle Cerebral Artery (MCA)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">1.58 / 0.78</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">1.62 / 0.80</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal resistance, no sparing</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Ductus Venosus / CPR</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Positive a-wave / 1.9</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Positive a-wave / 1.9</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal hemodynamic status</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size: 0.9em; margin-top: 14px; color: #333;">(It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness. Therefore, all fetal anomalies may not necessarily be detected at every examination).</p>
+      <p style="font-size: 0.9em; font-weight: bold; color: #111;">I, Dr. SHRUTI KUCHARIYA declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner.</p>
+    `,
+    defaultImpression: 'Twin live intrauterine fetuses of average gestational age 34-36 weeks with normal biophysical profile and normal Doppler waveform indices in both fetuses.',
+    defaultRecommendations: 'Close clinical monitoring and antenatal follow-up.'
   },
   {
-    id: "tpl-usg-obst-growth-scan",
-    name: "USG  OBST GROWTH SCAN",
-    category: "Radiology",
-    department: "Obstetric Ultrasound",
-    htmlContent: "<h3>OBSTETRIC SONOGRAPHY</h3>\n<ul>\n  <li>LMP \u2013  GA:- wks  days</li>\n  <li>This examination show a single live intra uterine fetus in cephalic presentation.</li>\n  <li>The placenta is  in position, grade    maturation and is well away from internal os.</li>\n  <li>Internal os is closed. Cervical length is normal.</li>\n  <li>Amount of liquor is adequate for gestational age. (AFI cm)</li>\n  <li>Fetal cardiac activity is regular and normal. Spontaneous Fetal Movements are well appreciated.</li>\n  <li>FHR \u2013   BPM.</li>\n  <li>The fetal growth parameters are as follows :</li>\n  <li>BPD</li>\n  <li>cm</li>\n  <li>wks</li>\n  <li>days</li>\n  <li>HC</li>\n  <li>cm</li>\n  <li>wks</li>\n  <li>days</li>\n  <li>AC</li>\n  <li>cm</li>\n  <li>wks</li>\n  <li>days</li>\n  <li>FL</li>\n  <li>cm</li>\n  <li>wks</li>\n  <li>days</li>\n  <li>MGA :  wks  day.</li>\n  <li>Estimated fetal weight is  gm+ 10%  gms .</li>\n  <li>EDD BY USG:-</li>\n</ul>",
-    defaultImpression: "Single live intrauterine fetus of estimated gestational age of   wks  days  \u00b1 wks.",
-    defaultRecommendations: "ice follow up. This is not anomaly scan. (It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness . Therefore all fetal anomalies may not necessarily be detected at every examination). I, Dr RAVINDRA WASKEL declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner."
+    id: 'tpl-usg-obst-growth-scan',
+    name: 'OBSTETRIC SONOGRAPHY (USG OBST GROWTH SCAN)',
+    category: 'Radiology',
+    department: 'Obstetric Ultrasound',
+    htmlContent: `
+      <h3>OBSTETRIC SONOGRAPHY</h3>
+      <p><strong>LMP –</strong> 27/05/2026 &nbsp;&nbsp;&nbsp;&nbsp; <strong>GA:-</strong> 25 wks 0 days &nbsp;&nbsp;&nbsp;&nbsp; <strong>EDD BY LMP –</strong> 03/03/2027</p>
+      <p>This examination shows a single live intra uterine fetus in breech presentation at the time of scanning.</p>
+      <p>The placenta is posterior in position, grade I maturation with completely covering the internal os of cervix s/o placenta previa at present scan.</p>
+      <p>Cervical length is normal.</p>
+      <p>Amount of liquor is adequate for gestational age.</p>
+      <p>Fetal cardiac activity is regular and normal. Spontaneous Fetal Movements are well appreciated.<br/>
+      <strong>FHR –</strong> 144 BPM.</p>
+      <p><strong>The fetal growth parameters are as follows :</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold; width: 25%;">BPD</td>
+            <td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">6.0 cm</td>
+            <td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">24 wks</td>
+            <td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">5 days</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">HC</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">22.7 cm</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">24 wks</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">6 days</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">AC</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">20.0 cm</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">24 wks</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">5 days</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">FL</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">4.5 cm</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">25 wks</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">1 days</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong>MGA :</strong> 24 wks 6 day.<br/>
+      <strong>Estimated fetal weight is</strong> 744 gm&plusmn; 109 gms .<br/>
+      <strong>EDD BY USG:-</strong> 04/03/2027</p>
+      <p><strong>Advice follow up.</strong><br/>
+      <strong>This is not anomaly scan.</strong></p>
+      <p style="font-size: 0.9em; margin-top: 14px; color: #333;">(It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness. Therefore, all fetal anomalies may not necessarily be detected at every examination).</p>
+      <p style="font-size: 0.9em; font-weight: bold; color: #111;">I, Dr. SHRUTI KUCHARIYA declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner.</p>
+    `,
+    defaultImpression: 'Single live intrauterine fetus of estimated gestational age of 24 wks 6 days ± 1 wks.',
+    defaultRecommendations: 'Advice follow up. This is not anomaly scan.'
   },
   {
     id: "tpl-usg-breast-memography",
@@ -374,13 +532,34 @@ export const CLINICAL_TEMPLATES: ClinicalTemplate[] = [
     defaultRecommendations: "\u2013 Kindly correlate clinically."
   },
   {
-    id: "tpl-usg-carotid-doppler",
-    name: "USG CAROTID DOPPLER",
-    category: "Radiology",
-    department: "Color Doppler",
-    htmlContent: "<h3>CAROTID COLOR DOPPLER STUDY</h3>\n<ul>\n  <li>RIGHT</li>\n  <li>LEFT</li>\n  <li>CIMT</li>\n  <li>mm</li>\n  <li>mm</li>\n  <li>CCA-PSV</li>\n  <li>cm/sec</li>\n  <li>cm/sec</li>\n  <li>ICA-PSV</li>\n  <li>cm/sec</li>\n  <li>cm/sec</li>\n  <li>ECA-PSV</li>\n  <li>cm/sec</li>\n  <li>cm/sec</li>\n  <li>ICA-EDV</li>\n  <li>cm/sec</li>\n  <li>cm/sec</li>\n  <li>Right ICA/CCA PSV Ratio-</li>\n  <li>Left ICA/CCA PSV Ratio-</li>\n  <li>Bilateral common carotid arteries, carotid bulb its branches into external carotid and internal carotid upto their visualized part reveals normal caliber and course.</li>\n  <li>Rest of the vessels shows normal flow pattern and corresponding velocities.</li>\n  <li>Bilateral vertebral arteries appear normal in flow pattern.</li>\n  <li>No evidence of plaque or thrombus seen.</li>\n</ul>",
-    defaultImpression: "Normal bilateral carotid doppler study. It is a professional opinion, not valid for medico legal purpose",
-    defaultRecommendations: "Clinical correlation and follow-up recommended."
+    id: 'tpl-usg-carotid-doppler',
+    name: 'CAROTID COLOR DOPPLER STUDY',
+    category: 'Radiology',
+    department: 'Vascular Doppler',
+    htmlContent: `
+      <h3>CAROTID COLOR DOPPLER STUDY</h3>
+      <p>High-resolution real-time B-mode and colour spectral Doppler examination of bilateral carotid arterial system was performed:</p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <thead>
+          <tr style="background-color: #f1f5f9; border-bottom: 1px solid #000;">
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Parameter</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">RIGHT CAROTID</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">LEFT CAROTID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">CIMT (Intima-Media Thickness)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.6 mm</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.6 mm</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">CCA-PSV (Common Carotid Artery)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">75 cm/sec</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">78 cm/sec</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">ICA-PSV (Internal Carotid Artery)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">68 cm/sec</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">72 cm/sec</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">ECA-PSV (External Carotid Artery)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">85 cm/sec</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">82 cm/sec</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">ICA-EDV (End Diastolic Velocity)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">25 cm/sec</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">26 cm/sec</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">ICA / CCA PSV Ratio</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.90</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.92</td></tr>
+        </tbody>
+      </table>
+      <p>Bilateral common carotid arteries, carotid bulbs, external and internal carotid arteries reveal normal caliber and course. No evidence of significant atherosclerotic plaque or hemodynamic stenosis seen. Bilateral vertebral arteries demonstrate normal antegrade flow with normal spectral waveforms.</p>
+    `,
+    defaultImpression: 'Normal bilateral carotid and vertebral Doppler study. No evidence of significant stenosis or hemodynamically significant plaque.',
+    defaultRecommendations: 'Clinical correlation suggested.'
   },
   {
     id: "tpl-usg-color-doppler-lower-limb-venous-system",
@@ -461,31 +640,125 @@ export const CLINICAL_TEMPLATES: ClinicalTemplate[] = [
     defaultRecommendations: "\u2013 Clinical correlation and further evaluation suggested."
   },
   {
-    id: "tpl-usg-nt-scan-for-twin",
-    name: "USG NT SCAN FOR TWIN",
-    category: "Radiology",
-    department: "Sonography / USG",
-    htmlContent: "<h3>OBSTETRIC SONOGRAPHY NT SCAN</h3>\n<ul>\n  <li>LMP \u201310/12/2023              GA BY LMP:  12 wks 6 day       EDD BY LMP: 15/09/2024</li>\n  <li>This examination shows twin live dichorionic diamniotic intra uterine fetuses in changing presentation.</li>\n  <li>The placenta of both fetuses seen forming Anteriorly and away from internal OS. Internal OS is closed.</li>\n  <li>Amount of liquor is adequate for gestational age in both fetuses.</li>\n  <li>Fetal cardiac activity is regular and normal.</li>\n  <li>Spontaneous Fetal Movements are well appreciated.</li>\n  <li>FHR \u2013 Twin I-    156  B/M</li>\n  <li>Twin II-   158 B/M</li>\n  <li>Parameters-</li>\n  <li>( Twin I )                                                                                  ( Twin II )</li>\n  <li>FL - 0.9 cm corresponding to 12 wks 6 days                     FL - 0.9 cm corresponding to 12 wks 6 days</li>\n  <li>CRL- 6.39 cm corresponding to 12 wks 6 days                CRL- 6.30 cm corresponding to 12 wks 5 days</li>\n  <li>N.T. measures-  2 mm (within normal range)                  N.T. measures- 2 mm (within normal range)</li>\n  <li>Nasal bone seen in both the fetuses.</li>\n  <li>Premaxillary triangle and mandibular gap sign seen.</li>\n  <li>Fetal skull & lateral ventricle appear normal.</li>\n  <li>Fetal Heart & Stomach seen. Cardiac situs normal.</li>\n  <li>Anterior abdomen wall appears intact.</li>\n  <li>All four limbs seen.</li>\n  <li>Three vessel cord seen.</li>\n  <li>Normal flow spectrum of ductus venosus seen.</li>\n  <li>Cervical length measures 3.4 cm</li>\n  <li>EDD by USG: 15/09/2024</li>\n  <li>IMPRESSTION :</li>\n  <li>Twin live dichorionic diamniotic intra uterine fetuses in changing presentation of gestational age of 12  Wks 6 days  + 1  Wks.</li>\n  <li>N.T. of both fetuses measures \u2013  2 mm (within normal range)</li>\n  <li>Suggested target scan between -19 to 22 week.</li>\n</ul>",
-    defaultImpression: "No significant abnormality detected on current sonographic examination.",
-    defaultRecommendations: "ice follow up This is not anomaly scan (It must be noted that detailed fetal anatomy may not  always be visible due to technical difficulties related to fetal position, amniotic fluid volume , fetal movement and abdominal wall thickness . Therefore all fetal anomalies may not necessarily be detected at every examination) . I, Dr. declare that while conduting  USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner ."
+    id: 'tpl-usg-nt-scan-for-twin',
+    name: 'USG NT SCAN FOR TWIN',
+    category: 'Radiology',
+    department: 'Obstetric Ultrasound',
+    htmlContent: `
+      <h3>OBSTETRIC SONOGRAPHY NT SCAN FOR TWIN</h3>
+      <p><strong>LMP:</strong> 10/12/2023 &nbsp;&nbsp;&nbsp;&nbsp; <strong>GA BY LMP:</strong> 12 wks 6 day &nbsp;&nbsp;&nbsp;&nbsp; <strong>EDD BY LMP:</strong> 15/09/2024</p>
+      <p>This examination shows twin live dichorionic diamniotic intra uterine fetuses in changing presentation.</p>
+      <p>The placenta of both fetuses is seen forming anteriorly and away from internal OS. Internal OS is closed. Amount of liquor is adequate for gestational age in both fetuses.</p>
+      <p><strong>Early Fetal Biometry & NT Markers (Twin Comparison):</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <thead>
+          <tr style="background-color: #f1f5f9; border-bottom: 1px solid #000;">
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Parameters</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">Twin I</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">Twin II</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Crown Rump Length (CRL)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">6.39 cm (12 wks 6 d)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">6.30 cm (12 wks 5 d)</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Femur Length (FL)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.9 cm (12 wks 6 d)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.9 cm (12 wks 6 d)</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Nuchal Translucency (NT)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">2.0 mm (Normal)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">2.0 mm (Normal)</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Nasal Bone</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Visualized</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Visualized</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Fetal Heart Rate (FHR)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">156 BPM</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">158 BPM</td></tr>
+        </tbody>
+      </table>
+      <p>Premaxillary triangle and mandibular gap sign seen in both fetuses. Fetal skull, lateral ventricles, stomach bubble and intact anterior abdominal wall visualized in both fetuses. Three-vessel umbilical cord and normal ductus venosus flow spectrum seen.</p>
+      <p><strong>Cervical length:</strong> 3.4 cm &nbsp;&nbsp;&nbsp;&nbsp; <strong>EDD by USG:</strong> 15/09/2024</p>
+      <p style="font-size: 0.9em; margin-top: 14px; color: #333;">(It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness. Therefore, all fetal anomalies may not necessarily be detected at every examination).</p>
+      <p style="font-size: 0.9em; font-weight: bold; color: #111;">I, Dr. SHRUTI KUCHARIYA declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner.</p>
+    `,
+    defaultImpression: 'Twin live dichorionic diamniotic intra uterine fetuses of gestational age 12 wks 6 days ± 1 wk. NT of both fetuses within normal limits.',
+    defaultRecommendations: 'Suggested target / anomaly scan between 19 to 22 weeks.'
   },
   {
-    id: "tpl-usg-nt-scan",
-    name: "USG NT SCAN",
-    category: "Radiology",
-    department: "Sonography / USG",
-    htmlContent: "<h3>OBSTETRIC SONOGRAPHY NT SCAN</h3>\n<ul>\n  <li>LMP \u201328/01/2024              GA BY LMP:  wks  day        EDD BY LMP:</li>\n  <li>This examination show single live intra uterine fetus in changing presentation.</li>\n  <li>The placenta \u2013 \u2026..  and Grade I , away from internal OS. Internal OS is closed.</li>\n  <li>Cervical length measures \u2026. cm.</li>\n  <li>Amount of liquor is adequate for gestational age.</li>\n  <li>Fetal cardiac activity is regular and normal. Spontaneous</li>\n  <li>Fetal Movements are well appreciated. FHR \u2013  B/M</li>\n  <li>CRL-   cm corresponding to    wks    days</li>\n  <li>BPD-   cm corresponding to    wks    days</li>\n  <li>HC-     cm corresponding to    wks    days</li>\n  <li>AC -    cm corresponding to    wks    days</li>\n  <li>FL-      cm corresponding to    wks    days</li>\n  <li>Estimated fetal weight -    gms.</li>\n  <li>N.T. measures \u2013  mm (within normal range)</li>\n  <li>Nasal bone seen.</li>\n  <li>Premaxillary triangle and mandibular gap sign seen.</li>\n  <li>Fetal skull & lateral ventricle appear normal.</li>\n  <li>Fetal Heart & Stomach seen. Cardiac situs normal.</li>\n  <li>Anterior abdomen wall appears intact.</li>\n  <li>All four limbs seen.</li>\n  <li>Three vessel cord seen.</li>\n  <li>Normal flow spectrum of ductus venosus seen.</li>\n  <li>PI of bilateral uterine arteries are 1.92 & 1.07 on right & left side respectively and are normal for gestational age.</li>\n  <li>EDD by USG:</li>\n  <li>IMPRESSTION:</li>\n  <li>Single live intra uterine fetus of estimated gestational age of   Wks   days  + 1  Wks.</li>\n  <li>N.T. measures \u2013   mm (within normal range)</li>\n  <li>Suggested target scan between -19 to 22 week.</li>\n</ul>",
-    defaultImpression: "No significant abnormality detected on current sonographic examination.",
-    defaultRecommendations: "ice follow up This is not anomaly scan (It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume , fetal movement and abdominal wall thickness . Therefore all fetal anomalies may not necessarily be detected at every examination). I, Dr. declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner."
+    id: 'tpl-usg-nt-scan',
+    name: 'USG NT SCAN (FIRST TRIMESTER SCREENING)',
+    category: 'Radiology',
+    department: 'Obstetric Ultrasound',
+    htmlContent: `
+      <h3>OBSTETRIC SONOGRAPHY NT SCAN (11 - 13+6 WEEKS)</h3>
+      <p><strong>LMP:</strong> &nbsp;&nbsp;&nbsp;&nbsp; <strong>GA BY LMP:</strong> &nbsp;&nbsp; wks &nbsp;&nbsp; day &nbsp;&nbsp;&nbsp;&nbsp; <strong>EDD BY LMP:</strong></p>
+      <p>This examination shows single live intra uterine fetus in changing presentation.</p>
+      <p>The placenta is seen forming away from internal OS. Internal OS is closed. Cervical length measures … cm. Amount of liquor is adequate for gestational age.</p>
+      <p>Fetal cardiac activity is regular and normal. Spontaneous fetal movements are well appreciated (FHR: … BPM).</p>
+      <p><strong>Early Fetal Biometry & Aneuploidy Markers :</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <thead>
+          <tr style="background-color: #f1f5f9; border-bottom: 1px solid #000;">
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Parameter</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Measurement</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Corresponding Gestational Age</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Crown Rump Length (CRL)</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp; cm</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp; wks &nbsp; days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Biparietal Diameter (BPD)</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp; cm</td><td style="border: 1px solid #000; padding: 6px 10px;">&nbsp; wks &nbsp; days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Nuchal Translucency (NT)</td><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">&nbsp; mm</td><td style="border: 1px solid #000; padding: 6px 10px;">Normal Range (&lt; 2.5 mm)</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Nasal Bone</td><td style="border: 1px solid #000; padding: 6px 10px;">Present</td><td style="border: 1px solid #000; padding: 6px 10px;">Normal marker</td></tr>
+        </tbody>
+      </table>
+      <p><strong>First Trimester Anatomy Survey:</strong></p>
+      <ul>
+        <li>Fetal skull contour and midline falx are normal. Lateral ventricles visualized.</li>
+        <li>Premaxillary triangle and mandibular gap sign seen. Facial profile normal.</li>
+        <li>Fetal heart rate and 4 chamber view visualized. Stomach bubble seen in left upper quadrant.</li>
+        <li>Anterior abdominal wall is intact with normal cord insertion. Both upper and lower limb buds identified.</li>
+        <li>Ductus venosus shows normal triphasic flow with positive 'a' wave. Tricuspid regurgitation is absent.</li>
+      </ul>
+      <p><strong>EDD by USG:</strong></p>
+      <p style="font-size: 0.9em; margin-top: 14px; color: #333;">(It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness. Therefore, all fetal anomalies may not necessarily be detected at every examination).</p>
+      <p style="font-size: 0.9em; font-weight: bold; color: #111;">I, Dr. SHRUTI KUCHARIYA declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner.</p>
+    `,
+    defaultImpression: 'Single live intrauterine fetus of estimated gestational age   wks   days ± 1 wk. Nuchal translucency is normal and nasal bone is present.',
+    defaultRecommendations: 'Suggested detailed anomaly / target scan between 18 - 20 weeks.'
   },
   {
-    id: "tpl-usg-obst-doppler",
-    name: "USG OBST DOPPLER",
-    category: "Radiology",
-    department: "Color Doppler",
-    htmlContent: "<h3>COLOR DOPPLER OBSTETRICS SONOGRAPH</h3>\n<ul>\n  <li>LMP-               GA BY LMP-  weeks  days                 EDD BY LMP \u2013</li>\n  <li>Gravid uterus reveal single live fetus in cephalic presentation with following parameters:</li>\n  <li>BPD</li>\n  <li>cm</li>\n  <li>Wks</li>\n  <li>days</li>\n  <li>HC</li>\n  <li>cm</li>\n  <li>wks</li>\n  <li>days</li>\n  <li>AC</li>\n  <li>cm</li>\n  <li>wks</li>\n  <li>days</li>\n  <li>FL</li>\n  <li>cm</li>\n  <li>wks</li>\n  <li>days</li>\n  <li>MGA :  35 wks   0day</li>\n  <li>Fetal cardiac activity is seen & is regular FHR \u2013  Bpm. Fetal movements are seen.</li>\n  <li>Amniotic fluid is adequate (AFI  - cm) .</li>\n  <li>Placenta is posterior & grade II is away from os. Internal os is closed.</li>\n  <li>Estimated fetal Wt. :  gm ( +/-10 %)</li>\n  <li>EDD BY USG \u2013</li>\n  <li>DOPPLER</li>\n  <li>Uterine umbilical & middle cerebral artery reveal normal wave form & indices</li>\n  <li>for gestational age.</li>\n  <li>PI</li>\n  <li>RI</li>\n  <li>Percentile</li>\n  <li>Umbilical</li>\n  <li>0.8</li>\n  <li>0.5</li>\n  <li>Normal</li>\n  <li>Middle cerebral artery</li>\n  <li>1.61</li>\n  <li>0.79</li>\n  <li>Normal</li>\n  <li>Uterine                                                  Rt :-</li>\n  <li>0.77</li>\n  <li>0.52</li>\n  <li>Normal</li>\n  <li>Lt :-</li>\n  <li>0.62</li>\n  <li>0.44</li>\n  <li>Normal</li>\n  <li>CPR:  2(Normal)</li>\n  <li>Ductus venous show normal flow and spectrum.</li>\n  <li>Umbilical vein show normal flow.</li>\n</ul>",
-    defaultImpression: "Single live intrauterine fetus of about   weeks  days (+/- 2 week) of gestational age. COLOR DOPPLER OBSTETRICS STUDY IS NORMAL.",
-    defaultRecommendations: "ice follow up. This is not anomaly scan (It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness . Therefore all fetal anomalies may not necessarily be detected at every examination). I, Dr.  declare that while conducting USG on MRS.  I have neither detected nor disclosed the sex of her fetus to anybody in any manner. s"
+    id: 'tpl-usg-obst-doppler',
+    name: 'COLOR DOPPLER OBSTETRICS SONOGRAPHY',
+    category: 'Radiology',
+    department: 'Obstetric Ultrasound',
+    htmlContent: `
+      <h3>COLOR DOPPLER OBSTETRICS SONOGRAPHY</h3>
+      <p><strong>LMP:</strong> &nbsp;&nbsp;&nbsp;&nbsp; <strong>GA BY LMP:</strong> &nbsp;&nbsp; weeks &nbsp;&nbsp; days &nbsp;&nbsp;&nbsp;&nbsp; <strong>EDD BY LMP:</strong></p>
+      <p>Gravid uterus reveals single live fetus in cephalic presentation with regular cardiac activity and movements (FHR: … BPM).</p>
+      <p>Amniotic fluid is adequate (AFI: … cm). Placenta is posterior & grade II maturity, well away from internal os. Internal os is closed.</p>
+      <p><strong>The fetal growth parameters are as follows :</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold; width: 25%;">BPD</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">&nbsp; cm</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">&nbsp; wks</td><td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">&nbsp; days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">HC</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; cm</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; wks</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">AC</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; cm</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; wks</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; days</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">FL</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; cm</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; wks</td><td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; days</td></tr>
+        </tbody>
+      </table>
+      <p><strong>MGA :</strong> &nbsp;&nbsp;&nbsp; wks &nbsp;&nbsp; days &nbsp;&nbsp;&nbsp;&nbsp; <strong>Estimated fetal Wt. :</strong> &nbsp;&nbsp;&nbsp; gm (±10%)<br/><strong>EDD BY USG:</strong></p>
+      <p><strong>FETAL & UTERINE DOPPLER EVALUATION:</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <thead>
+          <tr style="background-color: #f1f5f9; border-bottom: 1px solid #000;">
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Vessel</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">PI</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">RI</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">Percentile / Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Umbilical Artery</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.80</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.50</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Middle Cerebral Artery (MCA)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">1.61</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.79</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Uterine Artery (Right)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.77</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.52</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Uterine Artery (Left)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.62</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.44</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Cerebroplacental Ratio (CPR):</strong> 2.0 (Normal &gt; 1.08)<br/>Ductus venosus shows normal forward flow with positive A wave. Umbilical vein shows normal non-pulsatile flow.</p>
+      <p style="font-size: 0.9em; margin-top: 14px; color: #333;">(It must be noted that detailed fetal anatomy may not always be visible due to technical difficulties related to fetal position, amniotic fluid volume, fetal movement and abdominal wall thickness. Therefore, all fetal anomalies may not necessarily be detected at every examination).</p>
+      <p style="font-size: 0.9em; font-weight: bold; color: #111;">I, Dr. SHRUTI KUCHARIYA declare that while conducting USG on MRS. I have neither detected nor disclosed the sex of her fetus to anybody in any manner.</p>
+    `,
+    defaultImpression: 'Single live intrauterine fetus of about   weeks  days (± 2 week) of gestational age. COLOR DOPPLER OBSTETRICS INDICES ARE NORMAL.',
+    defaultRecommendations: 'Follow-up growth and Doppler scan as clinically advised.'
   },
   {
     id: "tpl-usg-ovulation-study-folicular-study",
@@ -1195,6 +1468,15 @@ export function findTemplateForTest(options: TemplateLookupOptions): ClinicalTem
   }
 
   // 4. Obstetric Ultrasound & Specialized Antenatal Scans
+  if (/(\btwin.*obs|obs.*twin|twin.*growth|twin.*doppler|twins)/i.test(name)) {
+    if (/(\bdoppler\b)/i.test(name)) {
+      const twinDoppler = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-twins-obst-doppler');
+      if (twinDoppler) return twinDoppler;
+    }
+    const twinTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-twing-obst-growth-scan');
+    if (twinTpl) return twinTpl;
+  }
+
   if (/(\banomaly\b|target\s*scan|level\s*2|level\s*ii|malformation|fetal\s*echo)/i.test(name)) {
     const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-ap-obs-anomaly-scan');
     if (tpl) return tpl;
@@ -1210,13 +1492,13 @@ export function findTemplateForTest(options: TemplateLookupOptions): ClinicalTem
     if (tpl) return tpl;
   }
 
-  if (/(\bgrowth\s*scan\b|obstetric\s*growth|fetal\s*growth|fetal\s*biometry)/i.test(name)) {
-    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-obst-growth-scan');
+  if (/(\bobs.*doppler\b|obstetric\s*doppler|umbilical\s*doppler)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-obst-doppler');
     if (tpl) return tpl;
   }
 
-  if (/(\bobs.*doppler\b|obstetric\s*doppler|umbilical\s*doppler)/i.test(name)) {
-    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-obst-doppler');
+  if (/(\bgrowth\s*scan\b|obstetric\s*growth|fetal\s*growth|fetal\s*biometry|obstetric|obstetrics|\bobs\b|antenatal|anc\b|pregnancy|gravid|fetal)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-obst-growth-scan');
     if (tpl) return tpl;
   }
 

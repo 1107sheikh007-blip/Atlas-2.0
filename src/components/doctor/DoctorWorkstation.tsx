@@ -128,6 +128,7 @@ export const DoctorWorkstation: React.FC = () => {
   const [templateSearchQuery, setTemplateSearchQuery] = useState('');
   const [templateCategoryFilter, setTemplateCategoryFilter] = useState<'ALL' | 'Pathology' | 'Radiology' | 'Cardiology'>('ALL');
   const [isTemplatePickerOpen, setIsTemplatePickerOpen] = useState(false);
+  const [isTableMenuOpen, setIsTableMenuOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('atlas_editor_font_size', String(editorFontSize));
@@ -400,6 +401,215 @@ export const DoctorWorkstation: React.FC = () => {
         }));
       }
     }
+  };
+
+  const insertHtmlAtCursor = (html: string) => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) {
+      if (editorRef.current) {
+        editorRef.current.innerHTML += html;
+        const newHtml = editorRef.current.innerHTML;
+        setEditorContent(newHtml);
+        editorContentRef.current = newHtml;
+        if (selectedOrderId && selectedTestId) {
+          localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
+            findingsHtml: newHtml,
+            impression,
+            recommendations,
+            timestamp: Date.now()
+          }));
+        }
+      }
+      return;
+    }
+    document.execCommand('insertHTML', false, html);
+    if (editorRef.current) {
+      const newHtml = editorRef.current.innerHTML;
+      setEditorContent(newHtml);
+      editorContentRef.current = newHtml;
+      if (selectedOrderId && selectedTestId) {
+        localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
+          findingsHtml: newHtml,
+          impression,
+          recommendations,
+          timestamp: Date.now()
+        }));
+      }
+    }
+  };
+
+  const insertGrowthTable = () => {
+    const html = `
+      <p><strong>The fetal growth parameters are as follows :</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold; width: 25%;">BPD</td>
+            <td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">&nbsp; cm</td>
+            <td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">&nbsp; wks</td>
+            <td style="border: 1px solid #000; padding: 6px 12px; width: 25%;">&nbsp; days</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">HC</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; cm</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; wks</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; days</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">AC</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; cm</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; wks</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; days</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #000; padding: 6px 12px; font-weight: bold;">FL</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; cm</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; wks</td>
+            <td style="border: 1px solid #000; padding: 6px 12px;">&nbsp; days</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><strong>MGA :</strong> &nbsp;&nbsp;&nbsp; wks &nbsp;&nbsp; day.<br/><strong>Estimated fetal weight is</strong> &nbsp;&nbsp;&nbsp; gm&plusmn; 10% gms.<br/><strong>EDD BY USG:-</strong> </p>
+    `;
+    insertHtmlAtCursor(html);
+    setIsTableMenuOpen(false);
+  };
+
+  const insertGenericTable = (cols = 4, rows = 3) => {
+    let headerRow = '<tr style="background-color: #f1f5f9; border-bottom: 1px solid #000;">';
+    for (let c = 0; c < cols; c++) {
+      headerRow += `<th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Column ${c + 1}</th>`;
+    }
+    headerRow += '</tr>';
+
+    let bodyRows = '';
+    for (let r = 0; r < rows; r++) {
+      bodyRows += '<tr>';
+      for (let c = 0; c < cols; c++) {
+        bodyRows += '<td style="border: 1px solid #000; padding: 6px 10px;">&nbsp;</td>';
+      }
+      bodyRows += '</tr>';
+    }
+
+    const html = `<table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;"><thead>${headerRow}</thead><tbody>${bodyRows}</tbody></table><p></p>`;
+    insertHtmlAtCursor(html);
+    setIsTableMenuOpen(false);
+  };
+
+  const insertDopplerTable = () => {
+    const html = `
+      <p><strong>Vascular Doppler Evaluation:</strong></p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; border: 1px solid #000;">
+        <thead>
+          <tr style="background-color: #f1f5f9; border-bottom: 1px solid #000;">
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: left; font-weight: bold;">Vessel</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">PI</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">RI</th>
+            <th style="border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold;">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Umbilical Artery</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.80</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.50</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Middle Cerebral Artery</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">1.61</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.79</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Uterine Artery (Rt)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.77</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.52</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal</td></tr>
+          <tr><td style="border: 1px solid #000; padding: 6px 10px; font-weight: bold;">Uterine Artery (Lt)</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.62</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">0.44</td><td style="border: 1px solid #000; padding: 6px 10px; text-align: center;">Normal</td></tr>
+        </tbody>
+      </table>
+      <p></p>
+    `;
+    insertHtmlAtCursor(html);
+    setIsTableMenuOpen(false);
+  };
+
+  const addTableRow = () => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
+    const sel = window.getSelection();
+    if (!sel || !sel.anchorNode) {
+      showToast('Click inside a table cell first to add a row.');
+      return;
+    }
+    let node: Node | null = sel.anchorNode;
+    let tr: HTMLTableRowElement | null = null;
+    let table: HTMLTableElement | null = null;
+    while (node && node !== editorRef.current) {
+      if (node.nodeName === 'TR') tr = node as HTMLTableRowElement;
+      if (node.nodeName === 'TABLE') table = node as HTMLTableElement;
+      node = node.parentNode;
+    }
+    if (table) {
+      const colCount = tr ? tr.cells.length : (table.rows[0]?.cells.length || 4);
+      const newTr = document.createElement('tr');
+      for (let i = 0; i < colCount; i++) {
+        const td = document.createElement('td');
+        td.style.border = '1px solid #000';
+        td.style.padding = '6px 10px';
+        td.innerHTML = '&nbsp;';
+        newTr.appendChild(td);
+      }
+      if (tr && tr.parentNode) {
+        tr.parentNode.insertBefore(newTr, tr.nextSibling);
+      } else {
+        const tbody = table.querySelector('tbody');
+        if (tbody) tbody.appendChild(newTr);
+        else table.appendChild(newTr);
+      }
+      if (editorRef.current) {
+        const newHtml = editorRef.current.innerHTML;
+        setEditorContent(newHtml);
+        editorContentRef.current = newHtml;
+        if (selectedOrderId && selectedTestId) {
+          localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
+            findingsHtml: newHtml,
+            impression,
+            recommendations,
+            timestamp: Date.now()
+          }));
+        }
+      }
+      showToast('Row added below.');
+    } else {
+      showToast('Click inside a table first to add a row.');
+    }
+    setIsTableMenuOpen(false);
+  };
+
+  const deleteTableRow = () => {
+    const sel = window.getSelection();
+    if (!sel || !sel.anchorNode) {
+      showToast('Click inside a table row first to delete it.');
+      return;
+    }
+    let node: Node | null = sel.anchorNode;
+    while (node && node !== editorRef.current) {
+      if (node.nodeName === 'TR') {
+        const tr = node as HTMLTableRowElement;
+        const table = tr.closest('table');
+        tr.remove();
+        if (table && table.rows.length === 0) table.remove();
+        if (editorRef.current) {
+          const newHtml = editorRef.current.innerHTML;
+          setEditorContent(newHtml);
+          editorContentRef.current = newHtml;
+          if (selectedOrderId && selectedTestId) {
+            localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
+              findingsHtml: newHtml,
+              impression,
+              recommendations,
+              timestamp: Date.now()
+            }));
+          }
+        }
+        showToast('Row deleted.');
+        break;
+      }
+      node = node.parentNode;
+    }
+    setIsTableMenuOpen(false);
   };
 
   const filteredOrders = orders.filter(ord => {
@@ -862,6 +1072,7 @@ export const DoctorWorkstation: React.FC = () => {
                     margin-bottom: 16px !important;
                     width: 100% !important;
                     border-collapse: collapse !important;
+                    border: 1px solid #000000 !important;
                   }
                   .report-editor-area ul {
                     margin-top: 8px !important;
@@ -874,7 +1085,12 @@ export const DoctorWorkstation: React.FC = () => {
                   }
                   .report-editor-area th,
                   .report-editor-area td {
-                    padding: 6px 8px !important;
+                    padding: 6px 10px !important;
+                    border: 1px solid #000000 !important;
+                  }
+                  .report-editor-area th {
+                    background-color: #f1f5f9 !important;
+                    font-weight: 700 !important;
                   }
                   .report-editor-area h3,
                   .report-editor-area h4 {
@@ -985,6 +1201,92 @@ export const DoctorWorkstation: React.FC = () => {
                   >
                     <ListOrdered className="w-4 h-4" />
                   </button>
+
+                  <div className="h-4 w-px bg-slate-300 mx-1" />
+
+                  {/* Table Insertion & Row Management Menu */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => setIsTableMenuOpen(!isTableMenuOpen)}
+                      className={`flex items-center gap-1.5 px-2 py-1 rounded font-bold cursor-pointer transition-colors ${
+                        isTableMenuOpen ? 'bg-sky-100 text-sky-800 border border-sky-300 shadow-inner' : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-300'
+                      }`}
+                      title="Insert Table or Add/Delete Rows"
+                    >
+                      <TableIcon className="w-3.5 h-3.5 text-sky-600" />
+                      <span className="text-[11px]">Table</span>
+                    </button>
+
+                    {isTableMenuOpen && (
+                      <div className="absolute left-0 top-full mt-1.5 w-64 bg-white border border-slate-300 rounded-2xl shadow-2xl z-40 p-2 space-y-1 text-slate-800 text-xs">
+                        <div className="px-2 py-0.5 text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                          Insert Pre-Formatted Table
+                        </div>
+                        <button
+                          type="button"
+                          onMouseDown={e => e.preventDefault()}
+                          onClick={insertGrowthTable}
+                          className="w-full text-left px-2.5 py-1.5 hover:bg-sky-50 hover:text-sky-800 rounded-xl flex items-center justify-between font-bold cursor-pointer transition-colors"
+                        >
+                          <span>Fetal Growth (BPD / HC / AC / FL)</span>
+                          <span className="text-[10px] bg-sky-100 text-sky-700 font-mono px-1.5 py-0.5 rounded">4x4</span>
+                        </button>
+                        <button
+                          type="button"
+                          onMouseDown={e => e.preventDefault()}
+                          onClick={insertDopplerTable}
+                          className="w-full text-left px-2.5 py-1.5 hover:bg-sky-50 hover:text-sky-800 rounded-xl flex items-center justify-between font-bold cursor-pointer transition-colors"
+                        >
+                          <span>Vascular Doppler (PI / RI)</span>
+                          <span className="text-[10px] bg-purple-100 text-purple-700 font-mono px-1.5 py-0.5 rounded">4x4</span>
+                        </button>
+                        <button
+                          type="button"
+                          onMouseDown={e => e.preventDefault()}
+                          onClick={() => insertGenericTable(4, 3)}
+                          className="w-full text-left px-2.5 py-1.5 hover:bg-slate-100 rounded-xl flex items-center justify-between cursor-pointer transition-colors"
+                        >
+                          <span>Standard 4-Column Table</span>
+                          <span className="text-[10px] text-slate-400 font-mono">4x3</span>
+                        </button>
+                        <button
+                          type="button"
+                          onMouseDown={e => e.preventDefault()}
+                          onClick={() => insertGenericTable(3, 3)}
+                          className="w-full text-left px-2.5 py-1.5 hover:bg-slate-100 rounded-xl flex items-center justify-between cursor-pointer transition-colors"
+                        >
+                          <span>Standard 3-Column Table</span>
+                          <span className="text-[10px] text-slate-400 font-mono">3x3</span>
+                        </button>
+
+                        <div className="border-t border-slate-100 my-1 pt-1.5">
+                          <div className="px-2 py-0.5 text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                            Table Row Controls
+                          </div>
+                          <div className="grid grid-cols-2 gap-1.5 px-1 pt-0.5">
+                            <button
+                              type="button"
+                              onMouseDown={e => e.preventDefault()}
+                              onClick={addTableRow}
+                              className="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl font-bold text-center cursor-pointer text-[11px] transition-colors"
+                            >
+                              + Add Row
+                            </button>
+                            <button
+                              type="button"
+                              onMouseDown={e => e.preventDefault()}
+                              onClick={deleteTableRow}
+                              className="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 rounded-xl font-bold text-center cursor-pointer text-[11px] transition-colors"
+                            >
+                              - Delete Row
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
                   <div className="h-4 w-px bg-slate-300 mx-1" />
 

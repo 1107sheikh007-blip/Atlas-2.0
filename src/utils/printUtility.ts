@@ -166,6 +166,9 @@ export const printElement = (
           .report-content-body table {
             margin-top: 12px !important;
             margin-bottom: 16px !important;
+            width: 100% !important;
+            border-collapse: collapse !important;
+            border: 1px solid #000000 !important;
             page-break-inside: auto !important;
           }
           .report-content-body tr {
@@ -173,7 +176,12 @@ export const printElement = (
           }
           .report-content-body th,
           .report-content-body td {
-            padding: 6px 8px !important;
+            padding: 6px 10px !important;
+            border: 1px solid #000000 !important;
+          }
+          .report-content-body th {
+            background-color: #f1f5f9 !important;
+            font-weight: 700 !important;
           }
           .report-content-body h3,
           .report-content-body h4 {
