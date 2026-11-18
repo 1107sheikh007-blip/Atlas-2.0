@@ -33,7 +33,7 @@ import {
   Droplets
 } from 'lucide-react';
 import { useDiagnostic } from '../../context/DiagnosticContext';
-import { CLINICAL_TEMPLATES } from '../../data/templates';
+import { CLINICAL_TEMPLATES, findTemplateForTest } from '../../data/templates';
 import { DiagnosticOrder, DiagnosticReport, DiagnosticTestItem } from '../../types';
 import { ReportPrintView } from '../common/ReportPrintView';
 import { PdfCropTranscribeModal } from '../common/PdfCropTranscribeModal';
@@ -141,13 +141,23 @@ export const DoctorWorkstation: React.FC = () => {
       setSelectedDoctorSpecialty(existingRep.doctorSpecialty);
       setSelectedDoctorRegNo(existingRep.doctorRegistrationNo);
     } else {
-      const test = tests.find(t => t.id === selectedTestId);
-      const matchedTpl = CLINICAL_TEMPLATES.find(tpl => tpl.id === test?.defaultTemplate) || CLINICAL_TEMPLATES[0];
+      // Find active test item from current order or test catalog
+      const activeTest = activeOrder?.tests.find(t => t.id === selectedTestId) || activeOrder?.tests[0];
+      const catalogTest = tests.find(t => t.id === selectedTestId || (t.name && activeTest?.name && t.name.toLowerCase() === activeTest.name.toLowerCase()));
+      
+      const matchedTpl = findTemplateForTest({
+        testName: activeTest?.name || catalogTest?.name || '',
+        category: activeTest?.category || catalogTest?.category || (isLabTech ? 'Pathology' : 'Radiology'),
+        department: activeTest?.department || catalogTest?.department || '',
+        gender: activeOrder?.patient?.gender || '',
+        defaultTemplateId: catalogTest?.defaultTemplate
+      });
+
       setEditorContent(matchedTpl.htmlContent);
       setImpression(matchedTpl.defaultImpression);
       setRecommendations(matchedTpl.defaultRecommendations);
     }
-  }, [selectedOrderId, selectedTestId, reports, tests]);
+  }, [selectedOrderId, selectedTestId, reports, tests, activeOrder, isLabTech]);
 
   const handleApplyTemplate = (templateId: string) => {
     const tpl = CLINICAL_TEMPLATES.find(t => t.id === templateId);
@@ -485,25 +495,6 @@ export const DoctorWorkstation: React.FC = () => {
                             </span>
                           ))}
                         </div>
-                        {isLabTech && (
-                          ord.sampleCollected ? (
-                            <span className="shrink-0 flex items-center gap-0.5 text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">
-                              <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" /> Sample Recv
-                            </span>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                markSampleCollected(ord.id, currentStaff?.name || 'Khushi Singh');
-                                showToast(`Sample collected for Order #${ord.invoiceNumber || ord.id}`);
-                              }}
-                              className="shrink-0 px-2 py-0.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[9px] font-bold shadow-xs cursor-pointer transition-all active:scale-95"
-                            >
-                              Collect Sample
-                            </button>
-                          )
-                        )}
                       </div>
                     </div>
                   );
@@ -532,22 +523,9 @@ export const DoctorWorkstation: React.FC = () => {
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Authorized
                       </span>
                     )}
-                    {activeOrder.sampleCollected ? (
-                      <span className="flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Sample Collected
-                      </span>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          markSampleCollected(activeOrder.id, currentStaff?.name || 'Khushi Singh');
-                          showToast(`Sample marked collected for ${activeOrder.patient.name}`);
-                        }}
-                        className="flex items-center gap-1 text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-xs cursor-pointer transition-all active:scale-95"
-                      >
-                        <Droplets className="w-3 h-3" /> Collect Sample Now
-                      </button>
-                    )}
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-800 border border-sky-200 font-bold">
+                      {activeOrder.status.replace('_', ' ')}
+                    </span>
                   </div>
                   <p className="text-xs text-slate-500 mt-1">
                     Ref: <strong>{activeOrder.referringDoctorName}</strong> • Barcode: <strong className="font-mono text-sky-700">{activeOrder.barcode}</strong>

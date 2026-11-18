@@ -19,7 +19,7 @@ export const printElement = (
   options: PrintOptions | string = {}
 ) => {
   const opts: PrintOptions = typeof options === 'string' ? { title: options } : options;
-  const title = opts.title || 'Atlas Diagnostics Center Document';
+  const title = opts.title !== undefined ? opts.title : 'Atlas Diagnostics Center Document';
   const pageSize = opts.pageSize || 'A4 portrait';
   const pageMargin = opts.pageMargin || '10mm 12mm';
 
@@ -125,6 +125,10 @@ export const printElement = (
             border: none !important;
             zoom: 0.90 !important;
             transform-origin: top center !important;
+          }
+          #printable-report,
+          #printable-report * {
+            zoom: 1 !important;
           }
           table {
             border-collapse: collapse !important;

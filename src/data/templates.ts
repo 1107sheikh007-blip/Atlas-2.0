@@ -616,4 +616,630 @@ export const CLINICAL_TEMPLATES: ClinicalTemplate[] = [
     defaultImpression: "Normal USG trans fontanelle study.",
     defaultRecommendations: "ised :- Clinical correlation"
   },
+  {
+    id: 'tpl-urine-routine',
+    name: 'Urine Routine & Microscopic Examination (Urinalysis)',
+    category: 'Pathology',
+    department: 'Clinical Pathology',
+    htmlContent: `
+      <h3>CLINICAL PATHOLOGY - URINE ROUTINE & MICROSCOPY</h3>
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left; margin-bottom: 12px;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th colspan="4" style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #1e293b;">PHYSICAL & CHEMICAL EXAMINATION</th>
+          </tr>
+          <tr style="background-color: #f8fafc; font-size: 11px;">
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Parameter</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Observed Value</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Biological Reference</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Quantity</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">25</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">mL</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Visual</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Colour</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">Pale Yellow</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Pale Yellow / Straw</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Visual</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Transparency / Appearance</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">Clear</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Clear</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Visual</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Specific Gravity</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">1.020</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">1.010 - 1.030</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Refractometer</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Reaction (pH)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">6.5 (Slightly Acidic)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">4.6 - 8.0</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Strip Indicator</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Urine Protein (Albumin)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #16a34a;">NIL</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">NIL (Negative)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Colorimetric Strip</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Urine Sugar (Glucose)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #16a34a;">NIL</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">NIL (Negative)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Enzymatic / Strip</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Ketone Bodies (Acetone)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">Negative</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Negative</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Legal's Strip</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Bile Salts & Bile Pigments</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">Negative</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Negative</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Hay's / Fouchet's</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Urobilinogen</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">Normal (0.2 mg/dL)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Normal (&lt; 1.0 mg/dL)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Ehrlich's Reaction</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th colspan="4" style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #1e293b;">MICROSCOPIC EXAMINATION (Centrifuged Sediment)</th>
+          </tr>
+          <tr style="background-color: #f8fafc; font-size: 11px;">
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Element</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Observed</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Reference Interval</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Pus Cells (Leucocytes)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">1 - 2</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">0 - 5</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">/ HPF</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Red Blood Cells (RBCs)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">NIL</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">0 - 2</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">/ HPF</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Epithelial Cells</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">2 - 4</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Occasional (0 - 5)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">/ HPF</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Casts</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">Not Seen</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Absent</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">/ LPF</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Crystals</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">Not Seen</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Absent</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">/ HPF</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Bacteria / Yeast</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">Absent</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Absent</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">/ HPF</td>
+          </tr>
+        </tbody>
+      </table>
+    `,
+    defaultImpression: 'Routine and microscopic examination of urine is within physiological biological reference intervals. No active urinary sediment or signs of acute UTI.',
+    defaultRecommendations: 'Please correlate with clinical presentation.'
+  },
+  {
+    id: 'tpl-kft-biochem',
+    name: 'Kidney Function Test (KFT / Renal Profile)',
+    category: 'Pathology',
+    department: 'Biochemistry',
+    htmlContent: `
+      <h3>BIOCHEMISTRY REPORT - KIDNEY FUNCTION TEST (KFT / RFT)</h3>
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Test Parameter</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Observed Value</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Unit</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Biological Reference Interval</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Blood Urea</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">24.0</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">15.0 - 45.0</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Serum Creatinine</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">0.95</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">0.70 - 1.30 (Male) / 0.50 - 1.10 (Female)</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Blood Urea Nitrogen (BUN)</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold;">11.2</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">7.0 - 20.0</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">BUN / Creatinine Ratio</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold;">11.8</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Ratio</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">10.0 - 20.0</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Serum Uric Acid</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">5.1</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">3.5 - 7.2 (Male) / 2.6 - 6.0 (Female)</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Serum Calcium (Total)</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold;">9.4</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">8.8 - 10.6</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Serum Sodium (Na+)</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold;">141.0</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mEq/L</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">136.0 - 145.0</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Serum Potassium (K+)</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold;">4.3</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mEq/L</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">3.5 - 5.1</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Serum Chloride (Cl-)</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold;">102.0</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mEq/L</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">98.0 - 107.0</td>
+          </tr>
+        </tbody>
+      </table>
+    `,
+    defaultImpression: 'Renal parameters and serum electrolytes are within normal physiological reference intervals.',
+    defaultRecommendations: 'Clinical correlation recommended.'
+  },
+  {
+    id: 'tpl-thyroid-profile',
+    name: 'Thyroid Function Test (Total T3, Total T4, TSH)',
+    category: 'Pathology',
+    department: 'Biochemistry / Endocrinology',
+    htmlContent: `
+      <h3>ENDOCRINOLOGY - THYROID PROFILE (CLIA METHOD)</h3>
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Investigation Parameter</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Observed Value</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Unit</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Reference Biological Interval</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Total Triiodothyronine (T3)</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">1.20</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">ng/mL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">0.80 - 2.00</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Total Thyroxine (T4)</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">8.40</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">µg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">5.10 - 14.10</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Thyroid Stimulating Hormone (TSH)</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">2.45</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">µIU/mL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">0.35 - 4.94 (Adults)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size: 11px; color: #64748b; margin-top: 8px;">Method: Chemiluminescence Immunoassay (CLIA). TSH levels are subject to circadian rhythm.</p>
+    `,
+    defaultImpression: 'Euthyroid status. Serum T3, T4, and TSH are within reference biological limits.',
+    defaultRecommendations: 'Correlate with clinical findings and history.'
+  },
+  {
+    id: 'tpl-blood-sugar-panel',
+    name: 'Blood Glucose & Diabetic Screen (FBS, PPBS, HbA1c)',
+    category: 'Pathology',
+    department: 'Biochemistry',
+    htmlContent: `
+      <h3>BIOCHEMISTRY - BLOOD GLUCOSE & DIABETIC PROFILE</h3>
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Investigation Parameter</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Observed Value</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Unit</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Reference Interval / ADA Criteria</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Fasting Blood Sugar (FBS)</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">92.0</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">70.0 - 99.0 (Normal)<br/>100.0 - 125.0 (Pre-Diabetes)<br/>&gt; 126.0 (Diabetes)</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Post Prandial Blood Sugar (PPBS)</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">124.0</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">&lt; 140.0 (Normal)<br/>140.0 - 199.0 (Impaired Tolerance)<br/>&gt; 200.0 (Diabetes)</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>HbA1c (Glycated Hemoglobin)</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">5.4</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">%</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">&lt; 5.7% (Non-Diabetic)<br/>5.7 - 6.4% (Pre-Diabetes)<br/>&gt; 6.5% (Diabetes)</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Estimated Average Glucose (eAG)</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold;">108</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">mg/dL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Calculated from HbA1c</td>
+          </tr>
+        </tbody>
+      </table>
+    `,
+    defaultImpression: 'Normoglycemic glycemic status. HbA1c within normal physiological range indicating optimal glycemic control over past 3 months.',
+    defaultRecommendations: 'Maintain healthy lifestyle and balanced dietary regimen.'
+  },
+  {
+    id: 'tpl-vitamin-profile',
+    name: 'Vitamin Profile (25-OH Vitamin D3 & Vitamin B12)',
+    category: 'Pathology',
+    department: 'Biochemistry / Immunoassay',
+    htmlContent: `
+      <h3>IMMUNOASSAY - 25-OH VITAMIN D & VITAMIN B12</h3>
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Investigation</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Observed Value</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Unit</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Biological Reference Interval</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>25-OH Vitamin D (Total)</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">32.5</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">ng/mL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">&lt; 20.0 : Deficient<br/>20.0 - 30.0 : Insufficient<br/>30.0 - 100.0 : Sufficient<br/>&gt; 100.0 : Toxicity Risk</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Vitamin B12 (Cyanocobalamin)</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">385.0</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">pg/mL</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">211.0 - 911.0 (Normal)<br/>&lt; 200.0 : Deficient</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size: 11px; color: #64748b; margin-top: 8px;">Method: Fully Automated Chemiluminescent Microparticle Immunoassay (CMIA).</p>
+    `,
+    defaultImpression: 'Serum 25-OH Vitamin D and Vitamin B12 are within sufficient physiological reference intervals.',
+    defaultRecommendations: 'Routine dietary intake and annual clinical surveillance advised.'
+  },
+  {
+    id: 'tpl-serology-widal',
+    name: 'Serology Screen (Widal / Typhoid / Dengue / CRP)',
+    category: 'Pathology',
+    department: 'Microbiology & Serology',
+    htmlContent: `
+      <h3>SEROLOGY - FEBRILE AGGLUTINATION & INFECTION SCREEN</h3>
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left; margin-bottom: 12px;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th colspan="3" style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold;">WIDAL SLIDE / TUBE AGGLUTINATION TEST</th>
+          </tr>
+          <tr style="background-color: #f8fafc; font-size: 11px;">
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Antigen</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Observed Titer</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Significance Cutoff</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Salmonella Typhi 'O'</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">&lt; 1:20 (Negative)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Titer &gt; 1:80 considered clinically significant</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Salmonella Typhi 'H'</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">&lt; 1:20 (Negative)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Titer &gt; 1:160 considered clinically significant</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Salmonella Paratyphi 'AH'</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">&lt; 1:20 (Negative)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Titer &gt; 1:80 considered clinically significant</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Salmonella Paratyphi 'BH'</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold;">&lt; 1:20 (Negative)</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">Titer &gt; 1:80 considered clinically significant</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Parameter</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Observed</th>
+            <th style="padding: 6px 8px; border: 1px solid #cbd5e1;">Reference Interval</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;"><strong>C-Reactive Protein (CRP, Quantitative)</strong></td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">2.1 mg/L</td>
+            <td style="padding: 5px 8px; border: 1px solid #cbd5e1;">&lt; 6.0 mg/L (Normal)</td>
+          </tr>
+        </tbody>
+      </table>
+    `,
+    defaultImpression: 'Widal test negative. No significant agglutination observed. C-Reactive Protein (CRP) within normal physiological baseline.',
+    defaultRecommendations: 'Clinical correlation recommended. Repeat testing if fever persists beyond 7 days.'
+  },
+  {
+    id: 'tpl-pathology-general',
+    name: 'General Pathology / Biochemistry Report Table',
+    category: 'Pathology',
+    department: 'Pathology & Laboratory Medicine',
+    htmlContent: `
+      <h3>DIAGNOSTIC PATHOLOGY LABORATORY INVESTIGATION</h3>
+      <table style="width: 100%; border: 1px solid #cbd5e1; text-align: left;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Investigation / Parameter</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Observed Value</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Unit</th>
+            <th style="padding: 8px; border: 1px solid #cbd5e1;">Biological Reference Interval</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;"><strong>Primary Diagnostic Marker</strong></td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #0284c7;">Normal / Negative</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">-</td>
+            <td style="padding: 6px 8px; border: 1px solid #cbd5e1;">Reference Norm</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size: 11px; color: #64748b; margin-top: 10px;">Sample Type: Whole Blood / Serum / Plasma. Quality control verified.</p>
+    `,
+    defaultImpression: 'Laboratory investigation conducted and authorized. Results within biological reference parameters.',
+    defaultRecommendations: 'Please correlate with clinical presentation and history.'
+  }
 ];
+
+export interface TemplateLookupOptions {
+  testName?: string;
+  category?: string;
+  department?: string;
+  gender?: string;
+  defaultTemplateId?: string;
+}
+
+/**
+ * Intelligently matches a diagnostic test to its specialized clinical report template.
+ * Guarantees that Pathology tests (CBC, Urine, Blood, Biochemistry) never accidentally open Sonography.
+ */
+export function findTemplateForTest(options: TemplateLookupOptions): ClinicalTemplate {
+  // 1. Explicit template ID match if configured on test
+  if (options.defaultTemplateId) {
+    const directMatch = CLINICAL_TEMPLATES.find(t => t.id === options.defaultTemplateId);
+    if (directMatch) return directMatch;
+  }
+
+  const name = (options.testName || '').trim().toLowerCase();
+  const cat = (options.category || '').trim().toLowerCase();
+  const dept = (options.department || '').trim().toLowerCase();
+  const gender = (options.gender || '').trim().toLowerCase();
+
+  // 2. Pathology & Clinical Biochemistry Specific Mappings
+  if (/(\bcbc\b|hemogram|haemogram|blood\s*count|complete\s*blood|wbc|tlc|dlc|esr|platelet)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-cbc-pathology');
+    if (tpl) return tpl;
+  }
+
+  if (/(\blipid\b|cholesterol|triglyceride|hdl|ldl|vldl)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-lipid-profile');
+    if (tpl) return tpl;
+  }
+
+  if (/(\blft\b|liver\s*function|bilirubin|sgot|sgpt|ast|alt|alkaline\s*phosphatase|ggt)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-lft-biochem');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bkft\b|\brft\b|kidney\s*function|renal\s*function|creatinine|urea|uric\s*acid|bun|electrolytes)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-kft-biochem');
+    if (tpl) return tpl;
+  }
+
+  if (/(\burine\b|urinalysis|urine\s*r\/m|urine\s*routine|urine\s*re|urine\s*me)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-urine-routine');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bthyroid\b|\btsh\b|\bt3\b|\bt4\b|\btft\b|\bft3\b|\bft4\b)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-thyroid-profile');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bglucose\b|\bsugar\b|\bfbs\b|\bppbs\b|\brbs\b|\bhba1c\b|glycated|diabetes)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-blood-sugar-panel');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bvitamin\b|vit-d|25-oh|b12|cobalamin|cholecalciferol)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-vitamin-profile');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bwidal\b|typhoid|dengue|ns1|malaria|\bmp\b|\bcrp\b|serology)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-serology-widal');
+    if (tpl) return tpl;
+  }
+
+  // 3. Cardiology Mappings
+  if (/(\becho\b|echocardiography|2d\s*echo|color\s*doppler\s*eco|eco)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-echo-normal-report');
+    if (tpl) return tpl;
+  }
+
+  // 4. Obstetric Ultrasound & Specialized Antenatal Scans
+  if (/(\banomaly\b|target\s*scan|level\s*2|level\s*ii|malformation|fetal\s*echo)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-ap-obs-anomaly-scan');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bnt\s*scan\b|nt\/nb|nuchal)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-nt-scan');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bearly\s*obs|early\s*obstetric|crl|g\s*sac|gestational\s*sac)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-early-obs-crl');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bgrowth\s*scan\b|obstetric\s*growth|fetal\s*growth|fetal\s*biometry)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-obst-growth-scan');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bobs.*doppler\b|obstetric\s*doppler|umbilical\s*doppler)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-obst-doppler');
+    if (tpl) return tpl;
+  }
+
+  // 5. Vascular Color Doppler Scans
+  if (/(\bcarotid\b)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-carotid-doppler');
+    if (tpl) return tpl;
+  }
+
+  if (/(\blower\s*limb|dvt|venous\s*doppler)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-color-doppler-lower-limb-venous-system');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bupper\s*limb)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-upper-limb-arterial-venous-system');
+    if (tpl) return tpl;
+  }
+
+  // 6. Specialized Organ Scans
+  if (/(\bbreast\b|mammograph|sonomammo)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-breast-memography');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bneck\b|thyroid\s*usg|parotid|submandibular)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-neck');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bscrot|testis|testicular)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-scrotal-normal');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bpelvic\b|\bpelvis\b|\btvs\b|uterus|adnexa|ovary|ovarian)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-pelvic');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bovulation\b|\bfollic|folliculometry)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-ovulation-study-folicular-study');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bkub\b|kidney\s*ureter\s*bladder)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-kub-male');
+    if (tpl) return tpl;
+  }
+
+  // 7. Radiography & Cross-Sectional Imaging
+  if (/(\bx-ray\b|\bxray\b|chest\s*pa|chest\s*ap|radiograph)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-xray-chest');
+    if (tpl) return tpl;
+  }
+
+  if (/(\bmri\b|brain\s*mri)/i.test(name)) {
+    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-mri-brain');
+    if (tpl) return tpl;
+  }
+
+  // 8. Sonography Whole Abdomen (Gender Aware)
+  if (/(\babdomen\b|\babdo\b|sonography|usg|ultrasound)/i.test(name)) {
+    if (gender.includes('female')) {
+      const femaleTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-whole-abdomen-female-1');
+      if (femaleTpl) return femaleTpl;
+    }
+    if (gender.includes('male')) {
+      const maleTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-wholw-abdomen-male');
+      if (maleTpl) return maleTpl;
+    }
+    const generalTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-abdomen');
+    if (generalTpl) return generalTpl;
+  }
+
+  // 9. Department/Modality Fallback (Never cross-contaminate Pathology with Sonography!)
+  if (cat.includes('path') || dept.includes('path') || dept.includes('hema') || dept.includes('bio') || dept.includes('micro') || cat.includes('lab')) {
+    const pathTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-pathology-general') || CLINICAL_TEMPLATES.find(t => t.id === 'tpl-cbc-pathology');
+    if (pathTpl) return pathTpl;
+  }
+
+  if (cat.includes('cardio') || dept.includes('cardio') || dept.includes('echo')) {
+    const echoTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-echo-normal-report');
+    if (echoTpl) return echoTpl;
+  }
+
+  if (cat.includes('radio') || dept.includes('radio') || dept.includes('usg') || dept.includes('sono') || dept.includes('x-ray')) {
+    const findingsTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-findings') || CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-abdomen');
+    if (findingsTpl) return findingsTpl;
+  }
+
+  // Final fallback
+  return CLINICAL_TEMPLATES[0];
+}
