@@ -38,11 +38,12 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
   // Bottom margin clearance for pre-printed footer in mm (Default: 28mm)
   const bottomMarginMm = 28;
 
-  // Report Text Font Size in px (Default: 14px)
+  // Report Text Font Size in px (Default: 20px)
   const [reportFontSize, setReportFontSize] = useState<number>(() => {
     const saved = localStorage.getItem('atlas_report_font_size');
     const parsed = Number(saved);
-    return !isNaN(parsed) && parsed >= 11 && parsed <= 20 ? parsed : 14;
+    // Default to 20px. Upgrade previous default of 14px to 20px.
+    return !isNaN(parsed) && parsed !== 14 && parsed >= 12 && parsed <= 32 ? parsed : 20;
   });
 
   useEffect(() => {
@@ -278,7 +279,7 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
               <span className="text-xs text-slate-500 font-bold">Text Size:</span>
               <button
                 type="button"
-                onClick={() => setReportFontSize(prev => Math.max(11, prev - 1))}
+                onClick={() => setReportFontSize(prev => Math.max(12, prev - 1))}
                 className="px-1.5 py-0.5 hover:bg-white rounded text-xs font-black text-slate-700 cursor-pointer"
                 title="Decrease font size"
               >
@@ -287,23 +288,23 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
               <span className="text-xs font-mono font-bold text-sky-700 px-1">{reportFontSize}px</span>
               <button
                 type="button"
-                onClick={() => setReportFontSize(prev => Math.min(20, prev + 1))}
+                onClick={() => setReportFontSize(prev => Math.min(28, prev + 1))}
                 className="px-1.5 py-0.5 hover:bg-white rounded text-xs font-black text-slate-700 cursor-pointer"
                 title="Increase font size"
               >
                 +
               </button>
               <div className="flex gap-1 ml-1">
-                {[12, 14, 16].map(px => (
+                {[16, 18, 20, 24].map(px => (
                   <button
                     key={px}
                     type="button"
                     onClick={() => setReportFontSize(px)}
                     className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition-colors cursor-pointer ${
-                      reportFontSize === px ? 'bg-sky-100 text-sky-800 border border-sky-300' : 'bg-white text-slate-600 border border-slate-200'
+                      reportFontSize === px ? 'bg-sky-100 text-sky-800 border border-sky-300 font-black' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    {px === 14 ? '14px (Std)' : `${px}px`}
+                    {px === 20 ? '20px (Default)' : `${px}px`}
                   </button>
                 ))}
               </div>
@@ -464,7 +465,7 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
 
             {/* 5. Impression */}
             {report.impression && (
-              <div className="mt-4 text-xs">
+              <div className="mt-4" style={{ fontSize: `${Math.max(15, Math.round(reportFontSize * 0.95))}px` }}>
                 <span className="font-black text-black uppercase tracking-wide block mb-1">IMPRESSION:</span>
                 <p className="text-black font-bold leading-relaxed whitespace-pre-line pl-2 border-l-2 border-black">
                   {report.impression}
@@ -474,7 +475,7 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
 
             {/* 6. Clinical Advice / Recommendations */}
             {report.recommendations && (
-              <div className="mt-3 text-xs">
+              <div className="mt-3" style={{ fontSize: `${Math.max(14, Math.round(reportFontSize * 0.9))}px` }}>
                 <span className="font-black text-black uppercase tracking-wide block mb-1">CLINICAL ADVICE / RECOMMENDATIONS:</span>
                 <p className="text-black font-medium leading-relaxed whitespace-pre-line pl-2">
                   {report.recommendations}

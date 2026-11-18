@@ -110,7 +110,9 @@ export const DoctorWorkstation: React.FC = () => {
   const [selectedDoctorRegNo, setSelectedDoctorRegNo] = useState<string>(AVAILABLE_DOCTORS[0].regNo);
   const [editorFontSize, setEditorFontSize] = useState<number>(() => {
     const s = localStorage.getItem('atlas_editor_font_size');
-    return s ? Number(s) : 14;
+    const n = s ? Number(s) : NaN;
+    // Default to 20px. Upgrade previous default of 14px to 20px.
+    return (!isNaN(n) && n !== 14 && n >= 12 && n <= 32) ? n : 20;
   });
 
   const editorRef = useRef<HTMLDivElement>(null);
@@ -929,12 +931,29 @@ export const DoctorWorkstation: React.FC = () => {
                     <button
                       type="button"
                       onMouseDown={e => e.preventDefault()}
-                      onClick={() => setEditorFontSize(prev => Math.min(22, prev + 1))}
+                      onClick={() => setEditorFontSize(prev => Math.min(28, prev + 1))}
                       className="px-1.5 py-0.5 hover:bg-slate-100 rounded text-xs font-black text-slate-700 cursor-pointer"
                       title="Increase font size"
                     >
                       +
                     </button>
+                  </div>
+
+                  {/* Font Size Presets */}
+                  <div className="flex items-center gap-1">
+                    {[16, 18, 20, 24].map(px => (
+                      <button
+                        key={px}
+                        type="button"
+                        onMouseDown={e => e.preventDefault()}
+                        onClick={() => setEditorFontSize(px)}
+                        className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                          editorFontSize === px ? 'bg-sky-100 text-sky-800 border border-sky-300 font-black' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                        }`}
+                      >
+                        {px === 20 ? '20px (Default)' : `${px}px`}
+                      </button>
+                    ))}
                   </div>
 
                   <div className="h-4 w-px bg-slate-300 mx-1" />
@@ -1050,7 +1069,7 @@ export const DoctorWorkstation: React.FC = () => {
                     value={impression}
                     onChange={e => setImpression(e.target.value)}
                     placeholder="E.g., Normal study / No acute pathology..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white"
                   />
                 </div>
 
@@ -1063,7 +1082,7 @@ export const DoctorWorkstation: React.FC = () => {
                     value={recommendations}
                     onChange={e => setRecommendations(e.target.value)}
                     placeholder="E.g., Correlate clinically..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white"
                   />
                 </div>
               </div>
