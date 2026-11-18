@@ -119,6 +119,13 @@ export const DoctorWorkstation: React.FC = () => {
   const loadedReportKeyRef = useRef<string>('');
   const editorContentRef = useRef<string>('');
 
+  const setEditorRef = useCallback((node: HTMLDivElement | null) => {
+    editorRef.current = node;
+    if (node && editorContentRef.current && (!node.innerHTML || node.innerHTML === '<br>')) {
+      node.innerHTML = editorContentRef.current;
+    }
+  }, []);
+
   const [previewReport, setPreviewReport] = useState<DiagnosticReport | null>(null);
   const [isSimulatingAnalyzer, setIsSimulatingAnalyzer] = useState(false);
   const [isPdfCropModalOpen, setIsPdfCropModalOpen] = useState(false);
@@ -236,8 +243,16 @@ export const DoctorWorkstation: React.FC = () => {
     }
   }, [selectedOrderId, selectedTestId, loadOrderAndTestReport]);
 
+  // Synchronize editor innerHTML whenever order or test switches
+  useEffect(() => {
+    if (editorRef.current && editorContentRef.current) {
+      if (editorRef.current.innerHTML !== editorContentRef.current) {
+        editorRef.current.innerHTML = editorContentRef.current;
+      }
+    }
+  }, [selectedOrderId, selectedTestId]);
+
   const handleEditorInput = (html: string) => {
-    setEditorContent(html);
     editorContentRef.current = html;
     if (selectedOrderId && selectedTestId) {
       localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
@@ -246,6 +261,22 @@ export const DoctorWorkstation: React.FC = () => {
         recommendations,
         timestamp: Date.now()
       }));
+    }
+  };
+
+  const handleEditorBlur = () => {
+    if (editorRef.current) {
+      const html = editorRef.current.innerHTML;
+      editorContentRef.current = html;
+      setEditorContent(html);
+      if (selectedOrderId && selectedTestId) {
+        localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
+          findingsHtml: html,
+          impression,
+          recommendations,
+          timestamp: Date.now()
+        }));
+      }
     }
   };
 
@@ -1348,12 +1379,11 @@ export const DoctorWorkstation: React.FC = () => {
 
                 {/* ContentEditable Area */}
                 <div
-                  ref={editorRef}
+                  ref={setEditorRef}
                   contentEditable
                   suppressContentEditableWarning
-                  dangerouslySetInnerHTML={{ __html: editorContent }}
                   onInput={e => handleEditorInput(e.currentTarget.innerHTML)}
-                  onBlur={e => handleEditorInput(e.currentTarget.innerHTML)}
+                  onBlur={handleEditorBlur}
                   style={{ fontSize: `${editorFontSize}px` }}
                   className="report-editor-area w-full min-h-[320px] max-h-[500px] overflow-y-auto p-5 bg-white text-slate-900 rounded-b-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 font-sans leading-relaxed shadow-inner"
                 />
@@ -1498,7 +1528,7 @@ export const DoctorWorkstation: React.FC = () => {
                           patientAge: activeOrder.patient.age,
                           patientGender: activeOrder.patient.gender,
                           category: activeTest?.category || 'Radiology',
-                          findingsHtml: editorContent,
+                          findingsHtml: editorRef.current ? editorRef.current.innerHTML : (editorContentRef.current || editorContent),
                           impression,
                           recommendations,
                           doctorName: selectedDoctorName,
