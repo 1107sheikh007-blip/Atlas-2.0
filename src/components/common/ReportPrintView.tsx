@@ -38,6 +38,13 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
   // Bottom margin clearance for pre-printed footer in mm (Default: 28mm)
   const bottomMarginMm = 28;
 
+  // Report Text Font Size in px (Default: 14px)
+  const [reportFontSize, setReportFontSize] = useState<number>(() => {
+    const saved = localStorage.getItem('atlas_report_font_size');
+    const parsed = Number(saved);
+    return !isNaN(parsed) && parsed >= 11 && parsed <= 20 ? parsed : 14;
+  });
+
   useEffect(() => {
     localStorage.setItem('atlas_report_print_mode', printMode);
   }, [printMode]);
@@ -45,6 +52,10 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
   useEffect(() => {
     localStorage.setItem('atlas_letterhead_top_margin', String(topMarginMm));
   }, [topMarginMm]);
+
+  useEffect(() => {
+    localStorage.setItem('atlas_report_font_size', String(reportFontSize));
+  }, [reportFontSize]);
 
   const handlePrint = () => {
     if (printMode === 'LETTERHEAD') {
@@ -261,6 +272,42 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
                 </div>
               </div>
             )}
+
+            {/* Font Size Adjuster */}
+            <div className="flex items-center gap-1.5 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">
+              <span className="text-xs text-slate-500 font-bold">Text Size:</span>
+              <button
+                type="button"
+                onClick={() => setReportFontSize(prev => Math.max(11, prev - 1))}
+                className="px-1.5 py-0.5 hover:bg-white rounded text-xs font-black text-slate-700 cursor-pointer"
+                title="Decrease font size"
+              >
+                -
+              </button>
+              <span className="text-xs font-mono font-bold text-sky-700 px-1">{reportFontSize}px</span>
+              <button
+                type="button"
+                onClick={() => setReportFontSize(prev => Math.min(20, prev + 1))}
+                className="px-1.5 py-0.5 hover:bg-white rounded text-xs font-black text-slate-700 cursor-pointer"
+                title="Increase font size"
+              >
+                +
+              </button>
+              <div className="flex gap-1 ml-1">
+                {[12, 14, 16].map(px => (
+                  <button
+                    key={px}
+                    type="button"
+                    onClick={() => setReportFontSize(px)}
+                    className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition-colors cursor-pointer ${
+                      reportFontSize === px ? 'bg-sky-100 text-sky-800 border border-sky-300' : 'bg-white text-slate-600 border border-slate-200'
+                    }`}
+                  >
+                    {px === 14 ? '14px (Std)' : `${px}px`}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Browser Tip Notice */}
@@ -277,8 +324,42 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
           <div
             ref={reportRef}
             id="printable-report"
-            className="w-full max-w-[800px] bg-white text-black p-6 sm:p-8 shadow-xl rounded-xl flex flex-col font-sans border border-slate-300 min-h-[1050px]"
+            style={{ fontSize: `${reportFontSize}px` }}
+            className="w-full max-w-[800px] bg-white text-black p-6 sm:p-8 shadow-xl rounded-xl flex flex-col font-sans border border-slate-300 min-h-[500px]"
           >
+            {/* Paragraph spacing style */}
+            <style dangerouslySetInnerHTML={{ __html: `
+              .report-content-body p {
+                margin-top: 10px !important;
+                margin-bottom: 14px !important;
+                line-height: 1.6 !important;
+              }
+              .report-content-body table {
+                margin-top: 12px !important;
+                margin-bottom: 16px !important;
+                width: 100% !important;
+                border-collapse: collapse !important;
+              }
+              .report-content-body ul {
+                margin-top: 8px !important;
+                margin-bottom: 14px !important;
+                padding-left: 20px !important;
+              }
+              .report-content-body li {
+                margin-bottom: 8px !important;
+                line-height: 1.6 !important;
+              }
+              .report-content-body th,
+              .report-content-body td {
+                padding: 6px 8px !important;
+              }
+              .report-content-body h3,
+              .report-content-body h4 {
+                margin-top: 14px !important;
+                margin-bottom: 8px !important;
+                font-weight: 800 !important;
+              }
+            ` }} />
             {/* 1. Header Area */}
             {printMode === 'LETTERHEAD' ? (
               /* Simulated space for physical stationery on screen (Hidden during print) */
@@ -376,7 +457,8 @@ export const ReportPrintView: React.FC<ReportPrintViewProps> = ({
 
             {/* 4. Findings HTML Body */}
             <div 
-              className="report-content-body text-xs leading-relaxed text-black my-2 prose prose-neutral max-w-none flex-1"
+              className="report-content-body leading-relaxed text-black my-2 prose prose-neutral max-w-none flex-1"
+              style={{ fontSize: `${reportFontSize}px` }}
               dangerouslySetInnerHTML={{ __html: report.findingsHtml }}
             />
 

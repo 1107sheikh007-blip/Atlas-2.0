@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   Stethoscope,
   FileEdit,
@@ -30,7 +30,9 @@ import {
   Lock,
   Scissors,
   FlaskConical,
-  Droplets
+  Droplets,
+  X,
+  Type
 } from 'lucide-react';
 import { useDiagnostic } from '../../context/DiagnosticContext';
 import { CLINICAL_TEMPLATES, findTemplateForTest } from '../../data/templates';
@@ -106,11 +108,28 @@ export const DoctorWorkstation: React.FC = () => {
   const [selectedDoctorName, setSelectedDoctorName] = useState<string>(AVAILABLE_DOCTORS[0].name);
   const [selectedDoctorSpecialty, setSelectedDoctorSpecialty] = useState<string>(AVAILABLE_DOCTORS[0].qualification);
   const [selectedDoctorRegNo, setSelectedDoctorRegNo] = useState<string>(AVAILABLE_DOCTORS[0].regNo);
+  const [editorFontSize, setEditorFontSize] = useState<number>(() => {
+    const s = localStorage.getItem('atlas_editor_font_size');
+    return s ? Number(s) : 14;
+  });
+
+  const editorRef = useRef<HTMLDivElement>(null);
+  const loadedReportKeyRef = useRef<string>('');
+  const editorContentRef = useRef<string>('');
 
   const [previewReport, setPreviewReport] = useState<DiagnosticReport | null>(null);
   const [isSimulatingAnalyzer, setIsSimulatingAnalyzer] = useState(false);
   const [isPdfCropModalOpen, setIsPdfCropModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Template Searcher state
+  const [templateSearchQuery, setTemplateSearchQuery] = useState('');
+  const [templateCategoryFilter, setTemplateCategoryFilter] = useState<'ALL' | 'Pathology' | 'Radiology' | 'Cardiology'>('ALL');
+  const [isTemplatePickerOpen, setIsTemplatePickerOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('atlas_editor_font_size', String(editorFontSize));
+  }, [editorFontSize]);
 
   const activeOrder = orders.find(o => o.id === selectedOrderId);
 
@@ -129,42 +148,122 @@ export const DoctorWorkstation: React.FC = () => {
     }
   }, [activeOrder, selectedTestId]);
 
-  useEffect(() => {
-    if (!selectedOrderId || !selectedTestId) return;
+  const filteredTemplates = useMemo(() => {
+    const q = templateSearchQuery.trim().toLowerCase();
+    return CLINICAL_TEMPLATES.filter(tpl => {
+      const matchesCategory = templateCategoryFilter === 'ALL' || tpl.category.toLowerCase() === templateCategoryFilter.toLowerCase();
+      if (!matchesCategory) return false;
+      if (!q) return true;
+      return (
+        tpl.name.toLowerCase().includes(q) ||
+        tpl.category.toLowerCase().includes(q) ||
+        tpl.department.toLowerCase().includes(q) ||
+        tpl.id.toLowerCase().includes(q)
+      );
+    });
+  }, [templateSearchQuery, templateCategoryFilter]);
 
-    const existingRep = reports.find(r => r.orderId === selectedOrderId && r.testId === selectedTestId);
-    if (existingRep) {
+  const loadOrderAndTestReport = useCallback((orderId: string, testId: string, forceReset = false) => {
+    if (!orderId || !testId) return;
+    const reportKey = `${orderId}___${testId}`;
+    if (!forceReset && loadedReportKeyRef.current === reportKey) {
+      return; // Already loaded, do not overwrite in-progress typing!
+    }
+    loadedReportKeyRef.current = reportKey;
+
+    const existingRep = reports.find(r => r.orderId === orderId && r.testId === testId);
+    if (existingRep && !forceReset) {
       setEditorContent(existingRep.findingsHtml);
+      editorContentRef.current = existingRep.findingsHtml;
       setImpression(existingRep.impression);
       setRecommendations(existingRep.recommendations || 'Clinical correlation suggested.');
       setSelectedDoctorName(existingRep.doctorName);
       setSelectedDoctorSpecialty(existingRep.doctorSpecialty);
       setSelectedDoctorRegNo(existingRep.doctorRegistrationNo);
-    } else {
-      // Find active test item from current order or test catalog
-      const activeTest = activeOrder?.tests.find(t => t.id === selectedTestId) || activeOrder?.tests[0];
-      const catalogTest = tests.find(t => t.id === selectedTestId || (t.name && activeTest?.name && t.name.toLowerCase() === activeTest.name.toLowerCase()));
-      
-      const matchedTpl = findTemplateForTest({
-        testName: activeTest?.name || catalogTest?.name || '',
-        category: activeTest?.category || catalogTest?.category || (isLabTech ? 'Pathology' : 'Radiology'),
-        department: activeTest?.department || catalogTest?.department || '',
-        gender: activeOrder?.patient?.gender || '',
-        defaultTemplateId: catalogTest?.defaultTemplate
-      });
-
-      setEditorContent(matchedTpl.htmlContent);
-      setImpression(matchedTpl.defaultImpression);
-      setRecommendations(matchedTpl.defaultRecommendations);
+      if (editorRef.current) {
+        editorRef.current.innerHTML = existingRep.findingsHtml;
+      }
+      return;
     }
-  }, [selectedOrderId, selectedTestId, reports, tests, activeOrder, isLabTech]);
+
+    // Check if user has an unsaved draft in localStorage
+    const savedDraftRaw = localStorage.getItem(`atlas_draft_${orderId}_${testId}`);
+    if (savedDraftRaw && !forceReset) {
+      try {
+        const draft = JSON.parse(savedDraftRaw);
+        if (draft.findingsHtml) {
+          setEditorContent(draft.findingsHtml);
+          editorContentRef.current = draft.findingsHtml;
+          setImpression(draft.impression || '');
+          setRecommendations(draft.recommendations || 'Clinical correlation suggested.');
+          if (editorRef.current) {
+            editorRef.current.innerHTML = draft.findingsHtml;
+          }
+          return;
+        }
+      } catch (e) {}
+    }
+
+    // Otherwise, initialize from matched template blueprint
+    const ord = orders.find(o => o.id === orderId);
+    const activeTest = ord?.tests.find(t => t.id === testId) || ord?.tests[0];
+    const catalogTest = tests.find(t => t.id === testId || (t.name && activeTest?.name && t.name.toLowerCase() === activeTest.name.toLowerCase()));
+
+    const matchedTpl = findTemplateForTest({
+      testName: activeTest?.name || catalogTest?.name || '',
+      category: activeTest?.category || catalogTest?.category || (isLabTech ? 'Pathology' : 'Radiology'),
+      department: activeTest?.department || catalogTest?.department || '',
+      gender: ord?.patient?.gender || '',
+      patientName: ord?.patient?.name || '',
+      defaultTemplateId: catalogTest?.defaultTemplate
+    });
+
+    setEditorContent(matchedTpl.htmlContent);
+    editorContentRef.current = matchedTpl.htmlContent;
+    setImpression(matchedTpl.defaultImpression);
+    setRecommendations(matchedTpl.defaultRecommendations);
+    if (editorRef.current) {
+      editorRef.current.innerHTML = matchedTpl.htmlContent;
+    }
+  }, [orders, reports, tests, isLabTech]);
+
+  useEffect(() => {
+    if (selectedOrderId && selectedTestId) {
+      loadOrderAndTestReport(selectedOrderId, selectedTestId);
+    }
+  }, [selectedOrderId, selectedTestId, loadOrderAndTestReport]);
+
+  const handleEditorInput = (html: string) => {
+    setEditorContent(html);
+    editorContentRef.current = html;
+    if (selectedOrderId && selectedTestId) {
+      localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
+        findingsHtml: html,
+        impression,
+        recommendations,
+        timestamp: Date.now()
+      }));
+    }
+  };
 
   const handleApplyTemplate = (templateId: string) => {
     const tpl = CLINICAL_TEMPLATES.find(t => t.id === templateId);
     if (tpl) {
       setEditorContent(tpl.htmlContent);
+      editorContentRef.current = tpl.htmlContent;
       setImpression(tpl.defaultImpression);
       setRecommendations(tpl.defaultRecommendations);
+      if (editorRef.current) {
+        editorRef.current.innerHTML = tpl.htmlContent;
+      }
+      if (selectedOrderId && selectedTestId) {
+        localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
+          findingsHtml: tpl.htmlContent,
+          impression: tpl.defaultImpression,
+          recommendations: tpl.defaultRecommendations,
+          timestamp: Date.now()
+        }));
+      }
       showToast(`Loaded "${tpl.name}" template`);
     }
   };
@@ -218,10 +317,11 @@ export const DoctorWorkstation: React.FC = () => {
   const handleSaveDraft = () => {
     if (!selectedOrderId || !selectedTestId) return;
     const docStaff = staff.find(s => s.name === selectedDoctorName || s.role === 'Radiologist' || s.role === 'Pathologist');
+    const content = editorRef.current ? editorRef.current.innerHTML : editorContent;
     saveReportDraft({
       orderId: selectedOrderId,
       testId: selectedTestId,
-      findingsHtml: editorContent,
+      findingsHtml: content,
       impression,
       recommendations,
       doctorName: selectedDoctorName,
@@ -231,17 +331,19 @@ export const DoctorWorkstation: React.FC = () => {
       doctorSealUrl: docStaff?.sealUrl,
       status: 'DRAFT'
     });
+    localStorage.removeItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`);
     showToast('Report draft saved successfully');
   };
 
   const handleAuthorizeAndSign = () => {
     if (!selectedOrderId || !selectedTestId) return;
     const docStaff = staff.find(s => s.name === selectedDoctorName || s.role === 'Radiologist' || s.role === 'Pathologist');
+    const content = editorRef.current ? editorRef.current.innerHTML : editorContent;
 
     const rep = saveReportDraft({
       orderId: selectedOrderId,
       testId: selectedTestId,
-      findingsHtml: editorContent,
+      findingsHtml: content,
       impression,
       recommendations,
       doctorName: selectedDoctorName,
@@ -260,6 +362,8 @@ export const DoctorWorkstation: React.FC = () => {
       sealUrl: docStaff?.sealUrl
     });
 
+    localStorage.removeItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`);
+
     setPreviewReport({
       ...rep,
       doctorSignatureUrl: docStaff?.signatureUrl,
@@ -277,7 +381,23 @@ export const DoctorWorkstation: React.FC = () => {
   };
 
   const execFormat = (command: string, value: string = '') => {
+    if (editorRef.current) {
+      editorRef.current.focus();
+    }
     document.execCommand(command, false, value);
+    if (editorRef.current) {
+      const html = editorRef.current.innerHTML;
+      setEditorContent(html);
+      editorContentRef.current = html;
+      if (selectedOrderId && selectedTestId) {
+        localStorage.setItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`, JSON.stringify({
+          findingsHtml: html,
+          impression,
+          recommendations,
+          timestamp: Date.now()
+        }));
+      }
+    }
   };
 
   const filteredOrders = orders.filter(ord => {
@@ -616,37 +736,156 @@ export const DoctorWorkstation: React.FC = () => {
                 </div>
               )}
 
-              {/* Template Quick Selector */}
-              <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-sky-50/60 rounded-2xl border border-sky-100">
-                <div className="flex items-center gap-2 text-xs text-slate-800">
-                  <FileEdit className="w-4 h-4 text-sky-600" />
-                  <span className="font-bold">Template:</span>
-                  <select
-                    onChange={e => handleApplyTemplate(e.target.value)}
-                    className="bg-white text-slate-900 border border-slate-300 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>Choose Clinical Template...</option>
-                    {CLINICAL_TEMPLATES.map(tpl => (
-                      <option key={tpl.id} value={tpl.id}>
-                        [{tpl.category}] {tpl.name}
-                      </option>
-                    ))}
-                  </select>
+              {/* Searchable Diagnostic Template Selector */}
+              <div className="p-3 bg-sky-50/70 rounded-2xl border border-sky-100 space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <FileEdit className="w-4 h-4 text-sky-600" />
+                    <span className="text-xs font-bold text-slate-800">Diagnostic Template:</span>
+                    <button
+                      type="button"
+                      onClick={() => setIsTemplatePickerOpen(prev => !prev)}
+                      className="px-3 py-1 bg-white hover:bg-sky-50 text-slate-900 border border-slate-300 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer transition-all"
+                    >
+                      <Search className="w-3.5 h-3.5 text-sky-600" />
+                      <span>Search & Select Template ({filteredTemplates.length})</span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm('Reload the original blueprint template? Any unsaved edits will be replaced.')) {
+                          loadOrderAndTestReport(selectedOrderId, selectedTestId, true);
+                          localStorage.removeItem(`atlas_draft_${selectedOrderId}_${selectedTestId}`);
+                        }
+                      }}
+                      className="text-[11px] px-2.5 py-1 text-slate-600 hover:text-slate-900 hover:bg-white rounded-lg border border-slate-200 transition-colors flex items-center gap-1 cursor-pointer"
+                      title="Reset to clean template blueprint"
+                    >
+                      <RotateCcw className="w-3 h-3 text-slate-500" />
+                      <span>Reset to Template</span>
+                    </button>
+
+                    <div className="text-[11px] text-slate-500 flex items-center gap-1.5 ml-1">
+                      <span>Modality: <strong className="text-sky-700">{activeTest?.category}</strong></span>
+                      <span>•</span>
+                      <span>Dept: <strong className="text-slate-700">{activeTest?.department}</strong></span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="text-[11px] text-slate-500 flex items-center gap-2">
-                  <span>Modality: <strong className="text-sky-700">{activeTest?.category}</strong></span>
-                  <span>•</span>
-                  <span>Dept: <strong className="text-slate-700">{activeTest?.department}</strong></span>
-                </div>
+                {/* Searchable Template Picker Dropdown */}
+                {isTemplatePickerOpen && (
+                  <div className="p-3 bg-white border border-sky-200 rounded-2xl shadow-xl space-y-2.5 mt-2 transition-all">
+                    <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
+                      <div className="relative flex-1 min-w-[200px]">
+                        <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                        <input
+                          type="text"
+                          value={templateSearchQuery}
+                          onChange={e => setTemplateSearchQuery(e.target.value)}
+                          placeholder="Search diagnostic (e.g. cbc, usg, urine, echo, lipid, female, male...)"
+                          className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                          autoFocus
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {(['ALL', 'Pathology', 'Radiology', 'Cardiology'] as const).map(cat => (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() => setTemplateCategoryFilter(cat)}
+                            className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
+                              templateCategoryFilter === cat ? 'bg-sky-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            }`}
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={() => setIsTemplatePickerOpen(false)}
+                          className="p-1 hover:bg-slate-100 text-slate-400 hover:text-slate-700 rounded-lg cursor-pointer ml-1"
+                          title="Close search"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="max-h-56 overflow-y-auto space-y-1 divide-y divide-slate-100 pr-1">
+                      {filteredTemplates.length === 0 ? (
+                        <p className="text-xs text-slate-500 py-3 text-center">No diagnostics match "{templateSearchQuery}"</p>
+                      ) : (
+                        filteredTemplates.map(tpl => (
+                          <button
+                            key={tpl.id}
+                            type="button"
+                            onClick={() => {
+                              handleApplyTemplate(tpl.id);
+                              setIsTemplatePickerOpen(false);
+                            }}
+                            className="w-full text-left p-2 hover:bg-sky-50 rounded-xl flex items-center justify-between gap-3 text-xs transition-colors cursor-pointer"
+                          >
+                            <div>
+                              <span className="font-bold text-slate-900 block">{tpl.name}</span>
+                              <span className="text-[10px] text-slate-500">{tpl.department}</span>
+                            </div>
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                              tpl.category === 'Pathology' ? 'bg-purple-100 text-purple-800' :
+                              tpl.category === 'Cardiology' ? 'bg-rose-100 text-rose-800' : 'bg-sky-100 text-sky-800'
+                            }`}>
+                              {tpl.category}
+                            </span>
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Rich Text Editor Toolbar */}
               <div className="space-y-1">
-                <div className="flex flex-wrap items-center gap-1 p-2 bg-slate-100 rounded-t-2xl border border-slate-300 text-slate-700 text-xs">
+                <style dangerouslySetInnerHTML={{ __html: `
+                  .report-editor-area p {
+                    margin-top: 10px !important;
+                    margin-bottom: 14px !important;
+                    line-height: 1.6 !important;
+                  }
+                  .report-editor-area table {
+                    margin-top: 12px !important;
+                    margin-bottom: 16px !important;
+                    width: 100% !important;
+                    border-collapse: collapse !important;
+                  }
+                  .report-editor-area ul {
+                    margin-top: 8px !important;
+                    margin-bottom: 14px !important;
+                    padding-left: 20px !important;
+                  }
+                  .report-editor-area li {
+                    margin-bottom: 8px !important;
+                    line-height: 1.6 !important;
+                  }
+                  .report-editor-area th,
+                  .report-editor-area td {
+                    padding: 6px 8px !important;
+                  }
+                  .report-editor-area h3,
+                  .report-editor-area h4 {
+                    margin-top: 14px !important;
+                    margin-bottom: 8px !important;
+                    font-weight: 800 !important;
+                  }
+                ` }} />
+
+                <div className="flex flex-wrap items-center gap-1 p-2 bg-slate-100 rounded-t-2xl border border-slate-300 text-slate-700 text-xs select-none">
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('bold')}
                     className="p-1.5 hover:bg-white hover:text-sky-700 rounded transition-colors cursor-pointer"
                     title="Bold"
@@ -655,6 +894,7 @@ export const DoctorWorkstation: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('italic')}
                     className="p-1.5 hover:bg-white hover:text-sky-700 rounded transition-colors cursor-pointer"
                     title="Italic"
@@ -663,6 +903,7 @@ export const DoctorWorkstation: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('underline')}
                     className="p-1.5 hover:bg-white hover:text-sky-700 rounded transition-colors cursor-pointer"
                     title="Underline"
@@ -672,8 +913,35 @@ export const DoctorWorkstation: React.FC = () => {
 
                   <div className="h-4 w-px bg-slate-300 mx-1" />
 
+                  {/* Font Size Control */}
+                  <div className="flex items-center gap-1 bg-white px-2 py-0.5 rounded-lg border border-slate-300">
+                    <Type className="w-3.5 h-3.5 text-slate-400" />
+                    <button
+                      type="button"
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => setEditorFontSize(prev => Math.max(12, prev - 1))}
+                      className="px-1.5 py-0.5 hover:bg-slate-100 rounded text-xs font-black text-slate-700 cursor-pointer"
+                      title="Decrease font size"
+                    >
+                      -
+                    </button>
+                    <span className="text-xs font-bold text-sky-700 min-w-[28px] text-center font-mono">{editorFontSize}px</span>
+                    <button
+                      type="button"
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => setEditorFontSize(prev => Math.min(22, prev + 1))}
+                      className="px-1.5 py-0.5 hover:bg-slate-100 rounded text-xs font-black text-slate-700 cursor-pointer"
+                      title="Increase font size"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <div className="h-4 w-px bg-slate-300 mx-1" />
+
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('formatBlock', '<h3>')}
                     className="p-1.5 hover:bg-white hover:text-sky-700 rounded font-bold cursor-pointer"
                     title="Heading"
@@ -682,6 +950,7 @@ export const DoctorWorkstation: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('insertUnorderedList')}
                     className="p-1.5 hover:bg-white hover:text-sky-700 rounded cursor-pointer"
                     title="Bullet List"
@@ -690,6 +959,7 @@ export const DoctorWorkstation: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('insertOrderedList')}
                     className="p-1.5 hover:bg-white hover:text-sky-700 rounded cursor-pointer"
                     title="Numbered List"
@@ -702,6 +972,7 @@ export const DoctorWorkstation: React.FC = () => {
                   {/* Highlights */}
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('hiliteColor', '#fef08a')}
                     className="flex items-center gap-1 px-2 py-0.5 bg-yellow-100 text-yellow-900 border border-yellow-300 rounded text-[11px] font-bold cursor-pointer"
                   >
@@ -709,6 +980,7 @@ export const DoctorWorkstation: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('hiliteColor', '#bbf7d0')}
                     className="flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded text-[11px] font-bold cursor-pointer"
                   >
@@ -716,6 +988,7 @@ export const DoctorWorkstation: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('hiliteColor', '#fed7aa')}
                     className="flex items-center gap-1 px-2 py-0.5 bg-orange-100 text-orange-900 border border-orange-300 rounded text-[11px] font-bold cursor-pointer"
                   >
@@ -727,6 +1000,7 @@ export const DoctorWorkstation: React.FC = () => {
                   {/* Colors */}
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('foreColor', '#0284c7')}
                     className="px-2 py-0.5 text-sky-600 hover:bg-white rounded font-bold text-[11px] cursor-pointer"
                   >
@@ -734,6 +1008,7 @@ export const DoctorWorkstation: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('foreColor', '#dc2626')}
                     className="px-2 py-0.5 text-rose-600 hover:bg-white rounded font-bold text-[11px] cursor-pointer"
                   >
@@ -741,6 +1016,7 @@ export const DoctorWorkstation: React.FC = () => {
                   </button>
                   <button
                     type="button"
+                    onMouseDown={e => e.preventDefault()}
                     onClick={() => execFormat('removeFormat')}
                     className="p-1.5 hover:bg-white rounded ml-auto text-slate-400 cursor-pointer"
                     title="Clear"
@@ -751,11 +1027,14 @@ export const DoctorWorkstation: React.FC = () => {
 
                 {/* ContentEditable Area */}
                 <div
+                  ref={editorRef}
                   contentEditable
                   suppressContentEditableWarning
                   dangerouslySetInnerHTML={{ __html: editorContent }}
-                  onBlur={e => setEditorContent(e.currentTarget.innerHTML)}
-                  className="w-full min-h-[300px] max-h-[460px] overflow-y-auto p-5 bg-white text-slate-900 rounded-b-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 font-sans leading-relaxed text-sm shadow-inner"
+                  onInput={e => handleEditorInput(e.currentTarget.innerHTML)}
+                  onBlur={e => handleEditorInput(e.currentTarget.innerHTML)}
+                  style={{ fontSize: `${editorFontSize}px` }}
+                  className="report-editor-area w-full min-h-[320px] max-h-[500px] overflow-y-auto p-5 bg-white text-slate-900 rounded-b-2xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 font-sans leading-relaxed shadow-inner"
                 />
               </div>
 

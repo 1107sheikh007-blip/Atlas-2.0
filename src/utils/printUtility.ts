@@ -130,6 +130,62 @@ export const printElement = (
           #printable-report * {
             zoom: 1 !important;
           }
+          #printable-report {
+            display: block !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            page-break-inside: auto !important;
+          }
+          .report-content-body {
+            display: block !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            page-break-inside: auto !important;
+          }
+          .report-content-body p {
+            margin-top: 10px !important;
+            margin-bottom: 14px !important;
+            line-height: 1.6 !important;
+            page-break-inside: avoid !important;
+          }
+          .report-content-body ul {
+            margin-top: 8px !important;
+            margin-bottom: 14px !important;
+            padding-left: 20px !important;
+            page-break-inside: auto !important;
+          }
+          .report-content-body li {
+            margin-bottom: 8px !important;
+            line-height: 1.6 !important;
+            page-break-inside: avoid !important;
+          }
+          .report-content-body table {
+            margin-top: 12px !important;
+            margin-bottom: 16px !important;
+            page-break-inside: auto !important;
+          }
+          .report-content-body tr {
+            page-break-inside: avoid !important;
+          }
+          .report-content-body th,
+          .report-content-body td {
+            padding: 6px 8px !important;
+          }
+          .report-content-body h3,
+          .report-content-body h4 {
+            margin-top: 14px !important;
+            margin-bottom: 8px !important;
+            page-break-inside: avoid !important;
+            page-break-after: avoid !important;
+          }
+          .report-impression-box,
+          .report-signature-block {
+            page-break-inside: avoid !important;
+          }
           table {
             border-collapse: collapse !important;
             width: 100% !important;

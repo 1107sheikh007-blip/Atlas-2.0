@@ -428,6 +428,21 @@ export const CLINICAL_TEMPLATES: ClinicalTemplate[] = [
     defaultRecommendations: "(ADV- clinical & pathological correlation.)"
   },
   {
+    id: "tpl-usg-kub-female",
+    name: "USG KUB & PELVIS FEMALE",
+    category: "Radiology",
+    department: "Sonography / USG",
+    htmlContent: `<h3>SONOGRAPHY - KUB & PELVIS (FEMALE)</h3>
+<ul>
+  <li><strong>Kidneys:</strong> Both kidneys are normal in size, position, shape, and cortical echogenicity. Corticomedullary differentiation is well preserved. No evidence of renal calculus, hydronephrosis, or focal mass lesion. Pelvicalyceal systems are undilated bilaterally.</li>
+  <li><strong>Ureters:</strong> Both ureters are undilated without acoustic shadowing or calculus.</li>
+  <li><strong>Urinary Bladder:</strong> Well distended with smooth mucosal contours and uniform wall thickness. Luminal contents are completely anechoic. No vesical calculus, diverticulum, or mass lesion.</li>
+  <li><strong>Pelvic Organs:</strong> Visualized uterus is normal in size and uniform myometrial echotexture. Bilateral ovaries and adnexa appear unremarkable. No adnexal cyst or free pelvic fluid in P.O.D.</li>
+</ul>`,
+    defaultImpression: "Normal ultrasound examination of KUB & Pelvis in female patient. No evidence of nephrolithiasis, obstructive uropathy, or pelvic mass.",
+    defaultRecommendations: "Clinical correlation recommended."
+  },
+  {
     id: "tpl-usg-local-region",
     name: "USG LOCAL REGION",
     category: "Radiology",
@@ -1055,12 +1070,65 @@ export interface TemplateLookupOptions {
   category?: string;
   department?: string;
   gender?: string;
+  patientName?: string;
   defaultTemplateId?: string;
+}
+
+/**
+ * Intelligent gender detection from patient demographics or name honorifics.
+ */
+export function detectGender(genderStr?: string, patientName?: string): 'male' | 'female' | 'unknown' {
+  const g = (genderStr || '').trim().toLowerCase();
+  const name = (patientName || '').trim().toLowerCase();
+
+  // Explicit female cues
+  if (
+    g.startsWith('f') ||
+    g.includes('female') ||
+    g.includes('/ f') ||
+    g.includes('/f') ||
+    g === 'female' ||
+    name.startsWith('mrs.') ||
+    name.startsWith('mrs ') ||
+    name.startsWith('ms.') ||
+    name.startsWith('ms ') ||
+    name.startsWith('miss') ||
+    name.startsWith('smt.') ||
+    name.startsWith('smt ') ||
+    name.includes(' bee') ||
+    name.includes(' begum') ||
+    name.includes(' bai') ||
+    name.includes(' devi') ||
+    name.includes(' kaur')
+  ) {
+    return 'female';
+  }
+
+  // Explicit male cues
+  if (
+    g === 'm' ||
+    g.startsWith('m/') ||
+    g.includes('/ m') ||
+    g.includes('/m') ||
+    g === 'male' ||
+    name.startsWith('mr.') ||
+    name.startsWith('mr ') ||
+    name.startsWith('shri') ||
+    name.startsWith('master') ||
+    name.includes(' khan') ||
+    name.includes(' singh') ||
+    name.includes(' kumar')
+  ) {
+    return 'male';
+  }
+
+  return 'unknown';
 }
 
 /**
  * Intelligently matches a diagnostic test to its specialized clinical report template.
  * Guarantees that Pathology tests (CBC, Urine, Blood, Biochemistry) never accidentally open Sonography.
+ * Accurately selects gender-appropriate templates (USG Abdomen Female vs Male, KUB Female vs Male).
  */
 export function findTemplateForTest(options: TemplateLookupOptions): ClinicalTemplate {
   // 1. Explicit template ID match if configured on test
@@ -1072,7 +1140,7 @@ export function findTemplateForTest(options: TemplateLookupOptions): ClinicalTem
   const name = (options.testName || '').trim().toLowerCase();
   const cat = (options.category || '').trim().toLowerCase();
   const dept = (options.department || '').trim().toLowerCase();
-  const gender = (options.gender || '').trim().toLowerCase();
+  const resolvedGender = detectGender(options.gender, options.patientName);
 
   // 2. Pathology & Clinical Biochemistry Specific Mappings
   if (/(\bcbc\b|hemogram|haemogram|blood\s*count|complete\s*blood|wbc|tlc|dlc|esr|platelet)/i.test(name)) {
@@ -1194,9 +1262,14 @@ export function findTemplateForTest(options: TemplateLookupOptions): ClinicalTem
     if (tpl) return tpl;
   }
 
+  // KUB (Gender Aware: Female includes Pelvis/Uterus; Male includes Prostate)
   if (/(\bkub\b|kidney\s*ureter\s*bladder)/i.test(name)) {
-    const tpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-kub-male');
-    if (tpl) return tpl;
+    if (resolvedGender === 'female') {
+      const femaleKub = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-kub-female');
+      if (femaleKub) return femaleKub;
+    }
+    const maleKub = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-kub-male');
+    if (maleKub) return maleKub;
   }
 
   // 7. Radiography & Cross-Sectional Imaging
@@ -1210,13 +1283,12 @@ export function findTemplateForTest(options: TemplateLookupOptions): ClinicalTem
     if (tpl) return tpl;
   }
 
-  // 8. Sonography Whole Abdomen (Gender Aware)
+  // 8. Sonography Whole Abdomen (Gender Aware: Female includes Uterus/Adnexa; Male includes Prostate)
   if (/(\babdomen\b|\babdo\b|sonography|usg|ultrasound)/i.test(name)) {
-    if (gender.includes('female')) {
+    if (resolvedGender === 'female') {
       const femaleTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-whole-abdomen-female-1');
       if (femaleTpl) return femaleTpl;
-    }
-    if (gender.includes('male')) {
+    } else if (resolvedGender === 'male') {
       const maleTpl = CLINICAL_TEMPLATES.find(t => t.id === 'tpl-usg-wholw-abdomen-male');
       if (maleTpl) return maleTpl;
     }
